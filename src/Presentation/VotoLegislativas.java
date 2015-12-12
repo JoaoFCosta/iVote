@@ -5,17 +5,30 @@
  */
 package Presentation;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+
 /**
  *
  * @author joaocosta
  */
 public class VotoLegislativas extends javax.swing.JFrame {
+    private ArrayList<JRadioButton> opcoes;
 
     /**
      * Creates new form Legislativas
      */
     public VotoLegislativas() {
         initComponents();
+        // TODO: Adicionar codigo que automaticamente adiciona
+        // os radio buttons associados as listas.
+        opcoes = new ArrayList<>();
+        opcoes.add(jRadioButton1);
+        opcoes.add(jRadioButton2);
+        opcoes.add(jRadioButton4);
+        opcoes.add(jRadioButton5);
         this.setTitle("Legislativas");
     }
 
@@ -40,9 +53,13 @@ public class VotoLegislativas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         voteButton.setText("Votar");
+        voteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voteButtonActionPerformed(evt);
+            }
+        });
 
         jRadioButton2.setText("PSD");
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +149,45 @@ public class VotoLegislativas extends javax.swing.JFrame {
     private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton4ActionPerformed
+
+    /**
+     * Registar o voto.
+     */
+    private void voteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voteButtonActionPerformed
+        // Verificar quantas opções foram selecionadas.
+        String selecionado = null;
+        int nSelecionados = 0;
+        /* Os valores possiveis para a decisão são
+         * 0 - Yes
+         * 1 - No
+         * 2 - Cancel */ 
+        int decisao;
+        
+        for (JRadioButton opcao : opcoes) {
+            if (opcao.isSelected()) {
+                selecionado = opcao.getText();
+                nSelecionados++;
+            }
+        }
+        
+        switch (nSelecionados) {
+            case 0:
+                decisao = JOptionPane.showConfirmDialog(this, 
+                    "Tem a certeza que pretende votar em branco?");
+                System.out.println(decisao);
+                break;
+            case 1:
+                decisao = JOptionPane.showConfirmDialog(this,
+                    "Confirma que quer votar na lista: " + selecionado + "?");
+                System.out.println(decisao);
+                break;
+            default:
+                decisao = JOptionPane.showConfirmDialog(this,
+                    "Tem a certeza que pretende fazer um voto nulo?");
+                System.out.println(decisao);
+                break;
+        }
+    }//GEN-LAST:event_voteButtonActionPerformed
 
     /**
      * @param args the command line arguments
