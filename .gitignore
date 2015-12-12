@@ -1,5 +1,5 @@
 # Ignore Build folder.
-build/*
+build/
 
 # Ignore .jar application.
 dist/iVote.jar
