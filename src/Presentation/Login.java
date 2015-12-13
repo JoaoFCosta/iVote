@@ -7,6 +7,7 @@ package Presentation;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -41,7 +42,7 @@ public class Login extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        electionsList = new javax.swing.JList();
         resultsButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,12 +122,12 @@ public class Login extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Eleições"));
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        electionsList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Eleição Legislativa 2015", "Eleição Presidencial 2010", "Eleição Legislativa 2011", "Eleição Presidencial 2006" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(electionsList);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -194,12 +195,29 @@ public class Login extends javax.swing.JFrame {
 
     private void resultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultsButtonActionPerformed
         // TODO: Modificar a frame que aparece conforme a eleição selecionada.
-        // Criar a nova frame e centrar no ecrã.
-        ResultadoPresidencial RP = new ResultadoPresidencial();
-        RP.setLocationRelativeTo(this);
-        this.dispose();
-        RP.setVisible(true);
         
+        /* Verificar qual a eleição selecionada.
+         * Se não houver seleção então o valor é null. */
+        String selecao = (String) electionsList.getSelectedValue();
+        
+        if (selecao == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Deve selecionar uma eleição.", "Erro", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            // Obter o ano da eleição
+            String[] campos = selecao.split("\\s+");
+            System.out.println(campos[2]);
+            int ano = Integer.parseInt(campos[2]);
+            JOptionPane.showMessageDialog(this, ano);
+            
+            // Criar a nova frame e centrar no ecrã.
+            ResultadoPresidencial RP = new ResultadoPresidencial();
+            RP.setLocationRelativeTo(this);
+            this.dispose();
+            RP.setVisible(true);
+        }
     }//GEN-LAST:event_resultsButtonActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
@@ -238,7 +256,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cardIdTextField;
-    private javax.swing.JList jList1;
+    private javax.swing.JList electionsList;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
