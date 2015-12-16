@@ -6,7 +6,6 @@
 package Presentation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
@@ -174,18 +173,23 @@ public class VotoLegislativas extends javax.swing.JFrame {
             case 0:
                 decisao = JOptionPane.showConfirmDialog(this, 
                     "Tem a certeza que pretende votar em branco?");
-                System.out.println(decisao);
                 break;
             case 1:
                 decisao = JOptionPane.showConfirmDialog(this,
                     "Confirma que quer votar na lista: " + selecionado + "?");
-                System.out.println(decisao);
                 break;
             default:
                 decisao = JOptionPane.showConfirmDialog(this,
                     "Tem a certeza que pretende fazer um voto nulo?");
-                System.out.println(decisao);
                 break;
+        }
+        
+        // Em caso de resposta positiva voltar para o ecrã de login.
+        if (decisao == JOptionPane.YES_OPTION) {
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
         }
     }//GEN-LAST:event_voteButtonActionPerformed
 
