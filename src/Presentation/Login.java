@@ -229,16 +229,24 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, 
                 "O campo de username e password não pode estar vazio.");
         } else {
+            // TODO: Ir à BD ver se é um admin.
+            if (cardIdTextField.getText().charAt(0) == 'a') {
+                GerirLegislativas GL = new GerirLegislativas();
+                GL.setLocationRelativeTo(this);
+                this.dispose();
+                GL.setVisible(true);
+            }
+            else {
+                // Eliminar a frame actual e criar uma para votação.
+                VotoLegislativas VL = new VotoLegislativas();
+                VL.setLocationRelativeTo(this);
+                this.dispose();
+                VL.setVisible(true);
+            }
+            
             /* TODO: Adicionar código que verifica qual das duas
              * votações está a decorrer e consoante a eleição
-             * muda a janela que aparece. */
-        
-        
-            // Eliminar a frame actual e criar uma para votação.
-            VotoLegislativas VL = new VotoLegislativas();
-            VL.setLocationRelativeTo(this);
-            this.dispose();
-            VL.setVisible(true);
+             * muda a janela que aparece. */    
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 

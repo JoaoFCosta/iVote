@@ -5,11 +5,15 @@
  */
 package Presentation;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author joaocosta
  */
 public class GerirLegislativas extends javax.swing.JFrame {
+    // Para manter controlo se houve alterações dos dados.
+    private boolean alterado = false;
 
     /**
      * Creates new form GerirLegislativas
@@ -29,8 +33,8 @@ public class GerirLegislativas extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
@@ -38,12 +42,12 @@ public class GerirLegislativas extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        addCircle = new javax.swing.JButton();
+        addList = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jList3 = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        addCandidate = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -80,9 +84,19 @@ public class GerirLegislativas extends javax.swing.JFrame {
                 .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jButton1.setText("Guardar Alterações");
+        saveButton.setText("Guardar Alterações");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("< Cancelar");
+        cancelButton.setText("< Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Circulos Eleitorais"));
 
@@ -110,9 +124,9 @@ public class GerirLegislativas extends javax.swing.JFrame {
         jList2.setSize(new java.awt.Dimension(40, 136));
         jScrollPane2.setViewportView(jList2);
 
-        jButton3.setText("Adicionar Círculo");
+        addCircle.setText("Adicionar Círculo");
 
-        jButton4.setText("Adicionar Lista");
+        addList.setText("Adicionar Lista");
 
         jList3.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "José Moreira", "Artur Mendes", "Sofia Pereira", "Pedro Morais" };
@@ -127,7 +141,12 @@ public class GerirLegislativas extends javax.swing.JFrame {
 
         jLabel3.setText("Candidatos");
 
-        jButton5.setText("Adicionar Candidato");
+        addCandidate.setText("Adicionar Candidato");
+        addCandidate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCandidateActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Remover Candidato");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -152,14 +171,14 @@ public class GerirLegislativas extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
+                            .addComponent(addCircle)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
-                            .addComponent(jButton4)
+                            .addComponent(addList)
                             .addComponent(jButton7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +186,7 @@ public class GerirLegislativas extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
-                                    .addComponent(jButton5)
+                                    .addComponent(addCandidate)
                                     .addComponent(jButton6))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
@@ -186,9 +205,9 @@ public class GerirLegislativas extends javax.swing.JFrame {
                     .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3))
+                    .addComponent(addCandidate)
+                    .addComponent(addList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addCircle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6)
@@ -207,9 +226,9 @@ public class GerirLegislativas extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(cancelButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(saveButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -221,8 +240,8 @@ public class GerirLegislativas extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(saveButton)
+                    .addComponent(cancelButton))
                 .addGap(6, 6, 6))
         );
 
@@ -236,6 +255,49 @@ public class GerirLegislativas extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    /** Botão 'Cancelar'. */
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO: Adicionar confirmação para quando o administrador
+        // tenta cancelar quando existem alterações.
+        if (alterado) {
+            if (JOptionPane.showConfirmDialog(this,
+                "Se sair as alterações nao serão guardadas?\n"
+                + "Quer mesmo sair?") == JOptionPane.YES_OPTION) {
+                    Login login = new Login();
+                    login.setLocationRelativeTo(this);
+                    this.dispose();
+                    login.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    /** Botão 'Guardar Alterações'. */
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        if (JOptionPane.showConfirmDialog(this,
+            "Tem a certeza que pretende guardar as alterações?") == JOptionPane.YES_OPTION) {
+            // TODO: Guardar alterações na BD.
+            
+            // Voltar para o ecrã de login.
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    /** Botão 'Adicionar Candidato'. */
+    private void addCandidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCandidateActionPerformed
+        // TODO: Adicionar nome do candidato à BD.
+        
+        String candidato = JOptionPane.showInputDialog(this,
+            "Nome do candidato");
+        if (candidato == null) System.out.println("Cancelado");
+        else {
+            System.out.println(candidato);
+            alterado = true;
+        }
+    }//GEN-LAST:event_addCandidateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,11 +319,10 @@ public class GerirLegislativas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton addCandidate;
+    private javax.swing.JButton addCircle;
+    private javax.swing.JButton addList;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
@@ -277,5 +338,6 @@ public class GerirLegislativas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }
