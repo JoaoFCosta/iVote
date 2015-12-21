@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `iVoteDB`.`RondaPresidencial` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `idEleicao` INT NOT NULL COMMENT '',
   `ronda` INT NOT NULL COMMENT '',
-  `data` DATETIME NOT NULL COMMENT '',
+  `data` DATE NOT NULL COMMENT '',
   INDEX `fk_Presidencial_Eleicao1_idx` (`idEleicao` ASC)  COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   CONSTRAINT `fk_Presidencial_Eleicao1`
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `iVoteDB`.`AssembleiaVoto` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
   `nome` VARCHAR(45) NOT NULL COMMENT '',
   `idCirculo` INT NULL COMMENT '',
-  `idRondaPresidencial` INT NOT NULL COMMENT '',
+  `idRondaPresidencial` INT NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `fk_Freguesia_Circulo1_idx` (`idCirculo` ASC)  COMMENT '',
   INDEX `fk_AssembleiaVoto_rondaPresidencial1_idx` (`idRondaPresidencial` ASC)  COMMENT '',
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `iVoteDB`.`Eleitor` (
   `votou` INT NULL COMMENT '',
   `seccao` INT NOT NULL COMMENT '',
   INDEX `fk_Eleitor_Freguesia_idx` (`idAssembleiaVoto` ASC)  COMMENT '',
-  PRIMARY KEY (`idCidadao`)  COMMENT '',
+  PRIMARY KEY (`idCidadao`, `idAssembleiaVoto`)  COMMENT '',
   CONSTRAINT `fk_Eleitor_Freguesia`
     FOREIGN KEY (`idAssembleiaVoto`)
     REFERENCES `iVoteDB`.`AssembleiaVoto` (`id`)
