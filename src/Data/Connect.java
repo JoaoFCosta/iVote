@@ -22,8 +22,7 @@ public class Connect {
         Class.forName("com.mysql.jdbc.Driver");
         // TODO: Substituir nome final da base de dados e port.
         Connection c = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/Eleicoes?" + 
-            "?user=root&password=");
+            "jdbc:mysql://localhost:3306/iVoteDB?user=root&password=");
         return c;
     }
 }
