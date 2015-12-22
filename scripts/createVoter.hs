@@ -1,4 +1,5 @@
 import System.Random
+import Combine
 
 main :: IO ()
 main = do
@@ -30,9 +31,6 @@ votersIDByParish citizenID parishID =
       citizensID   = [citizenID..citizenRange -1]
       parishesID   = [parishID,parishID +24 .. 312]
   in combineLists citizensID parishesID ++ votersIDByParish citizenRange (parishID +1)
-
-combineLists l1 l2 = concat . map (flip pairWithList l2) $ l1
-pairWithList a = map (\x -> (a,x))
 
 randomIfVotedList n = do
   g <- getStdGen
