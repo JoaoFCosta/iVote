@@ -11,15 +11,15 @@ package Business;
  */
 public class Voto {
     // TODO: Implementar votos nulos e brancos.
-    
+
     // Escolha associada ao voto.
     String escolha;
     // Id da eleição à qual está associado o voto.
     int idEleicao;
-    
+
     /**
-     * Cosntrutor parametrizado.
-     * 
+     * Construtor parametrizado.
+     *
      * @param escolha   Escolha associada ao voto.
      * @param idEleicao Id da eleição à qual o voto está associado.
      */
