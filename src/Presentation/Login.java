@@ -5,21 +5,22 @@
  */
 package Presentation;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import javax.swing.JOptionPane;
+import Business.SGE;
 
 /**
  *
  * @author joaocosta
  */
 public class Login extends javax.swing.JFrame {
+    private final SGE sge;
 
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        this.sge = new SGE();
         this.setTitle("iVote");
     }
 
@@ -221,32 +222,41 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_resultsButtonActionPerformed
 
-    /** Método que corre quando o botão de login é pressionado. */
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        /* TODO: Verificar que o campo de username e password não está vazio. */
-        if (cardIdTextField.getText().equals("") || passwordField.getText().equals("")) {
-            System.out.println("Não irás entrar!");
+        String ccidadao = cardIdTextField.getText();
+        String password = passwordField.getText();
+        
+        // Verificar se os campos de username e password estão vazios.
+        if (ccidadao.equals("") || password.equals(""))
             JOptionPane.showMessageDialog(this, 
-                "O campo de username e password não pode estar vazio.");
-        } else {
-            // TODO: Ir à BD ver se é um admin.
-            if (cardIdTextField.getText().charAt(0) == 'a') {
+                "O campo de cartão de cidadão e password não pode estar vazio.");
+        else {
+            if (ccidadao.charAt(0) == 'a') {
+                // Login de administrador.
                 GerirLegislativas GL = new GerirLegislativas();
                 GL.setLocationRelativeTo(this);
                 this.dispose();
                 GL.setVisible(true);
             }
             else {
-                // Eliminar a frame actual e criar uma para votação.
-                VotoLegislativas VL = new VotoLegislativas();
-                VL.setLocationRelativeTo(this);
-                this.dispose();
-                VL.setVisible(true);
+                // Login de eleitor.
+                boolean r = sge.loginEleitor(Integer.parseInt(ccidadao), password);
+                
+                if (r) {
+                    // TODO: Verificar que eleitor não vota duas vezes.
+                    VotoLegislativas VL = new VotoLegislativas();
+                    VL.setLocationRelativeTo(this);
+                    this.dispose();
+                    VL.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "Dados inválidos.");
+                }
             }
             
             /* TODO: Adicionar código que verifica qual das duas
              * votações está a decorrer e consoante a eleição
-             * muda a janela que aparece. */    
+             * muda a janela que aparece. */
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -259,7 +269,7 @@ public class Login extends javax.swing.JFrame {
             javax.swing.UIManager.setLookAndFeel(
                     javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
-            System.out.println("Unable to load native look and feel");
+           System.out.println("Unable to load native look and feel");
         }
 
         /* Create and display the form */
