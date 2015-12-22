@@ -250,6 +250,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void loginEleitor(String ccidadao, String password) {
+        // Verificar se os dados estão correctos.
         boolean r = sge.loginEleitor(Integer.parseInt(ccidadao), password);
 
         if (r) {
@@ -265,10 +266,18 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void loginAdmin(String id, String password) {
-        GerirLegislativas GL = new GerirLegislativas();
-        GL.setLocationRelativeTo(this);
-        this.dispose();
-        GL.setVisible(true);
+        // Verificar se os dados estão correctos.
+        boolean r = sge.loginAdministrador(id, password);
+        
+        if (r) {
+            GerirLegislativas GL = new GerirLegislativas();
+            GL.setLocationRelativeTo(this);
+            this.dispose();
+            GL.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Dados inválidos.");
+        }
     }
 
     /**

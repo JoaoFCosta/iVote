@@ -269,6 +269,11 @@ public class GerirLegislativas extends javax.swing.JFrame {
                     this.dispose();
                     login.setVisible(true);
             }
+        } else {
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
         }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
