@@ -5,9 +5,8 @@
  */
 package Presentation;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import javax.swing.JOptionPane;
+import Business.SGE;
 
 /**
  *
@@ -15,11 +14,14 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
 
+    private final SGE sge;
+
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        this.sge = new SGE();
         this.setTitle("iVote");
     }
 
@@ -193,26 +195,27 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /** Método que corre quando o botão de resultados é pressionado. */
+    /**
+     * Método que corre quando o botão de resultados é pressionado.
+     */
     private void resultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultsButtonActionPerformed
         // TODO: Modificar a frame que aparece conforme a eleição selecionada.
-        
+
         /* Verificar qual a eleição selecionada.
          * Se não houver seleção então o valor é null. */
         String selecao = (String) electionsList.getSelectedValue();
-        
+
         if (selecao == null) {
-            JOptionPane.showMessageDialog(this, 
-                "Deve selecionar uma eleição.", "Erro", 
-                JOptionPane.ERROR_MESSAGE);
-        }
-        else {
+            JOptionPane.showMessageDialog(this,
+                    "Deve selecionar uma eleição.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
             // Obter o ano da eleição
             String[] campos = selecao.split("\\s+");
             System.out.println(campos[2]);
             int ano = Integer.parseInt(campos[2]);
             JOptionPane.showMessageDialog(this, ano);
-            
+
             // Criar a nova frame e centrar no ecrã.
             ResultadoPresidencial RP = new ResultadoPresidencial();
             RP.setLocationRelativeTo(this);
@@ -221,34 +224,52 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_resultsButtonActionPerformed
 
-    /** Método que corre quando o botão de login é pressionado. */
+    /* -------------- LOGIN -------------- */
+    
+    /** Botão de Login pressionado. */
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        /* TODO: Verificar que o campo de username e password não está vazio. */
-        if (cardIdTextField.getText().equals("") || passwordField.getText().equals("")) {
-            System.out.println("Não irás entrar!");
-            JOptionPane.showMessageDialog(this, 
-                "O campo de username e password não pode estar vazio.");
+        String ccidadao = cardIdTextField.getText();
+        String password = passwordField.getText();
+
+        // Verificar se os campos de username e password estão vazios.
+        if (ccidadao.equals("") || password.equals("")) {
+            JOptionPane.showMessageDialog(this,
+                    "O campo de cartão de cidadão e password não pode estar vazio.");
         } else {
-            // TODO: Ir à BD ver se é um admin.
-            if (cardIdTextField.getText().charAt(0) == 'a') {
-                GerirLegislativas GL = new GerirLegislativas();
-                GL.setLocationRelativeTo(this);
-                this.dispose();
-                GL.setVisible(true);
-            }
-            else {
-                // Eliminar a frame actual e criar uma para votação.
-                VotoLegislativas VL = new VotoLegislativas();
-                VL.setLocationRelativeTo(this);
-                this.dispose();
-                VL.setVisible(true);
-            }
-            
             /* TODO: Adicionar código que verifica qual das duas
              * votações está a decorrer e consoante a eleição
-             * muda a janela que aparece. */    
+             * muda a janela que aparece. */
+            if (ccidadao.charAt(0) == 'a') {
+                // Login de administrador.
+                loginAdmin(ccidadao, password);
+            } else {
+                // Login de eleitor.
+                loginEleitor(ccidadao, password);
+            }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void loginEleitor(String ccidadao, String password) {
+        boolean r = sge.loginEleitor(Integer.parseInt(ccidadao), password);
+
+        if (r) {
+            // TODO: Verificar que eleitor não vota duas vezes.
+            VotoLegislativas VL = new VotoLegislativas();
+            VL.setLocationRelativeTo(this);
+            this.dispose();
+            VL.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Dados inválidos.");
+        }
+    }
+
+    private void loginAdmin(String id, String password) {
+        GerirLegislativas GL = new GerirLegislativas();
+        GL.setLocationRelativeTo(this);
+        this.dispose();
+        GL.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -267,7 +288,7 @@ public class Login extends javax.swing.JFrame {
             public void run() {
                 // Criar a frame e centrar no ecrã.
                 Login login = new Login();
-                login.setVisible(true);                
+                login.setVisible(true);
                 login.setLocationRelativeTo(null);
             }
         });
