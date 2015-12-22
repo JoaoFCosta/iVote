@@ -4,4 +4,7 @@ build/
 # Ignore .jar application.
 dist/iVote.jar
 
+# Ignore nbproject/private
+nbproject/private
+
 .DS_Store

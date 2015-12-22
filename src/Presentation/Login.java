@@ -193,6 +193,7 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /** Método que corre quando o botão de resultados é pressionado. */
     private void resultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultsButtonActionPerformed
         // TODO: Modificar a frame que aparece conforme a eleição selecionada.
         
@@ -220,15 +221,33 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_resultsButtonActionPerformed
 
+    /** Método que corre quando o botão de login é pressionado. */
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        /* TODO: Adicionar código que verifica qual das duas
-         * votações está a decorrer e consoante a eleição
-         * muda a janela que aparece. */
-        // Eliminar a frame actual e criar uma para votação.
-        VotoLegislativas VL = new VotoLegislativas();
-        VL.setLocationRelativeTo(this);
-        this.dispose();
-        VL.setVisible(true);
+        /* TODO: Verificar que o campo de username e password não está vazio. */
+        if (cardIdTextField.getText().equals("") || passwordField.getText().equals("")) {
+            System.out.println("Não irás entrar!");
+            JOptionPane.showMessageDialog(this, 
+                "O campo de username e password não pode estar vazio.");
+        } else {
+            // TODO: Ir à BD ver se é um admin.
+            if (cardIdTextField.getText().charAt(0) == 'a') {
+                GerirLegislativas GL = new GerirLegislativas();
+                GL.setLocationRelativeTo(this);
+                this.dispose();
+                GL.setVisible(true);
+            }
+            else {
+                // Eliminar a frame actual e criar uma para votação.
+                VotoLegislativas VL = new VotoLegislativas();
+                VL.setLocationRelativeTo(this);
+                this.dispose();
+                VL.setVisible(true);
+            }
+            
+            /* TODO: Adicionar código que verifica qual das duas
+             * votações está a decorrer e consoante a eleição
+             * muda a janela que aparece. */    
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
