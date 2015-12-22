@@ -15,23 +15,25 @@ public class AdminDAO {
      *  @param pass     Password do administrador.
      *  @return True se a password estiver correcta para o utilizador fornecido
      *          ou false caso contrário. */
-    public boolean confirmPassword (String admin, String pass) {
-        Connection con = null;
+    public boolean confirmaPassword (String admin, String pass) {
+        Connection con  = null;
+        String query    = "select * from Admin where id='" + admin + "';";
         
         try {
             con                  = Connect.connect();
-            PreparedStatement ps = con.prepareStatement("select Password "
-            + "from Admins where id=" + admin);
+            PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs            = ps.executeQuery();
             
             // Aceder a password e comparar.
             if (rs.next()) {
-                String password = rs.getString("Password");
+                String password = rs.getString("password");
                 
                 return password.equals(pass);
             }
         }
-        catch (SQLException | ClassNotFoundException e) { return false; }
+        catch (SQLException | ClassNotFoundException e) { 
+            System.out.println(e);
+        }
         finally { 
             try { con.close(); }
             catch (Exception e) { System.out.println(e); }
