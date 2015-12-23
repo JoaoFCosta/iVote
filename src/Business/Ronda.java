@@ -1,6 +1,7 @@
 package Business;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Calendar;
 
 /**
@@ -61,7 +62,7 @@ public class Ronda {
 
     /** Alterar Data de Realização da Ronda n.
      *  @param d nova Data de Realização da Ronda n. */
-    public void setDataRealizacao(Calendar d) { this.numero = d; }
+    public void setDataRealizacao(Calendar d) { this.dataRealizacao = d; }
 
     /** Alterar Número de Votos Validos nessa Secção de Voto.
      *  @param v Novo Número de Votos Validos para essa Secção de Voto. */

@@ -1,6 +1,8 @@
 package Business;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
@@ -14,7 +16,7 @@ public class Assembleia {
      *  @param sc         Lista com todas as Seções de Voto dessa Assembleia.
      */
     public Assembleia (List<SeccaoVoto> sc) {
-        this.secoes = new ArrayList<SeccaoVoto>();
+        this.seccoesVoto = new ArrayList<SeccaoVoto>();
         for(SeccaoVoto s: sc){
           seccoesVoto.add(s);
         }
@@ -29,7 +31,7 @@ public class Assembleia {
     }
 
     /** Lista com todas as Seções de Voto dessa Assembleia. */
-    public List<Secao> seccoesVoto() {return this.seccoesVoto; }
+    public List<SeccaoVoto> seccoesVoto() {return this.seccoesVoto; }
 
     /** Calcula o número total de Votos nessa Assembleia. */
     public int totalDeVotos(SeccaoVoto v){
