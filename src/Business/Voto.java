@@ -28,4 +28,8 @@ public class Voto {
         this.escolha    = escolha;
         this.idEleicao  = idEleicao;
     }
+    
+    public String escolha () {
+        return escolha;
+    }
 }

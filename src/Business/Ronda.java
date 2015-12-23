@@ -120,7 +120,7 @@ public class Ronda {
         int totalVotosCandidato=0;
         String esc;
         for(Voto v:votos){
-          esc=v.opcao();
+          esc=v.escolha();
           if(esc.equals(candidato.getNome())) totalVotosCandidato++;
         }
         return totalVotosCandidato;

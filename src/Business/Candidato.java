@@ -52,4 +52,9 @@ public class Candidato extends Eleitor {
     /** Alterar partido do candidato.
      *  @param partido Novo partido do candidato. */
     public void setPartido (String partido) { this.partido = partido; }
+    
+    /** @return Nome do candidato. */
+    public String getNome () {
+        return super.nome();
+    }
 }
