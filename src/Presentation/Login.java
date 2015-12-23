@@ -7,6 +7,12 @@ package Presentation;
 
 import javax.swing.JOptionPane;
 import Business.SGE;
+import Business.Eleicao;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 /**
  *
@@ -19,10 +25,11 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public Login() {
+    public Login () {
         initComponents();
         this.sge = new SGE();
         this.setTitle("iVote");
+        this.setListaEleicoes(sge.eleicoes());
     }
 
     /**
@@ -115,7 +122,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 399, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 385, Short.MAX_VALUE)
                 .addComponent(loginButton)
                 .addContainerGap())
         );
@@ -124,11 +131,6 @@ public class Login extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Eleições"));
 
-        electionsList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Eleição Legislativa 2015", "Eleição Presidencial 2010", "Eleição Legislativa 2011", "Eleição Presidencial 2006" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(electionsList);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -143,7 +145,7 @@ public class Login extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -224,6 +226,15 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_resultsButtonActionPerformed
 
+    private void setListaEleicoes (List<Eleicao> lista) {
+        List<String> anos = new ArrayList<String>();
+        
+        for (Eleicao e : lista)
+            anos.add(String.valueOf(e.getData().get(Calendar.YEAR)));
+        
+        electionsList.setListData(anos.toArray());
+    }
+    
     /* -------------- LOGIN -------------- */
     
     /** Botão de Login pressionado. */

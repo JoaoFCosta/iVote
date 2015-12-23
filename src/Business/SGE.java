@@ -1,7 +1,8 @@
 package Business;
 
-import Data.CidadaoDAO;
-import Data.AdminDAO;
+import Data.*;
+import Business.*;
+import java.util.List;
 
 /**
  *
@@ -10,10 +11,12 @@ import Data.AdminDAO;
 public class SGE {
     private final CidadaoDAO cidadaos;
     private final AdminDAO admins;
+    private final EleicaoDAO eleicoes;
     
     public SGE () {
         this.cidadaos   = new CidadaoDAO();
         this.admins     = new AdminDAO();
+        this.eleicoes   = new EleicaoDAO();
     }
     
     /** Fazer login de eleitor.
@@ -33,4 +36,9 @@ public class SGE {
     public boolean loginAdministrador (String username, String password) {
         return admins.confirmaPassword(username, password);
     }
+    
+    /** Lista de eleições. */
+    public List<Eleicao> eleicoes () {
+        return eleicoes.eleicoes();
+    } 
 }
