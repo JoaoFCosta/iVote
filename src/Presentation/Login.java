@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
 /**
  *
@@ -201,38 +200,21 @@ public class Login extends javax.swing.JFrame {
      * Método que corre quando o botão de resultados é pressionado.
      */
     private void resultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultsButtonActionPerformed
-        // TODO: Modificar a frame que aparece conforme a eleição selecionada.
+        // Aceder à eleição selecionada.
+        Eleicao selecao = (Eleicao) electionsList.getModel().getElementAt(
+            electionsList.getSelectedIndex());
 
-        /* Verificar qual a eleição selecionada.
-         * Se não houver seleção então o valor é null. */
-        String selecao = (String) electionsList.getSelectedValue();
-
-        if (selecao == null) {
-            JOptionPane.showMessageDialog(this,
-                    "Deve selecionar uma eleição.", "Erro",
-                    JOptionPane.ERROR_MESSAGE);
-        } else {
-            // Obter o ano da eleição
-            String[] campos = selecao.split("\\s+");
-            System.out.println(campos[2]);
-            int ano = Integer.parseInt(campos[2]);
-            JOptionPane.showMessageDialog(this, ano);
-
-            // Criar a nova frame e centrar no ecrã.
-            ResultadoPresidencial RP = new ResultadoPresidencial();
-            RP.setLocationRelativeTo(this);
-            this.dispose();
-            RP.setVisible(true);
-        }
+        System.out.println(selecao.toString());
     }//GEN-LAST:event_resultsButtonActionPerformed
 
     private void setListaEleicoes (List<Eleicao> lista) {
-        List<String> anos = new ArrayList<String>();
+        DefaultListModel<Eleicao> dlm = new DefaultListModel<Eleicao>();
         
-        for (Eleicao e : lista)
-            anos.add(String.valueOf(e.getData().get(Calendar.YEAR)));
+        lista.stream().forEach((e) -> {
+            dlm.addElement(e);
+        });
         
-        electionsList.setListData(anos.toArray());
+        electionsList.setModel(dlm);
     }
     
     /* -------------- LOGIN -------------- */

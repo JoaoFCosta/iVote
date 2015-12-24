@@ -20,4 +20,9 @@ public class Eleicao {
   public void setData (Calendar data) {
     this.data = (Calendar) data.clone();
   }
+  
+  @Override
+  public String toString () {
+      return "Eleição de " + data.get(Calendar.YEAR);
+  }
 }
