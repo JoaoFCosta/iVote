@@ -204,7 +204,7 @@ public class Login extends javax.swing.JFrame {
         Eleicao selecao = (Eleicao) electionsList.getModel().getElementAt(
             electionsList.getSelectedIndex());
 
-        System.out.println(selecao.toString());
+        System.out.println(selecao.id());
     }//GEN-LAST:event_resultsButtonActionPerformed
 
     private void setListaEleicoes (List<Eleicao> lista) {

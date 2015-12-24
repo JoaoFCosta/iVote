@@ -2,6 +2,8 @@ package Data;
 
 // Imports.
 import Business.Eleicao;
+import Business.EleicaoPresidencial;
+import Business.EleicaoLegislativa;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -44,7 +46,9 @@ public class EleicaoDAO {
         Date dt         = df.parse(rs.getString("data"));
         Calendar cal    = Calendar.getInstance();
         cal.setTime(dt);
-        Eleicao e       = new Eleicao(cal);
+        int id          = rs.getInt("idEleicao");
+        
+        Eleicao e       = new EleicaoPresidencial(cal, id);
         lista.add(e);
       }
       
@@ -57,7 +61,9 @@ public class EleicaoDAO {
         Date dt         = df.parse(rs.getString("data"));
         Calendar cal    = Calendar.getInstance();
         cal.setTime(dt);
-        Eleicao e       = new Eleicao(cal);
+        int id          = rs.getInt("idEleicao");
+        
+        Eleicao e       = new EleicaoLegislativa(cal, id);
         lista.add(e);
       }
     } catch (ParseException | SQLException | ClassNotFoundException e) {

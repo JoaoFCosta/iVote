@@ -4,17 +4,22 @@ import java.util.Calendar;
 /**
  * @author joaocosta
  */
-public class Eleicao {
+public abstract class Eleicao {
+  private final int id;
   private Calendar data;
 
   /** Construtor parametrizado.
-   *  @param data Data da Eleição. */
-  public Eleicao (Calendar data) {
+   *  @param data Data da Eleição.
+   *  @param id   Identificador da Eleição. */
+  public Eleicao (Calendar data, int id) {
     this.data = (Calendar) data.clone();
+    this.id   = id;
   }
 
   // GETTERS & SETTERS
 
+  public int id () { return this.id; }
+  
   public Calendar getData () { return (Calendar) data.clone(); }
 
   public void setData (Calendar data) {
