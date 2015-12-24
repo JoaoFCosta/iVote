@@ -36,9 +36,26 @@ public class SGE {
     public boolean loginAdministrador (String username, String password) {
         return admins.confirmaPassword(username, password);
     }
-    
-    /** Lista de eleições. */
+
+    /** @return Lista das eleições presentes na base de dados. */
     public List<Eleicao> eleicoes () {
         return eleicoes.eleicoes();
-    } 
+    }
+    
+    /** Rondas da Eleição Presidencial com o id fornecido.
+     *  @param id Identificador da Eleição.
+     *  @return Lista com a rondas associadas à dada eleição ou null
+     *          se não existir eleição com o id fornecido. */
+    public List<EleicaoPresidencial> presidencialComId (int id) {
+      // TODO: Implementar.
+      return null;
+    }
+    
+    /** Eleição Legislativa com o id fornecido.
+     *  @param id Idenfiticado da Eleição.
+     *  @return Eleição Legislativa para o id dado ou null. */
+    public EleicaoLegislativa legislativaComId (int id) {
+      // TODO: Implementar.
+      return null;
+    }
 }
