@@ -52,7 +52,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
     jScrollPane1 = new javax.swing.JScrollPane();
     electionsList = new javax.swing.JList();
     jPanel2 = new javax.swing.JPanel();
-    jButton5 = new javax.swing.JButton();
+    addEleitor = new javax.swing.JButton();
     jButton6 = new javax.swing.JButton();
     jLabel1 = new javax.swing.JLabel();
 
@@ -105,7 +105,12 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Eleitores"));
 
-    jButton5.setText("Adicionar Eleitor");
+    addEleitor.setText("Adicionar Eleitor");
+    addEleitor.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addEleitorActionPerformed(evt);
+      }
+    });
 
     jButton6.setText("Consultar Eleitores");
 
@@ -121,7 +126,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 252, Short.MAX_VALUE)
         .addComponent(jButton6)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jButton5)
+        .addComponent(addEleitor)
         .addContainerGap())
     );
     jPanel2Layout.setVerticalGroup(
@@ -129,7 +134,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jButton5)
+          .addComponent(addEleitor)
           .addComponent(jButton6)
           .addComponent(jLabel1))
         .addContainerGap())
@@ -172,6 +177,13 @@ public class MenuAdministrador extends javax.swing.JFrame {
     l.setVisible(true);
   }//GEN-LAST:event_logoutButtonActionPerformed
 
+  /** Adicionar novo eleitor ao sistema. */
+  private void addEleitorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEleitorActionPerformed
+    AdicionarEleitor AE = new AdicionarEleitor();
+    AE.setLocationRelativeTo(this);
+    AE.setVisible(true);
+  }//GEN-LAST:event_addEleitorActionPerformed
+
   /**
    * @param args the command line arguments
    */
@@ -192,10 +204,10 @@ public class MenuAdministrador extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton addEleitor;
   private javax.swing.JList electionsList;
   private javax.swing.JButton jButton2;
   private javax.swing.JButton jButton3;
-  private javax.swing.JButton jButton5;
   private javax.swing.JButton jButton6;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JPanel jPanel1;
