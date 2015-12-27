@@ -236,14 +236,23 @@ public class Login extends javax.swing.JFrame {
   private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
     String ccidadao       = cardIdTextField.getText();
     String password       = passwordField.getText();
-    boolean votoEfetuado  = sge.votoEfetuado(Integer.parseInt(ccidadao));
-
-    /*  Verificar se os campos de username ou password estão vazios
-        e verificar se o eleitor ainda não votou. */
-    if (ccidadao.equals("") || password.equals("") || votoEfetuado) {
+    if (ccidadao.equals("") || password.equals("")) {
       JOptionPane.showMessageDialog(this,
           "O campo de cartão de cidadão e password não pode estar vazio.");
-    } else {
+    }
+    else{ 
+    boolean votoEfetuado=false;
+    /**Caso contrário lança excepção pq Integer.parseInt("admin") dá erro*/
+    if (ccidadao.charAt(0) != 'a') {
+        votoEfetuado  = sge.votoEfetuado(Integer.parseInt(ccidadao));
+        if (votoEfetuado) {
+            JOptionPane.showMessageDialog(this,
+          "O campo de cartão de cidadão e password não pode estar vazio.");
+        } 
+    }
+    /*  Verificar se os campos de username ou password estão vazios
+        e verificar se o eleitor ainda não votou. */
+    else {
       if (ccidadao.charAt(0) == 'a') {
         // Login de administrador.
         loginAdmin(ccidadao, password);
@@ -254,6 +263,7 @@ public class Login extends javax.swing.JFrame {
         // Login de eleitor.
         loginEleitor(ccidadao, password);
       }
+    }
     }
   }//GEN-LAST:event_loginButtonActionPerformed
 
