@@ -26,7 +26,7 @@ public class EleicaoDAO {
   public List<Eleicao> eleicoes () {
     Connection con  = null;
     List lista      = (List) new ArrayList<Eleicao>();
-    
+
 
     try {
       con                     = Connect.connect();
@@ -47,11 +47,11 @@ public class EleicaoDAO {
         Calendar cal    = Calendar.getInstance();
         cal.setTime(dt);
         int id          = rs.getInt("idEleicao");
-        
+
         Eleicao e       = new EleicaoPresidencial(cal, id);
         lista.add(e);
       }
-      
+
       // Consultar eleições legislativas.
       rs = legislativas.executeQuery();
 
@@ -62,7 +62,7 @@ public class EleicaoDAO {
         Calendar cal    = Calendar.getInstance();
         cal.setTime(dt);
         int id          = rs.getInt("idEleicao");
-        
+
         Eleicao e       = new EleicaoLegislativa(cal, id);
         lista.add(e);
       }
@@ -75,5 +75,81 @@ public class EleicaoDAO {
 
     return lista;
   }
-}
+  public int idMaisRecenteEleicao () {
+    Connection con  = null;
+    int id = -1;
 
+    try {
+      con = Connect.connect();
+
+      PreparedStatement idEleicao  = con.prepareStatement(
+      "SELECT id FROM Eleicao ORDER BY id DESC LIMIT 1;");
+
+      ResultSet rs = idEleicao.executeQuery();
+
+      if (rs.next())
+        id = rs.getInt("id");
+
+    } catch (SQLException | ClassNotFoundException e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+
+    return id;
+  }
+
+  public boolean serPresidencial (int idEleicao) {
+    Connection con  = null;
+    boolean serPresidencial = false;
+
+    try {
+      con = Connect.connect();
+
+      PreparedStatement rondasPresendenciais  = con.prepareStatement(
+      "SELECT * FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP " +
+      "ON E.id = RP.idEleicao WHERE E.id = " + idEleicao + ";");
+
+      ResultSet rs = rondasPresendenciais.executeQuery();
+
+      if (rs.next())
+        serPresidencial = true;
+
+    } catch (SQLException | ClassNotFoundException e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+
+    return serPresidencial;
+  }
+
+  public int rondaMaisRecente (int idEleicao) {
+    Connection con  = null;
+    int ronda = 1;
+
+    try {
+      con = Connect.connect();
+
+      PreparedStatement rondaPresidencial  = con.prepareStatement(
+      "SELECT RP.ronda FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP " +
+      "ON E.id = RP.idEleicao WHERE E.id = " + idEleicao +
+      " ORDER BY RP.ronda DESC LIMIT 1;");
+
+      ResultSet rs = rondaPresidencial.executeQuery();
+
+      if (rs.next())
+        ronda = rs.getInt("ronda");
+
+    } catch (SQLException | ClassNotFoundException e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+
+    return ronda;
+  }
+}
