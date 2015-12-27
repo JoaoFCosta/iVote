@@ -47,7 +47,7 @@ public class EleitorDAO {
 
     boolean booleanVotou;
 
-    if (ronda = 0)
+    if (ronda == 0)
       booleanVotou = true;
     else
       booleanVotou = false;
