@@ -216,6 +216,10 @@ public class Login extends javax.swing.JFrame {
     }
   }//GEN-LAST:event_resultsButtonActionPerformed
 
+  /** Popula a lista de eleições do separador 'Resultados' com a lista de
+   *  eleições fornecida utilizando o método 'toString()'.
+   *  @param lista Lista de eleições a utilizar.
+   */
   private void setListaEleicoes (List<Eleicao> lista) {
     DefaultListModel<Eleicao> dlm = new DefaultListModel<Eleicao>();
 
@@ -230,23 +234,23 @@ public class Login extends javax.swing.JFrame {
 
   /** Botão de Login pressionado. */
   private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-    String ccidadao = cardIdTextField.getText();
-    String password = passwordField.getText();
-    // TODO: jaVotou deverá ter true se o eleitor já votou na eleição atual.
-    Boolean jaVotou = false;
+    String ccidadao       = cardIdTextField.getText();
+    String password       = passwordField.getText();
+    boolean votoEfetuado  = sge.votoEfetuado(Integer.parseInt(ccidadao));
 
-    // Verificar se os campos de username e password estão vazios.
-    if (ccidadao.equals("") || password.equals("") || jaVotou) {
+    /*  Verificar se os campos de username ou password estão vazios
+        e verificar se o eleitor ainda não votou. */
+    if (ccidadao.equals("") || password.equals("") || votoEfetuado) {
       JOptionPane.showMessageDialog(this,
           "O campo de cartão de cidadão e password não pode estar vazio.");
     } else {
-      /* TODO: Adicionar código que verifica qual das duas
-       * votações está a decorrer e consoante a eleição
-       * muda a janela que aparece. */
       if (ccidadao.charAt(0) == 'a') {
         // Login de administrador.
         loginAdmin(ccidadao, password);
       } else {
+        /* TODO: Adicionar código que verifica qual das duas
+         * votações está a decorrer e consoante a eleição
+         * muda a janela que aparece. */
         // Login de eleitor.
         loginEleitor(ccidadao, password);
       }
