@@ -29,8 +29,12 @@ public class Eleitor {
         this.distrito       = distrito;
         this.freguesia      = freguesia;
         this.nascimento     = nascimento;
-        
     }   
+    
+    public Eleitor (String nome, String codigo) {
+      this.nome           = nome;
+      this.codigoEleitor  = codigo;
+    }
     
     /** Nome do eleitor. */
     public String nome () { return this.nome; }
