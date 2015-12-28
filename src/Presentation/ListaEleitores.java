@@ -28,12 +28,10 @@ public class ListaEleitores extends javax.swing.JFrame {
         this.setTitle("Lista de Eleitores");
         jTable1.setAutoResizeMode(100);
         lista = sge.eleitores();
-        this.setListaEleitores2(lista);
+        this.setListaEleitores(lista);
     }
     
-    private void setListaEleitores (List<Eleitor> lista) {
-        int tamanho=lista.size();
-        
+    private void setListaEleitores (List<Eleitor> lista){    
         for (int i = 0; i < jTable1.getRowCount(); i++){
             Eleitor er = (Eleitor) lista.get(i);
             jTable1.setValueAt(er.getNome (), i, 0);
@@ -322,7 +320,7 @@ public class ListaEleitores extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         lista = sge.eleitores();
-        this.setListaEleitores2(lista);
+        this.setListaEleitores(lista);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

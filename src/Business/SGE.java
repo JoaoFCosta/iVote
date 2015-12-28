@@ -73,7 +73,7 @@ public class SGE {
   public boolean votoEfetuado (int ccidadao) {
     // Adquirir id da eleição mais recente e verificar qual o tipo.
     int eleicao           = eleicoes.idMaisRecenteEleicao();
-    boolean presidencial  = eleicoes.serPresidencial(eleicao);
+    boolean presidencial  = eleicoes.ePresidencial(eleicao);
 
     if (presidencial)
       return eleitores.votouPresidencial(eleicao, 
