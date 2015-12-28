@@ -236,7 +236,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
   /**
    * @param args the command line arguments
    */
-  public static void main(String args[]) {
+  public void main(String args[]) {
     /* Set the Nimbus look and feel */
     try {
       javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());

@@ -10,6 +10,7 @@ import Business.Eleitor;
 import Business.SGE;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,16 +28,28 @@ public class ListaEleitores extends javax.swing.JFrame {
         this.setTitle("Lista de Eleitores");
         jTable1.setAutoResizeMode(100);
         lista = sge.eleitores();
-        this.setListaEleitores(lista);
+        this.setListaEleitores2(lista);
     }
     
     private void setListaEleitores (List<Eleitor> lista) {
+        int tamanho=lista.size();
+        
         for (int i = 0; i < jTable1.getRowCount(); i++){
             Eleitor er = (Eleitor) lista.get(i);
             jTable1.setValueAt(er.getNome (), i, 0);
             jTable1.setValueAt(er.getCC(), i, 1);
         }  
     }
+    
+    private void setListaEleitores2 (List<Eleitor> lista) {
+        DefaultTableModel model = new DefaultTableModel();
+        jTable1.setModel(model);
+        model.setColumnIdentifiers(new String[] {"Nome", "Nº Cartão de Cidadão"});
+        for(Eleitor er : lista){
+            model.addRow(new String[] {er.getNome(), er.getCC()+""});
+        }
+    }
+    
     
 
     /**
@@ -309,7 +322,7 @@ public class ListaEleitores extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         lista = sge.eleitores();
-        this.setListaEleitores(lista);
+        this.setListaEleitores2(lista);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
