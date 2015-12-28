@@ -9,6 +9,7 @@ import Business.Eleicao;
 import Business.Eleitor;
 import Business.SGE;
 import java.util.List;
+import java.util.Collection;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListaEleitores extends javax.swing.JFrame {
     private final SGE sge;
-    private List<Eleitor> lista;
+    private Collection<Eleitor> lista;
     /**
      * Creates new form ListaEleitores
      */
@@ -31,12 +32,14 @@ public class ListaEleitores extends javax.swing.JFrame {
         this.setListaEleitores(lista);
     }
     
-    private void setListaEleitores (List<Eleitor> lista){    
-        for (int i = 0; i < jTable1.getRowCount(); i++){
-            Eleitor er = (Eleitor) lista.get(i);
-            jTable1.setValueAt(er.getNome (), i, 0);
-            jTable1.setValueAt(er.getCC(), i, 1);
-        }  
+    private void setListaEleitores (Collection<Eleitor> lista){
+      int i = 0;
+      
+      for (Eleitor e : lista) {
+        jTable1.setValueAt(e.getNome (), i, 0);
+        jTable1.setValueAt(e.getCC(), i, 1);
+        i++;
+      }
     }
     
     private void setListaEleitores2 (List<Eleitor> lista) {

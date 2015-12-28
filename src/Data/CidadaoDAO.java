@@ -164,6 +164,49 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
 
     return eleitor;
   }
+  
+  /** Inserir um eleitor no sistema.
+   *  @param key Número do cartão de cidadão.
+   *  @param value Eleitor a ser inserido.
+   *  @param password Password do eleitor.
+   *  @return Se já existisse um eleitor com o mesmo número do cartão de cidadão
+   *          então é devolvida a instância desse eleitor, caso contrário é
+   *          devolvido null. */
+  public int put (Integer key, Eleitor value, String password) {
+    Connection con  = null;
+    Eleitor eleitor = null;
+    Eleitor aux     = (Eleitor) value;
+    PreparedStatement ps;
+    ResultSet rs;
+
+    try {
+      con = Connect.connect();
+
+      /*  Verificar se já existe eleitor associado ao número fornecido e
+          remover da base de dados. */
+      if (containsKey(key)) {
+        eleitor = get(value);
+        remove(key);
+      }
+
+      con = Connect.connect();
+      ps  = con.prepareStatement(
+        "insert into Cidadao"
+        + "(id, idEleitor, password, nome)"
+        + "values"
+        + "(" + aux.getCodigo() + "," + (size() + 1) + ",'"
+          + password +"'," + aux.getNome() + ");"
+      );
+      rs  = ps.executeQuery();
+    } catch (Exception e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+
+    return 1;
+  }
 
   /** Remover um eleitor do sistema.
    *  @param key  Número do cartão de cidadão do eleitor.
@@ -360,122 +403,4 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
     System.out.println("6 - " + (containsValue(e) == false));
   }
   */
-  
-   /** Lista de Eleitores.
-   *  @return Lista de todas os eleitores que estão na base de dados. */
-  public List<Eleitor> eleitores () {
-    Connection con  = null;
-    List lista      = (List) new ArrayList<Eleitor>();
-
-
-    try {
-      con                     = Connect.connect();
-
-      // Statement para cidadaos.
-      
-      //TODO Alterar query de modo a filtrar só os eleitores!
-      PreparedStatement eleitoresBD  = con.prepareStatement(
-          "select * from Cidadao;");
-
-
-      // Consultar eleições presidenciais.
-      ResultSet rs = eleitoresBD.executeQuery();
-
-      while (rs.next()) {
-        int id           = rs.getInt("id");
-        String nome      = rs.getString("nome");
-        String codigo    = rs.getString("password");
-       
-        Eleitor e  = new Eleitor (nome,codigo,id);
-        lista.add(e);
-      }
-
-    } catch (SQLException | ClassNotFoundException e) {
-      System.out.println(e);
-    } finally {
-      try { con.close(); }
-      catch (Exception e) { System.out.println(e); }
-    }
-
-    return lista;
-  }
-  
-  /** @Adiciona um Eleitor à base de dados. */
-  public int addEleitor (String nome, String password, int ccidadao, int idEleitor) {
-    Connection con  = null;
-    
-    //Guarda o número de registos alterados
-    int count=-1;
-    
-    try {
-      con = Connect.connect();
-      
-      // Statement para a tabela cidadao.
-      PreparedStatement eleitoresBD  = con.prepareStatement(
-          "insert into Cidadao (id, idEleitor, password, nome) "+
-          "values "+
-          "("+ccidadao+","+idEleitor+","+"'"+password+"'"+","+"'"+nome+"'"+");"
-          );
-
-      // Executar inserção
-      count = eleitoresBD.executeUpdate();
-
-    } catch ( SQLException | ClassNotFoundException e) {
-      System.out.println(e);
-    } finally {
-      try { con.close(); }
-      catch (Exception e) { System.out.println(e); }
-    }
-    return count;
-  }
-  
-   public int lastID() {
-        Connection con = null;
-        int r = -1;
-        
-        try {
-            con                     = Connect.connect();
-            PreparedStatement ps    = con.prepareStatement(
-                    "select idEleitor " +
-                    " from Cidadao " +
-                    " order by idEleitor DESC " +
-                    " limit 1; "
-            );
-            ResultSet rs            = ps.executeQuery();
-            
-            if (rs.next()) {
-               r = rs.getInt("idEleitor");
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e);
-        } finally {
-            try { con.close(); }
-            catch (Exception e) { System.out.println(e); }
-        }
-        return r;
-    }
-   
-   
-   public boolean existeID (int ccidadao) {
-        Connection con = null;
-        boolean r      = false;
-        try {
-            con                     = Connect.connect();
-            PreparedStatement ps    = con.prepareStatement(
-                    "select id from Cidadao where id=" + ccidadao
-            );
-            ResultSet rs            = ps.executeQuery();
-            
-            if (rs.next()) {
-               if(!(rs.wasNull())) r = true;
-               int i             = rs.getInt("id"); 
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e);
-        } finally {
-            try { con.close(); }
-            catch (Exception e) { System.out.println(e); }
-        }
-        return r;
-    }
 }

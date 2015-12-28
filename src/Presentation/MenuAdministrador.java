@@ -9,6 +9,7 @@ import Business.EleicaoLegislativa;
 import Business.EleicaoPresidencial;
 import Business.SGE;
 import java.util.List;
+import java.util.Collection;
 import javax.swing.DefaultListModel;
 
 /**
@@ -27,7 +28,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
     setListaEleicoes(sge.eleicoes());
   }
 
-  private void setListaEleicoes (List<Eleicao> lista) {
+  private void setListaEleicoes (Collection<Eleicao> lista) {
     DefaultListModel<Eleicao> dlm = new DefaultListModel<Eleicao>();
 
     lista.stream().forEach((e) -> {

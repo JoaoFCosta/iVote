@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import Business.SGE;
 import Business.Eleicao;
 import Business.EleicaoPresidencial;
-import java.util.List;
+import java.util.Collection;
 import javax.swing.DefaultListModel;
 
 /**
@@ -220,7 +220,7 @@ public class Login extends javax.swing.JFrame {
    *  eleições fornecida utilizando o método 'toString()'.
    *  @param lista Lista de eleições a utilizar.
    */
-  private void setListaEleicoes (List<Eleicao> lista) {
+  private void setListaEleicoes (Collection<Eleicao> lista) {
     DefaultListModel<Eleicao> dlm = new DefaultListModel<Eleicao>();
 
     lista.stream().forEach((e) -> {

@@ -2,7 +2,7 @@ package Business;
 
 import Data.*;
 import Business.*;
-import java.util.List;
+import java.util.Collection;
 
 /**
  *
@@ -42,28 +42,29 @@ public class SGE {
   }
 
   /** @return Lista das eleições presentes na base de dados. */
-  public List<Eleicao> eleicoes () {
+  public Collection<Eleicao> eleicoes () {
     return eleicoes.eleicoes();
   }
   
   /** @return Lista dos eleitores presentes na base de dados. */
-  public List<Eleitor> eleitores () {
-    return cidadaos.eleitores ();
+  public Collection<Eleitor> eleitores () {
+    return cidadaos.values ();
   }
   
   /** @return Se eleitor foi adicionado ou não. */
-  public int addEleitor (String nome, String password, int ccidadao, int idEleitor){
-    return cidadaos.addEleitor(nome,password,ccidadao,idEleitor);
+  public int addEleitor (String nome, String password, int ccidadao){
+    return cidadaos.put(ccidadao, 
+      new Eleitor(nome,Integer.toString(ccidadao)), password);
   }
   
   /** @return Devolve último idEleitor na base de dados. */
   public int lastID(){
-    return cidadaos.lastID();
+    return cidadaos.size();
   }
   
    /** @return Verifica se um eleitor está na base de dados. */
   public boolean existeID (int ccidadao){
-    return cidadaos.existeID(ccidadao);
+    return cidadaos.containsKey(ccidadao);
   }
 
   /** Verifica se um dado eleitor já voltou na eleição atual.
@@ -80,23 +81,6 @@ public class SGE {
         eleicoes.rondaMaisRecente(eleicao), ccidadao);
     else
       return eleitores.votouLegislativa(eleicao, ccidadao);
-  }
-
-  /** Rondas da Eleição Presidencial com o id fornecido.
-   *  @param id Identificador da Eleição.
-   *  @return Lista com a rondas associadas à dada eleição ou null
-   *          se não existir eleição com o id fornecido. */
-  public List<EleicaoPresidencial> presidencialComId (int id) {
-    // TODO: Implementar.
-    return null;
-  }
-
-  /** Eleição Legislativa com o id fornecido.
-   *  @param id Idenfiticado da Eleição.
-   *  @return Eleição Legislativa para o id dado ou null. */
-  public EleicaoLegislativa legislativaComId (int id) {
-    // TODO: Implementar.
-    return null;
   }
   
   public int criaEleicaoPresidencial(String data){
