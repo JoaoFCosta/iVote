@@ -73,4 +73,61 @@ public class CandidatoDAO {
 
     return lista;
     }
-}
+    
+     public int lastID() {
+        Connection con = null;
+        int r = -1;
+        
+        try {
+            con                     = Connect.connect();
+            PreparedStatement ps    = con.prepareStatement(
+                    "select idLista " +
+                    " from Candidato " +
+                    " order by idLista DESC " +
+                    " limit 1; "
+            );
+            ResultSet rs            = ps.executeQuery();
+            
+            if (rs.next()) {
+               r = rs.getInt("idLista");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return r;
+    }
+     
+     /** @return Se candidato foi adicionado ou não. */
+    public int addCandidato (int ccidadao, int idLista){
+       
+        Connection con  = null;
+    
+        //Guarda o número de registos alterados
+        int count=-1;
+    
+         try {
+            con = Connect.connect();
+      
+            // Statement para a tabela cidadao.
+            PreparedStatement eleitoresBD  = con.prepareStatement(
+                    "insert into Candidato (idCidadao, idLista) "+
+                    "values "+
+                    "("+ccidadao+","+idLista+");"
+                    );
+
+            // Executar inserção
+            count = eleitoresBD.executeUpdate();
+
+        } catch ( SQLException | ClassNotFoundException e) {
+             System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return count;
+        }
+    }
+    

@@ -14,6 +14,7 @@ public class SGE {
   private final AdminDAO    admins;
   private final EleicaoDAO  eleicoes;
   private final EleitorDAO  eleitores;
+  private final CandidatoDAO candidatos;
 
 
   public SGE () {
@@ -21,6 +22,7 @@ public class SGE {
     this.admins     = new AdminDAO();
     this.eleicoes   = new EleicaoDAO();
     this.eleitores  = new EleitorDAO();
+    this.candidatos = new CandidatoDAO();
   }
 
   /** Fazer login de eleitor.
@@ -59,6 +61,17 @@ public class SGE {
   /** @return Devolve último idEleitor na base de dados. */
   public int lastID(){
     return cidadaos.lastID();
+  }
+  
+  /** @return Se candidato foi adicionado ou não. */
+  public int addCandidato (int ccidadao, int lista){
+    return candidatos.addCandidato(ccidadao, lista);
+  }
+  
+  
+  /** @return Devolve último idlista na base de dados. */
+  public int lastIDL(){
+    return candidatos.lastID();
   }
   
    /** @return Verifica se um eleitor está na base de dados. */

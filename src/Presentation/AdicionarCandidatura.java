@@ -5,17 +5,22 @@
  */
 package Presentation;
 
+import Business.SGE;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author joaocosta
  */
 public class AdicionarCandidatura extends javax.swing.JFrame {
-
+    private final SGE sge;
     /**
      * Creates new form AdicionarCandidatura
      */
-    public AdicionarCandidatura() {
+    public AdicionarCandidatura(SGE s) {
         initComponents();
+        this.sge=s;
+        this.setTitle("Adicionar Candidato");
     }
 
     /**
@@ -36,13 +41,22 @@ public class AdicionarCandidatura extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Adicionar Candidato");
-        setMaximumSize(new java.awt.Dimension(400, 300));
         setMinimumSize(new java.awt.Dimension(400, 300));
         setSize(new java.awt.Dimension(400, 300));
 
         jButton1.setText("Confirmar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("< Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nome"));
         jPanel1.setMaximumSize(new java.awt.Dimension(400, 60));
@@ -65,7 +79,7 @@ public class AdicionarCandidatura extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Nº Cartão de Cidadão"));
@@ -89,7 +103,7 @@ public class AdicionarCandidatura extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -127,10 +141,32 @@ public class AdicionarCandidatura extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String nome = jTextField1.getText();
+        int c = Integer.parseInt(jTextField2.getText());
+        int lista=-1,n=-1;
+        if(!(sge.existeID(c))){
+           JOptionPane.showMessageDialog(this, "Não Existe na Base de Dados esse Cidadão");
+        }
+        else{
+            lista=sge.lastIDL()+1;
+            n=sge.addCandidato(c,lista);
+            if (n>0){
+                JOptionPane.showMessageDialog(this, "Candidato adicionado.");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {        
+    public void main(String args[]) {        
     
         /* Set the Nimbus look and feel */
         try {
@@ -142,7 +178,7 @@ public class AdicionarCandidatura extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdicionarCandidatura().setVisible(true);
+                new AdicionarCandidatura(sge).setVisible(true);
             }
         });
     }
