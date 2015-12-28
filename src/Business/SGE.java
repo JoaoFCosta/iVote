@@ -48,6 +48,16 @@ public class SGE {
     return eleicoes.eleicoes();
   }
   
+  /** @param cc Número do cartão de cidadão do eleitor.
+   *  @return Eleitor com um dado número de cidadão. */
+  public Eleitor eleitorComCC (int cc) {
+    return cidadaos.get(cc);
+  }
+  
+  public void removeEleitor (int cc) {
+    cidadaos.remove(cc);
+  }
+  
   /** @return Lista dos eleitores presentes na base de dados. */
   public Collection<Eleitor> eleitores () {
     return cidadaos.values ();

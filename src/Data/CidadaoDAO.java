@@ -111,7 +111,8 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
       rs  = ps.executeQuery();
 
       if (rs.next()) {
-        eleitor = new Eleitor(rs.getString("nome"), rs.getString("id"));
+        eleitor = new Eleitor(rs.getString("nome"),
+          rs.getString("password"), rs.getInt("id"));
       }
     } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
@@ -225,7 +226,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
       if (containsKey(key)) eleitor = get(key);
       ps  = con.prepareStatement(
         "delete from Cidadao where id=" + ccidadao + ";");
-      rs  = ps.executeQuery();
+      ps.executeUpdate();
     } catch (Exception e) {
       System.out.println(e);
     } finally {
