@@ -1,6 +1,5 @@
 import System.Random
-import Control.Monad (replicateM)
-import Combine
+import Combine (combineLists)
 
 main = do
   let list = [1..6]
@@ -9,7 +8,7 @@ main = do
 
   votes <- createVotes (length assemblyLists)
 
-  let inserts = zip  assemblyLists votes
+  let inserts = zip assemblyLists votes
 
   putStrLn $ unlines . map parseInsert $ inserts
 
@@ -20,10 +19,8 @@ parseInsert ((a,b),c) =
       vote = show c
   in "(" ++ idList ++ ", " ++ idAssembly ++ ", " ++ vote ++ "),"
 
-createVotes :: Int -> IO [Int]
+createVotes :: Int -> IO [Integer]
 createVotes n = do
   g <- newStdGen
-  let vote = take n $ (randomRs (0,200) g)
-  return vote
-
-
+  let votes = take n $ randomRs (0,200) g
+  return votes
