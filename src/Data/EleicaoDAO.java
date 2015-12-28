@@ -75,8 +75,9 @@ public class EleicaoDAO {
 
     return lista;
   }
+  
   public int idMaisRecenteEleicao () {
-    Connection con  = null;
+    Connection con = null;
     int id = -1;
 
     try {
@@ -100,9 +101,10 @@ public class EleicaoDAO {
     return id;
   }
 
-  public boolean serPresidencial (int idEleicao) {
-    Connection con  = null;
-    boolean serPresidencial = false;
+  // Retorna se é eleição presidencial.
+  public boolean ePresidencial (int idEleicao) {
+    Connection con = null;
+    boolean ePresidencial = false;
 
     try {
       con = Connect.connect();
@@ -114,7 +116,7 @@ public class EleicaoDAO {
       ResultSet rs = rondasPresendenciais.executeQuery();
 
       if (rs.next())
-        serPresidencial = true;
+        ePresidencial = true;
 
     } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
@@ -123,7 +125,7 @@ public class EleicaoDAO {
       catch (Exception e) { System.out.println(e); }
     }
 
-    return serPresidencial;
+    return ePresidencial;
   }
 
   public int rondaMaisRecente (int idEleicao) {
