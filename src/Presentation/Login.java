@@ -234,36 +234,36 @@ public class Login extends javax.swing.JFrame {
 
   /** Botão de Login pressionado. */
   private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+    
     String ccidadao       = cardIdTextField.getText();
     String password       = passwordField.getText();
+    boolean votoEfetuado=false;
+    
+    /** Caso em que input não é inserido. */
     if (ccidadao.equals("") || password.equals("")) {
       JOptionPane.showMessageDialog(this,
           "O campo de cartão de cidadão e password não pode estar vazio.");
     }
-    else{ 
-    boolean votoEfetuado=false;
-    /**Caso contrário lança excepção pq Integer.parseInt("admin") dá erro*/
-    if (ccidadao.charAt(0) != 'a') {
-        votoEfetuado  = sge.votoEfetuado(Integer.parseInt(ccidadao));
-        if (votoEfetuado) {
-            JOptionPane.showMessageDialog(this,
-          "O campo de cartão de cidadão e password não pode estar vazio.");
+    /** Caso em que input é inserido. */
+    else{
+        /** Login de administrador. */
+        if (ccidadao.charAt(0) == 'a') {
+            loginAdmin(ccidadao, password);
         } 
-    }
-    /*  Verificar se os campos de username ou password estão vazios
-        e verificar se o eleitor ainda não votou. */
-    else {
-      if (ccidadao.charAt(0) == 'a') {
-        // Login de administrador.
-        loginAdmin(ccidadao, password);
-      } else {
-        /* TODO: Adicionar código que verifica qual das duas
-         * votações está a decorrer e consoante a eleição
-         * muda a janela que aparece. */
-        // Login de eleitor.
-        loginEleitor(ccidadao, password);
-      }
-    }
+        /** Login de eleitor. */
+        else{
+            /**  Verificar se os campos de username ou password estão vazios
+              *  e verificar se o eleitor ainda não votou. */
+            votoEfetuado = sge.votoEfetuado(Integer.parseInt(ccidadao));
+            if (votoEfetuado) {
+                JOptionPane.showMessageDialog(this, 
+                    "O campo de cartão de cidadão e password não pode estar vazio.");
+            }
+            /** Caso o eleitor ainda não tenha votado. */
+            else{
+                loginEleitor(ccidadao, password);
+            }
+        }
     }
   }//GEN-LAST:event_loginButtonActionPerformed
 
