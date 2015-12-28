@@ -3,12 +3,13 @@ package Business;
 import Data.*;
 import Business.*;
 import java.util.Collection;
+import java.util.Observable;
 
 /**
  *
  * @authors joaocosta,zcbg
  */
-public class SGE {
+public class SGE extends Observable{
   // DAOs.
   private final CidadaoDAO  cidadaos;
   private final AdminDAO    admins;
@@ -72,6 +73,8 @@ public class SGE {
   public int addEleitor (String nome, String password, int ccidadao){
     cidadaos.put(ccidadao, 
       new Eleitor(nome,Integer.toString(ccidadao)), password);
+    setChanged();
+    notifyObservers(nome);
     return 1;
   }
   

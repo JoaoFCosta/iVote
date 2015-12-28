@@ -13,12 +13,14 @@ import java.util.Collection;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.Observer;
+import java.util.Observable;
 
 /**
  *
  * @authors joaocosta,zcbg
  */
-public class ListaEleitores extends javax.swing.JFrame {
+public class ListaEleitores extends javax.swing.JFrame implements Observer{
   private final SGE sge;
   private Collection<Eleitor> lista;
   /**
@@ -27,11 +29,18 @@ public class ListaEleitores extends javax.swing.JFrame {
   public ListaEleitores(SGE s) {
     initComponents();
     this.sge=s;
+    sge.addObserver(this);
     this.setTitle("Lista de Eleitores");
     lista = sge.eleitores();
     this.setListaEleitores(lista);
   }
-
+  
+  @Override
+    public void update(Observable o, Object arg) {
+        JOptionPane.showMessageDialog(this, "Eleitor criado: " + arg.toString());
+        setListaEleitores(lista);
+    }
+    
   private void setListaEleitores (Collection<Eleitor> lista){
     DefaultTableModel tmodel = new DefaultTableModel(0, 2);
 
