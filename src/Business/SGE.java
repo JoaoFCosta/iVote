@@ -57,6 +57,8 @@ public class SGE extends Observable{
   
   public void removeEleitor (int cc) {
     cidadaos.remove(cc);
+    setChanged();
+    notifyObservers(Integer.toString(cc));
   }
   
   /** @return Lista dos eleitores presentes na base de dados. */
@@ -85,7 +87,10 @@ public class SGE extends Observable{
   
   /** @return Se candidato foi adicionado ou não. */
   public int addCandidato (int ccidadao, int lista){
-    return candidatos.addCandidato(ccidadao, lista);
+    int res=candidatos.addCandidato(ccidadao, lista);
+    setChanged();
+    notifyObservers(Integer.toString(ccidadao));
+    return res;
   }
   
   
@@ -116,10 +121,16 @@ public class SGE extends Observable{
   }
   
   public int criaEleicaoPresidencial(String data){
-    return eleicoes.criaEleicaoPresidencial(data);
+    int res=eleicoes.criaEleicaoPresidencial(data);
+    setChanged();
+    notifyObservers(data);
+    return res;
   }
   public int criaEleicaoLegislativa(String data){
-    return eleicoes.criaEleicaoLegislativa(data);
+   int res=eleicoes.criaEleicaoLegislativa(data);
+    setChanged();
+    notifyObservers(data);
+    return res;
   }
   
 }
