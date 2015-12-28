@@ -6,12 +6,15 @@
 package Presentation;
 
 import Business.SGE;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author joaocosta
  */
 public class GerirPresidenciais extends javax.swing.JFrame {
+     // Para manter controlo se houve alterações dos dados.
+     private boolean alterado = false;
      private final SGE sge;
     /**
      * Creates new form EditarPresidenciais
@@ -63,7 +66,6 @@ public class GerirPresidenciais extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gerir Eleição Presidencial");
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setSize(new java.awt.Dimension(800, 600));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Primeira Ronda"));
@@ -153,6 +155,11 @@ public class GerirPresidenciais extends javax.swing.JFrame {
         });
 
         jButton2.setText("< Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Segunda Ronda"));
 
@@ -254,12 +261,41 @@ public class GerirPresidenciais extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (JOptionPane.showConfirmDialog(this,
+            "Tem a certeza que pretende guardar as alterações?") == JOptionPane.YES_OPTION) {
+            // TODO: Guardar alterações na BD.
+            
+            // Voltar para o ecrã de login.
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO: Adicionar confirmação para quando o administrador
+        // tenta cancelar quando existem alterações.
+        if (alterado) {
+            if (JOptionPane.showConfirmDialog(this,
+                "Se sair as alterações nao serão guardadas?\n"
+                + "Quer mesmo sair?") == JOptionPane.YES_OPTION) {
+                    Login login = new Login();
+                    login.setLocationRelativeTo(this);
+                    this.dispose();
+                    login.setVisible(true);
+            }
+        } else {
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

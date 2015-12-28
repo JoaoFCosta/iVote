@@ -7,6 +7,8 @@ package Presentation;
 
 import Business.SGE;
 import java.awt.Color;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,7 +45,6 @@ public class CriarEleicao extends javax.swing.JFrame {
         setTitle("Configurar Eleição");
         setBackground(new java.awt.Color(204, 204, 204));
         setMinimumSize(new java.awt.Dimension(400, 300));
-        setPreferredSize(new java.awt.Dimension(400, 300));
         setSize(new java.awt.Dimension(400, 300));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Tipo De Eleição"));
@@ -77,6 +78,11 @@ public class CriarEleicao extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Data"));
 
         jFormattedTextField1.setText("09/12/2016");
+        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextField1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -93,6 +99,11 @@ public class CriarEleicao extends javax.swing.JFrame {
         );
 
         jButton2.setText("< Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,7 +141,37 @@ public class CriarEleicao extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+     int n=-1;
+     String data    = jFormattedTextField1.getText();  
+     String escolha = jComboBox1.getSelectedItem().toString();
+     switch(escolha){
+         case "Presidencial":   n=sge.criaEleicaoPresidencial(data);
+                                break;
+             
+         case "Legislativa":    n=sge.criaEleicaoLegislativa(data);
+                                break;
+             
+         case "Europeia":
+                                break;
+             
+         case "Autárquica":
+                                break;
+
+     }
+     
+     if (n>0){
+             JOptionPane.showMessageDialog(this, "Eleição criada.");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
 
     /**
      * @param args the command line arguments

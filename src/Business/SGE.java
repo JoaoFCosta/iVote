@@ -98,4 +98,12 @@ public class SGE {
     // TODO: Implementar.
     return null;
   }
+  
+  public int criaEleicaoPresidencial(String data){
+    return eleicoes.criaEleicaoPresidencial(data);
+  }
+  public int criaEleicaoLegislativa(String data){
+    return eleicoes.criaEleicaoLegislativa(data);
+  }
+  
 }

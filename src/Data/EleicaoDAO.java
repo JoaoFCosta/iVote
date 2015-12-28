@@ -152,4 +152,12 @@ public class EleicaoDAO {
 
     return ronda;
   }
+  
+  //TODO @return number of rows updated on DB
+  public int criaEleicaoPresidencial(String data){
+    return 1;
+  }
+  public int criaEleicaoLegislativa(String data){
+    return 1;
+  }
 }

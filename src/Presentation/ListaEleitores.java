@@ -17,6 +17,7 @@ import javax.swing.DefaultListModel;
  */
 public class ListaEleitores extends javax.swing.JFrame {
     private final SGE sge;
+    private List<Eleitor> lista;
     /**
      * Creates new form ListaEleitores
      */
@@ -24,8 +25,18 @@ public class ListaEleitores extends javax.swing.JFrame {
         initComponents();
         this.sge=s;
         this.setTitle("Lista de Eleitores");
+        jTable1.setAutoResizeMode(100);
+        lista = sge.eleitores();
+        this.setListaEleitores(lista);
     }
     
+    private void setListaEleitores (List<Eleitor> lista) {
+        for (int i = 0; i < jTable1.getRowCount(); i++){
+            Eleitor er = (Eleitor) lista.get(i);
+            jTable1.setValueAt(er.getNome (), i, 0);
+            jTable1.setValueAt(er.getCC(), i, 1);
+        }  
+    }
     
 
     /**
@@ -53,6 +64,11 @@ public class ListaEleitores extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jButton1.setText("< Voltar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista Eleitores"));
 
@@ -61,7 +77,103 @@ public class ListaEleitores extends javax.swing.JFrame {
                 {"António Ferreira Guimarães", "02988204"},
                 {"José Pedro da Silva", "06291482"},
                 {"João Carlos Faria", "05829187"},
-                {"Ana Carla Magalhães Costa", "03401928"}
+                {"Ana Carla Magalhães Costa", "03401928"},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
                 "Nome", "Nº Cartão de Cidadão"
@@ -83,6 +195,11 @@ public class ListaEleitores extends javax.swing.JFrame {
         jLabel1.setText("Pesquisar");
 
         jButton4.setText("Pesquisar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -109,13 +226,23 @@ public class ListaEleitores extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jButton2.setText("Adicionar Eleitor");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Carregar Eleitores");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,6 +277,40 @@ public class ListaEleitores extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        int c, pedido = Integer.parseInt(jTextField1.getText());
+        String nm;
+        boolean found=false;
+        for (int i = 0; i < jTable1.getRowCount(); i++){
+            nm = (String) jTable1.getValueAt(i, 0);
+            c  = (int) jTable1.getValueAt(i, 1);
+            if(pedido==c){
+                jTextField1.setText("Encontrado!");
+                found=true;
+            }
+        }  
+        if(found==false) jTextField1.setText("Não Existe esse Eleitor!");
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        AdicionarEleitor AE = new AdicionarEleitor(sge);
+        AE.setLocationRelativeTo(this);
+        AE.setVisible(true);  
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        lista = sge.eleitores();
+        this.setListaEleitores(lista);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
