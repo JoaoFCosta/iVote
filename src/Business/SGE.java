@@ -45,6 +45,21 @@ public class SGE {
   public List<Eleicao> eleicoes () {
     return eleicoes.eleicoes();
   }
+  
+  /** @return Lista dos eleitores presentes na base de dados. */
+  public List<Eleitor> eleitores () {
+    return cidadaos.eleitores ();
+  }
+  
+  /** @return Se eleitor foi adicionado ou não. */
+  public int addEleitor (String nome, String password, int ccidadao, int idEleitor){
+    return cidadaos.addEleitor(nome,password,ccidadao,idEleitor);
+  }
+  
+  /** @return Devolve último idEleitor na base de dados. */
+  public int lastID(){
+    return cidadaos.lastID();
+  }
 
   /** Verifica se um dado eleitor já voltou na eleição atual.
    *  @param ccidadao Número do cartão de cidadão do eleitor.

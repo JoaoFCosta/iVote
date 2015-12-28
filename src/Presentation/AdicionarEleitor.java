@@ -214,7 +214,12 @@ public class AdicionarEleitor extends javax.swing.JFrame {
           + "já está presente no sistema.");
       else {
         // TODO: Correr método que adiciona eleitor à BD.
-        
+        int cc          = Integer.parseInt(ccidadao);
+        int idEleitor   = sge.lastID()+1;
+        int n           = sge.addEleitor(nome, password, cc, idEleitor);
+        if (n>0){
+             JOptionPane.showMessageDialog(this, "Eleitor adicionado.");
+        }
         this.dispose();
       }
     }

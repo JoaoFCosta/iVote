@@ -40,7 +40,7 @@ public class CandidatoDAO {
       con                     = Connect.connect();
 
       PreparedStatement candidatos  = con.prepareStatement(
-          "select distinct C.id, C.nome from Eleicao as E" +
+          "select distinct C.id, C.nome, C.password from Eleicao as E" +
             "	inner join RondaPresidencial as RP" +
             "	on E.id=RP.id" +
             "		inner join AssembleiaVoto as AV" +
@@ -57,9 +57,10 @@ public class CandidatoDAO {
       ResultSet rs = candidatos.executeQuery();
 
       while (rs.next()) {       
-        String idCidadao = rs.getInt("id") + "";
-        String nome = rs.getString("nome");
-        Candidato c = new Candidato(nome,idCidadao);
+        int idCidadao = rs.getInt("id");
+        String pass   = rs.getString("password");
+        String nome   = rs.getString("nome");
+        Candidato c   = new Candidato(nome,pass,idCidadao);
         lista.add(c);
       }
       
