@@ -156,10 +156,10 @@ public class EleicaoDAO {
   }
   
   //TODO @return number of rows updated on DB
-  public int criaEleicaoPresidencial(String data){
+  public int criaEleicaoPresidencial(Calendar data){
     return 1;
   }
-  public int criaEleicaoLegislativa(String data){
+  public int criaEleicaoLegislativa(Calendar data){
     return 1;
   }
 }

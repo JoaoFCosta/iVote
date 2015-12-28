@@ -2,6 +2,7 @@ package Business;
 
 import Data.*;
 import Business.*;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Observable;
 
@@ -120,13 +121,13 @@ public class SGE extends Observable{
       return eleitores.votouLegislativa(eleicao, ccidadao);
   }
   
-  public int criaEleicaoPresidencial(String data){
+  public int criaEleicaoPresidencial(Calendar data){
     int res=eleicoes.criaEleicaoPresidencial(data);
     setChanged();
     notifyObservers(data);
     return res;
   }
-  public int criaEleicaoLegislativa(String data){
+  public int criaEleicaoLegislativa(Calendar data){
    int res=eleicoes.criaEleicaoLegislativa(data);
     setChanged();
     notifyObservers(data);

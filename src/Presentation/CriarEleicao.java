@@ -7,7 +7,10 @@ package Presentation;
 
 import Business.SGE;
 import java.awt.Color;
+import static java.lang.Integer.parseInt;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 /**
@@ -138,11 +141,23 @@ public class CriarEleicao extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    public Calendar formatarData(String data){
+            // input d/m/a
+            StringTokenizer st = new StringTokenizer(data,"/");
+            int d = parseInt(st.nextToken());
+            int m = parseInt(st.nextToken());
+            int a = parseInt(st.nextToken());
+        
+            Calendar c = new GregorianCalendar(); 
+            c.set(a,m,d);
+            return c;
+    }
+    
+   
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
      int n=-1;
-     String data    = jFormattedTextField1.getText();  
+     Calendar data    = formatarData (jFormattedTextField1.getText() );  
      String escolha = jComboBox1.getSelectedItem().toString();
      switch(escolha){
          case "Presidencial":   n=sge.criaEleicaoPresidencial(data);
