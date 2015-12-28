@@ -53,6 +53,11 @@ public class SGE {
     return cidadaos.values ();
   }
   
+  /** @return Número de eleitores no sistema. */
+  public int numEleitores () {
+    return cidadaos.size();
+  }
+  
   /** @return Se eleitor foi adicionado ou não. */
   public int addEleitor (String nome, String password, int ccidadao){
     return cidadaos.put(ccidadao, 

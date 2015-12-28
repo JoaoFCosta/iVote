@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -57,6 +56,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
   /** @param key Número do cartão de cidadão.
    *  @return true se o número do cartão de cidadão já estiver no sistema
    *          e false caso contrário. */
+  @Override
   public boolean containsKey (Object key) {
     Connection con  = null;
     int ccidadao    = (int) key;
@@ -261,7 +261,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
       con = Connect.connect();
       ps  = con.prepareStatement("delete from Cidadao;");
       rs  = ps.executeQuery();
-    } catch (Exception e) {
+    } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
     } finally {
       try { con.close(); }
@@ -274,7 +274,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
   @Override
   public Set<Integer> keySet () {
     Connection con        = null;
-    TreeSet<Integer> set  = new TreeSet<Integer>();
+    TreeSet<Integer> set  = new TreeSet<>();
     PreparedStatement ps;
     ResultSet rs;
 
@@ -285,7 +285,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
 
       while (rs.next())
         set.add(rs.getInt("id"));
-    } catch (Exception e) {
+    } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
     } finally {
       try { con.close(); }
@@ -301,17 +301,20 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
   @Override
   public Collection<Eleitor> values () {
     Connection con        = null;
-    Collection<Eleitor> c = new ArrayList<Eleitor>();
+    Collection<Eleitor> c = new ArrayList<>();
     PreparedStatement ps;
     ResultSet rs;
+    Eleitor el;
 
     try {
       con = Connect.connect();
-      ps  = con.prepareStatement("select id, nome from Cidadao;");
+      ps  = con.prepareStatement("select id, password, nome from Cidadao;");
       rs  = ps.executeQuery();
 
       while (rs.next()) {
-        c.add(new Eleitor(rs.getString("nome"), rs.getString("id")));
+        el = new Eleitor(rs.getString("nome"), rs.getString("password"), 
+          rs.getInt("id"));
+        c.add(el);
       }
     } catch (Exception e) {
       System.out.println(e);
@@ -330,7 +333,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
   @Override
   public Set<Entry<Integer, Eleitor>> entrySet () {
     Connection con                   = null;
-    Set<Entry<Integer, Eleitor>> set = new TreeSet<Entry<Integer, Eleitor>>();
+    Set<Entry<Integer, Eleitor>> set = new TreeSet<>();
     PreparedStatement ps;
     ResultSet rs;
 
