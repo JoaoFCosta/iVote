@@ -5,17 +5,20 @@
  */
 package Presentation;
 
+import Business.SGE;
+
 /**
  *
  * @author joaocosta
  */
 public class GerirPresidenciais extends javax.swing.JFrame {
-
+     private final SGE sge;
     /**
      * Creates new form EditarPresidenciais
      */
-    public GerirPresidenciais() {
+    public GerirPresidenciais(SGE s) {
         initComponents();
+        this.sge=s;
     }
 
     /**
@@ -89,7 +92,7 @@ public class GerirPresidenciais extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Candidatos Primeira Ronda"));
@@ -261,7 +264,7 @@ public class GerirPresidenciais extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -272,7 +275,7 @@ public class GerirPresidenciais extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GerirPresidenciais().setVisible(true);
+                new GerirPresidenciais(sge).setVisible(true);
             }
         });
     }

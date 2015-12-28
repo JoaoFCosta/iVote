@@ -5,18 +5,28 @@
  */
 package Presentation;
 
+import Business.Eleicao;
+import Business.Eleitor;
+import Business.SGE;
+import java.util.List;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author joaocosta
  */
 public class ListaEleitores extends javax.swing.JFrame {
-
+    private final SGE sge;
     /**
      * Creates new form ListaEleitores
      */
-    public ListaEleitores() {
+    public ListaEleitores(SGE s) {
         initComponents();
+        this.sge=s;
+        this.setTitle("Lista de Eleitores");
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -144,7 +154,7 @@ public class ListaEleitores extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -157,7 +167,7 @@ public class ListaEleitores extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListaEleitores().setVisible(true);
+                new ListaEleitores(sge).setVisible(true);
             }
         });
     }

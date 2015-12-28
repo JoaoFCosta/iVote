@@ -5,6 +5,7 @@
  */
 package Presentation;
 
+import Business.SGE;
 import java.awt.Color;
 
 /**
@@ -12,12 +13,13 @@ import java.awt.Color;
  * @author joaocosta
  */
 public class CriarEleicao extends javax.swing.JFrame {
-
+    private final SGE sge;
     /**
      * Creates new form CriarEleicao
      */
-    public CriarEleicao() {
+    public CriarEleicao(SGE s) {
         initComponents();
+        this.sge=s;
         this.setTitle("Configurar Eleição");
     }
 
@@ -133,7 +135,7 @@ public class CriarEleicao extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -144,7 +146,7 @@ public class CriarEleicao extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CriarEleicao().setVisible(true);
+                new CriarEleicao(sge).setVisible(true);
             }
         });
     }

@@ -5,6 +5,7 @@
  */
 package Presentation;
 
+import Business.SGE;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,12 +15,14 @@ import javax.swing.JOptionPane;
 public class GerirLegislativas extends javax.swing.JFrame {
     // Para manter controlo se houve alterações dos dados.
     private boolean alterado = false;
+    private final SGE sge;
 
     /**
      * Creates new form GerirLegislativas
      */
-    public GerirLegislativas() {
+    public GerirLegislativas(SGE s) {
         initComponents();
+        this.sge=s;
     }
 
     /**
@@ -80,7 +83,7 @@ public class GerirLegislativas extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 2, Short.MAX_VALUE)
+                .addGap(0, 4, Short.MAX_VALUE)
                 .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -307,7 +310,7 @@ public class GerirLegislativas extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -318,7 +321,7 @@ public class GerirLegislativas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GerirLegislativas().setVisible(true);
+                new GerirLegislativas(sge).setVisible(true);
             }
         });
     }

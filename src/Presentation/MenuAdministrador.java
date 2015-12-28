@@ -5,6 +5,8 @@
  */
 package Presentation;
 import Business.Eleicao;
+import Business.EleicaoLegislativa;
+import Business.EleicaoPresidencial;
 import Business.SGE;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -71,8 +73,18 @@ public class MenuAdministrador extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Eleições"));
 
         jButton2.setText("Criar Eleição");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Editar Eleição");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(electionsList);
 
@@ -113,6 +125,11 @@ public class MenuAdministrador extends javax.swing.JFrame {
         });
 
         jButton6.setText("Consultar Eleitores");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("15000000 Eleitores no Sistema");
 
@@ -183,6 +200,38 @@ public class MenuAdministrador extends javax.swing.JFrame {
     AE.setLocationRelativeTo(this);
     AE.setVisible(true);
   }//GEN-LAST:event_addEleitorActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        int numeroEleitores = sge.eleitores ().size();
+        jLabel1.setText(numeroEleitores +" Eleitores no Sistema");
+        ListaEleitores LE = new ListaEleitores(sge);
+        LE.setLocationRelativeTo(this);
+        LE.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        CriarEleicao CE = new CriarEleicao(sge);
+        CE.setLocationRelativeTo(this);
+        CE.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        int index = electionsList.getSelectedIndex();
+        Eleicao e = (Eleicao) electionsList.getModel().getElementAt(index);
+        if(e instanceof EleicaoLegislativa){
+            GerirLegislativas GL = new GerirLegislativas(sge);
+            GL.setLocationRelativeTo(this);
+            GL.setVisible(true);
+        }
+        if(e instanceof EleicaoPresidencial){
+            GerirPresidenciais GP = new GerirPresidenciais(sge);
+            GP.setLocationRelativeTo(this);
+            GP.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
   /**
    * @param args the command line arguments
