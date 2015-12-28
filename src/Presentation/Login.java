@@ -14,7 +14,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class Login extends javax.swing.JFrame {
 

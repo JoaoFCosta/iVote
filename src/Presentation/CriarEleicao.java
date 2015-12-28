@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class CriarEleicao extends javax.swing.JFrame {
     private final SGE sge;

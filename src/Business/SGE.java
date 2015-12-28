@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class SGE {
   // DAOs.

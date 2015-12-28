@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class AdicionarEleitor extends javax.swing.JFrame {
       private final SGE sge;

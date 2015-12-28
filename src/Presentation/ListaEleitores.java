@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class ListaEleitores extends javax.swing.JFrame {
     private final SGE sge;

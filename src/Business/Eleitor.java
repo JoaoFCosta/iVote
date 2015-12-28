@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class Eleitor {
     private String nome;

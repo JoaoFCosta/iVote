@@ -13,7 +13,7 @@ import javax.swing.DefaultListModel;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class MenuAdministrador extends javax.swing.JFrame {
   private final SGE sge;

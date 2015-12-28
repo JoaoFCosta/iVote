@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class GerirPresidenciais extends javax.swing.JFrame {
      // Para manter controlo se houve alterações dos dados.

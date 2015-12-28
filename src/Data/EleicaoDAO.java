@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author joaocosta
+ * @authors joaocosta,zcbg
  */
 public class EleicaoDAO {
 
