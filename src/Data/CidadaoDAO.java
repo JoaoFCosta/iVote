@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -172,7 +173,7 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
    *  @return Se já existisse um eleitor com o mesmo número do cartão de cidadão
    *          então é devolvida a instância desse eleitor, caso contrário é
    *          devolvido null. */
-  public int put (Integer key, Eleitor value, String password) {
+  public Eleitor put (Integer key, Eleitor value, String password) {
     Connection con  = null;
     Eleitor eleitor = null;
     Eleitor aux     = (Eleitor) value;
@@ -181,7 +182,6 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
 
     try {
       con = Connect.connect();
-
       /*  Verificar se já existe eleitor associado ao número fornecido e
           remover da base de dados. */
       if (containsKey(key)) {
@@ -189,23 +189,21 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
         remove(key);
       }
 
-      con = Connect.connect();
       ps  = con.prepareStatement(
-        "insert into Cidadao"
-        + "(id, idEleitor, password, nome)"
-        + "values"
+        "insert into Cidadao "
+        + "(id, idEleitor, password, nome) "
+        + "values "
         + "(" + aux.getCodigo() + "," + (size() + 1) + ",'"
-          + password +"'," + aux.getNome() + ");"
-      );
-      rs  = ps.executeQuery();
-    } catch (Exception e) {
+          + password +"','" + aux.getNome() + "');");
+      ps.executeUpdate();
+    } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
     } finally {
       try { con.close(); }
       catch (Exception e) { System.out.println(e); }
     }
 
-    return 1;
+    return eleitor;
   }
 
   /** Remover um eleitor do sistema.

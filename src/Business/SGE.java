@@ -60,8 +60,9 @@ public class SGE {
   
   /** @return Se eleitor foi adicionado ou não. */
   public int addEleitor (String nome, String password, int ccidadao){
-    return cidadaos.put(ccidadao, 
+    cidadaos.put(ccidadao, 
       new Eleitor(nome,Integer.toString(ccidadao)), password);
+    return 1;
   }
   
   /** @return Devolve último idEleitor na base de dados. */
