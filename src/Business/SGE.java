@@ -60,6 +60,11 @@ public class SGE {
   public int lastID(){
     return cidadaos.lastID();
   }
+  
+   /** @return Verifica se um eleitor está na base de dados. */
+  public boolean existeID (int ccidadao){
+    return cidadaos.existeID(ccidadao);
+  }
 
   /** Verifica se um dado eleitor já voltou na eleição atual.
    *  @param ccidadao Número do cartão de cidadão do eleitor.

@@ -140,4 +140,28 @@ public class CidadaoDAO {
         }
         return r;
     }
+   
+   
+   public boolean existeID (int ccidadao) {
+        Connection con = null;
+        boolean r      = false;
+        try {
+            con                     = Connect.connect();
+            PreparedStatement ps    = con.prepareStatement(
+                    "select id from Cidadao where id=" + ccidadao
+            );
+            ResultSet rs            = ps.executeQuery();
+            
+            if (rs.next()) {
+               if(!(rs.wasNull())) r = true;
+               int i             = rs.getInt("id"); 
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return r;
+    }
 }

@@ -200,21 +200,24 @@ public class AdicionarEleitor extends javax.swing.JFrame {
       || password.isEmpty() || passwordConf.isEmpty();
     
     // Verificar que nenhum dos campos está vazio.
-    if (isEmpty)
+    if (isEmpty){
       JOptionPane.showMessageDialog(this, "Nenhum dos campos pode estar vazio");
+    }  
     // Verificar se as password estão diferentes.
-    else if (!password.equals(passwordConf))
+    else if (!password.equals(passwordConf)){
       JOptionPane.showMessageDialog(this, "As passwords não são iguais.");
+    }  
     else {
-      // TODO: Verificar se o número de cartão de cidadão não existe já na BD.
-      boolean eleitorExistente = false;
-      
-      if (eleitorExistente)
+      int cc          = Integer.parseInt(ccidadao); 
+      //Verificar se o número de cartão de cidadão não existe já na BD.
+      boolean eleitorExistente=sge.existeID(cc);
+     
+      if (eleitorExistente){
         JOptionPane.showMessageDialog(this, "Número de cartão de cidadão " 
           + "já está presente no sistema.");
+      } 
       else {
-        // TODO: Correr método que adiciona eleitor à BD.
-        int cc          = Integer.parseInt(ccidadao);
+        //Correr método que adiciona eleitor à BD.
         int idEleitor   = sge.lastID()+1;
         int n           = sge.addEleitor(nome, password, cc, idEleitor);
         if (n>0){
