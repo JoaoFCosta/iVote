@@ -5,6 +5,7 @@
  */
 package Data;
 
+import Exception.FailedInsert;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,7 +53,7 @@ public class CirculoSDAO {
      
      }
      
-      public void insert(int idCirculo,String nCirculo,int idLegislativa){
+      public void insert(int idCirculo,String nCirculo,int idLegislativa) throws FailedInsert{
         Connection con = null;
         try {
             con                     = Connect.connect();
@@ -62,7 +63,7 @@ public class CirculoSDAO {
               );
              insertCirculosSt.executeUpdate();
               } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e);
+                         throw new FailedInsert(e.toString());
         } finally {
             try { con.close(); }
             catch (Exception e) { System.out.println(e); }

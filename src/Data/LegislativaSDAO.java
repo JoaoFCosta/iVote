@@ -5,6 +5,7 @@
  */
 package Data;
 
+import Exception.FailedInsert;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,5 +40,21 @@ public class LegislativaSDAO {
             catch (Exception e) { System.out.println(e); }
         }
         return r;
+    }
+    
+    public void insert(int idLegislativa,int idEleicao,String dataE) throws FailedInsert{
+        Connection con = null;
+        int r = -1;
+        try {
+            con                     = Connect.connect();
+        PreparedStatement insertEleicaoLSt = con.prepareStatement(
+        "insert into legislativa (id,idEleicao,data)"
+                + " values ("+idLegislativa+","+idEleicao+","+dataE+ ");");
+         } catch (SQLException | ClassNotFoundException e) {
+             throw new FailedInsert(e.toString());
+         } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
     }
 }

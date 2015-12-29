@@ -5,6 +5,7 @@
  */
 package Data;
 
+import Exception.FailedInsert;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,20 +42,10 @@ public class RondaPresidencialSDAO {
         }
         return r;
     }
-    
-    public void insert(Connection con,int idRondaP,int idEleicao,int dataE) throws Exception{
-    
-          PreparedStatement insertRondaPresidencialSt = con.prepareStatement(
-        "insert into rondapresidencial (id, idEleicao, ronda, data) " +
- "	VALUES " +
- "	("+idRondaP+","+idEleicao+",1,"+ dataE +");");
-          insertRondaPresidencialSt.executeUpdate();
-    
-    }
-    
-    public void insert(int idRondaP,int idEleicao,int dataE) throws Exception{
+      
+    public void insert(int idRondaP,int idEleicao,String dataE) throws FailedInsert
+    {
         Connection con = null;
-        int r = -1;
         try {
             con                     = Connect.connect();
           PreparedStatement insertRondaPresidencialSt = con.prepareStatement(
@@ -63,7 +54,7 @@ public class RondaPresidencialSDAO {
  "	("+idRondaP+","+idEleicao+",1,"+ dataE +");");
           insertRondaPresidencialSt.executeUpdate();
           } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e);
+             throw new FailedInsert(e.toString());
         } finally {
             try { con.close(); }
             catch (Exception e) { System.out.println(e); }
