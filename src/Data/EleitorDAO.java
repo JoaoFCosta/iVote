@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EleitorDAO {
 
@@ -37,7 +39,7 @@ public class EleitorDAO {
 
       if (rs.next())
         votou = rs.getInt("votou");
-
+      
     } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
     } finally {

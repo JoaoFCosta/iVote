@@ -162,4 +162,30 @@ public class SGE extends Observable{
             votos += votosAssembleia;
         return votos;
     }
+    
+    public void votoBrancoPresidencial (int idEleicao, int ronda, int idCidadao) {
+        eleicoes.voto(idEleicao, ronda, idCidadao, true);
+    }
+    
+    public void votoNuloPresidencial (int idEleicao, int ronda, int idCidadao) {
+        eleicoes.voto(idEleicao, ronda, idCidadao, false);
+    }
+        
+    public void votoBrancoLegislativa (int idEleicao, int idCidadao, boolean votoBranco) {
+        eleicoes.voto(idEleicao, -1, idCidadao, true);
+    }
+            
+    public void votoBrancoPresidencial (int idEleicao, int idCidadao, boolean votoBranco) {
+        eleicoes.voto(idEleicao, -1, idCidadao, false);
+    }
+    
+    public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) {
+        eleicoes.votoPresidencial(idEleicao, ronda, idCidadao, idCandidato);
+    }
+    
+    public void votoLegislativa (int idEleicao, int idCidadao, int idLista) {
+        eleicoes.votoLegislativa(idEleicao, idCidadao, idLista);
+    }
+
+            
 }

@@ -462,7 +462,7 @@ public class EleicaoDAO {
         return -1;
     }
 
-    public void votoLegislativa (int idEleicao, int idCidadao, int idLista) throws Exception {
+    public void votoLegislativa (int idEleicao, int idCidadao, int idLista) {
         Connection con  = null;
 
         try {
@@ -479,12 +479,9 @@ public class EleicaoDAO {
                             "ON AV.id = EL.idAssembleiaVoto\n" +
                             "WHERE E.id = " + idEleicao + " AND EL.idCidadao = " + idCidadao +");");
 
-            ResultSet rs = votoPresidencial.executeQuery();
-            con.commit();
+            votoPresidencial.executeQuery();
 
         } catch (SQLException | ClassNotFoundException e) {
-            if (con != null)
-                con.rollback();
             System.out.println(e);
         } finally {
             try { con.close(); }
@@ -492,7 +489,7 @@ public class EleicaoDAO {
         }
     }
 
-    public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) throws Exception {
+    public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) {
         Connection con  = null;
 
         try {
@@ -508,16 +505,79 @@ public class EleicaoDAO {
                             "ON AV.id = EL.idAssembleiaVoto\n" +
                             "WHERE E.id = " + idEleicao + " AND RP.ronda = " + ronda + " AND EL.idCidadao = " + idCidadao +");");
 
-            ResultSet rs = votoPresidencial.executeQuery();
-            con.commit();
+            votoPresidencial.executeQuery();
 
         } catch (SQLException | ClassNotFoundException e) {
-            if (con != null)
-                con.rollback();
             System.out.println(e);
         } finally {
             try { con.close(); }
             catch (Exception e) { System.out.println(e); }
         }
     }
+    
+    private int idAssembleiaVoto (Connection con, int idEleicao, int ronda, int idCidadao) {
+        
+        int idAssembleiaVoto = 0;
+
+        try {    
+            PreparedStatement idAssembleiaVotoQuery = con.prepareStatement(
+                "SELECT idAssembleiaVoto\n" +
+                "FROM (SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, EL.idCidadao\n" +
+                "FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP\n" +
+                "ON E.id = RP.idEleicao INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON RP.id = AV.idRondaPresidencial INNER JOIN Eleitor AS EL\n" +
+                "ON AV.id = EL.idAssembleiaVoto\n" +
+                "WHERE RP.ronda = " + ronda +"\n" +
+                "UNION\n" +
+                "SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, EL.idCidadao\n" +
+                "FROM Eleicao AS E INNER JOIN Legislativa AS L\n" +
+                "ON E.id = L.idEleicao INNER JOIN Circulo AS C\n" +
+                "ON L.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON C.id = AV.idCirculo INNER JOIN Eleitor AS EL\n" +
+                "ON AV.id = EL.idAssembleiaVoto) AS Cenas\n" +
+                "WHERE idEleicao = " + idEleicao + " AND idCidadao = " + idCidadao + ";");
+
+            ResultSet rs = idAssembleiaVotoQuery.executeQuery();
+            
+            if (rs.next())
+                idAssembleiaVoto = rs.getInt("idAssembleiaVoto");
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+        }
+        
+        return idAssembleiaVoto;
+    }
+    
+    public void voto (int idEleicao, int ronda, int idCidadao, boolean votoBranco) {
+        String set;
+        
+        if (votoBranco)
+            set = "SET votosBrancos = votosBrancos +1\n";
+        else
+            set = "SET votosNulos = votosNulos +1\n";
+              Connection con  = null;
+
+        try {
+            con = Connect.connect();
+            int idAssembleiaVoto = idAssembleiaVoto(con, idEleicao, ronda, idCidadao);
+            
+            PreparedStatement idAssembleiaVotoQuery = con.prepareStatement(
+                    "UPDATE AssembleiaVoto\n" + 
+                    set + 
+                    "WHERE id = " + idAssembleiaVoto + ";");
+            
+            idAssembleiaVotoQuery.executeQuery();
+        
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }     
+    }    
+    
+     public int eleicaoAberta  () {
+     }
 }
