@@ -4,6 +4,7 @@ package Data;
 import Business.Eleicao;
 import Business.EleicaoPresidencial;
 import Business.EleicaoLegislativa;
+import Exception.FailedInsert;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -242,29 +243,35 @@ public class EleicaoDAO {
         return votosBrancosPorAssembleia;
     }
 
-
-    //TODO @return number of rows updated on DB
-    public int criaEleicaoPresidencial(Calendar data,int idEleicaoGeral, int idPresidencial, int ronda, int AssembleiaVoto){
-        return 0;
+  public void insert(int idEleicao) throws FailedInsert{
+    Connection con  = null;  
+    try {
+      con = Connect.connect();
+          PreparedStatement insertEleicaoSt = con.prepareStatement(
+        "insert into Eleicao (id) values ("+idEleicao+");");
+         insertEleicaoSt.executeUpdate();}
+        catch (SQLException | ClassNotFoundException e) {
+            throw new FailedInsert();
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
     }
+  }
 
-    public int criaEleicaoLegislativa(Calendar data, int idEleicaoGeral, int idLegislativa, int circulo, int AssembleiaVoto){
-        return 0;
-    }
+
     /*
       Cria uma eleicao presidencial, uma ronda presidencial e todas as assembleias de voto
     */
-    public int criaEleicaoPresidencial(Calendar data){
-        Connection con  = null;
-        int idEleicao = -1;
-        int idRondaP = -1;
-        int idAV = -1;
-
-        try {
-            con = Connect.connect();
-
-            con.setAutoCommit(false); // transaction block start
-       
+public int criaEleicaoPresidencial(Calendar data){
+    Connection con  = null;
+    int idEleicao = -1;
+    int idRondaP = -1;
+    int idAV = -1;
+    
+    try {
+      con = Connect.connect();
+      
+      con.setAutoCommit(false); // transaction block start       
       /*FIND last id's */
             PreparedStatement idEleicaoSt  = con.prepareStatement(
                     "SELECT id FROM Eleicao ORDER BY id DESC LIMIT 1;");
@@ -350,19 +357,23 @@ public class EleicaoDAO {
     }
 
 
-    /*
-      Cria  uma eleicao legislativa, os seus circulos e as assembleias de voto
-    */
-    public int criaEleicaoLegislativa(Calendar data){
-        Connection con  = null;
-        int idEleicao = -1;
-        int idLegislativa = -1;
-        int idCirculo = -1;
-        int idAV = -1;
-        try {
-            con = Connect.connect();
 
-            con.setAutoCommit(false); // transaction block start
+ 
+  /*
+    Cria  uma eleicao legislativa, os seus circulos e as assembleias de voto
+  */
+  
+  
+   public int criaEleicaoLegislativa(Calendar data){
+    Connection con  = null;
+    int idEleicao = -1;
+    int idLegislativa = -1;
+    int idCirculo = -1;
+    int idAV = -1;
+    try {
+      con = Connect.connect();
+      
+      con.setAutoCommit(false); // transaction block start
 
             /*FIND last id's */
             PreparedStatement idEleicaoSt  = con.prepareStatement(
@@ -520,4 +531,5 @@ public class EleicaoDAO {
             catch (Exception e) { System.out.println(e); }
         }
     }
+
 }
