@@ -26,9 +26,9 @@ public class EleitorDAO {
       con = Connect.connect();
 
       PreparedStatement seVotou  = con.prepareStatement(
-      "SELECT votou FROM RondaPresidencial AS RP INNER JOIN AssembleiaVoto AS AV " +
-      "ON RP.id = AV.idRondaPresidencial INNER JOIN Eleitor AS E " +
-      "ON AV.id = E.idAssembleiaVoto " +
+      "SELECT votou FROM RondaPresidencial AS RP INNER JOIN AssembleiaVoto AS AV\n" +
+      "ON RP.id = AV.idRondaPresidencial INNER JOIN Eleitor AS E\n" +
+      "ON AV.id = E.idAssembleiaVoto\n" +
       "WHERE RP.idEleicao = " + idEleicao +
       " AND RP.ronda = " + ronda +
       " AND E.idCidadao = " + idCidadao + ";");
@@ -47,7 +47,7 @@ public class EleitorDAO {
 
     boolean booleanVotou;
 
-    if (votou == 0)
+    if (votou == 1)
       booleanVotou = true;
     else
       booleanVotou = false;
@@ -63,11 +63,11 @@ public class EleitorDAO {
       con = Connect.connect();
 
       PreparedStatement seVotou  = con.prepareStatement(
-      "SELECT votou FROM Legislativa AS LL INNER JOIN Circulo AS C " +
-      "ON LL.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV " +
-      "ON C.id = AV.idCirculo INNER JOIN Eleitor AS E " +
-      "ON AV.id = E.idAssembleiaVoto " +
-      "WHERE AV.idEleicao = " + idEleicao +
+      "SELECT votou FROM Legislativa AS LL INNER JOIN Circulo AS C\n" +
+      "ON LL.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
+      "ON C.id = AV.idCirculo INNER JOIN Eleitor AS E\n" +
+      "ON AV.id = E.idAssembleiaVoto\n" +
+      "WHERE LL.idEleicao = " + idEleicao +
       " AND E.idCidadao = " + idCidadao + ";");
 
       ResultSet rs = seVotou.executeQuery();
@@ -84,7 +84,7 @@ public class EleitorDAO {
 
     boolean booleanVotou;
 
-    if (votou == 0)
+    if (votou == 1)
       booleanVotou = true;
     else
       booleanVotou = false;

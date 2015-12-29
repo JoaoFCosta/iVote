@@ -235,7 +235,7 @@ public class EleicaoDAO {
         return votosBrancosPorAssembleia;
     }
 
-    public void votoLegislativa (int idEleicao, int idCidadao, int idLista) {
+    public void votoLegislativa (int idEleicao, int idCidadao, int idLista) throws Exception {
         Connection con  = null;
 
         try {
@@ -253,8 +253,11 @@ public class EleicaoDAO {
                     "WHERE E.id = " + idEleicao + " AND EL.idCidadao = " + idCidadao +");");
 
             ResultSet rs = votoPresidencial.executeQuery();
+            con.commit();
 
         } catch (SQLException | ClassNotFoundException e) {
+            if (con != null)
+                con.rollback();
             System.out.println(e);
         } finally {
             try { con.close(); }
@@ -262,7 +265,7 @@ public class EleicaoDAO {
         }
     }
 
-    public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) {
+    public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) throws Exception {
         Connection con  = null;
 
         try {
@@ -279,8 +282,11 @@ public class EleicaoDAO {
                             "WHERE E.id = " + idEleicao + " AND RP.ronda = " + ronda + " AND EL.idCidadao = " + idCidadao +");");
 
             ResultSet rs = votoPresidencial.executeQuery();
+            con.commit();
 
         } catch (SQLException | ClassNotFoundException e) {
+            if (con != null)
+                con.rollback();
             System.out.println(e);
         } finally {
             try { con.close(); }
