@@ -5,6 +5,7 @@ import Business.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -188,5 +189,9 @@ public class SGE extends Observable{
     /** Para registar voto na base de dados*/
     public void votoLegislativa(int idEleicao, int idCidadao, String selecionado){
      
+    }
+    
+    public List<Candidato> getCandidatos (int idEleicao) {
+      return candidatos.getCandidatosP(idEleicao);
     }
 }
