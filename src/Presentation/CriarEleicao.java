@@ -80,7 +80,7 @@ public class CriarEleicao extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Data"));
 
-        jFormattedTextField1.setText("09/12/2016");
+        jFormattedTextField1.setText("09-12-2016");
         jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextField1ActionPerformed(evt);
@@ -143,7 +143,7 @@ public class CriarEleicao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     public Calendar formatarData(String data){
             // input d/m/a
-            StringTokenizer st = new StringTokenizer(data,"/");
+            StringTokenizer st = new StringTokenizer(data,"-");
             int d = parseInt(st.nextToken());
             int m = parseInt(st.nextToken());
             int a = parseInt(st.nextToken());

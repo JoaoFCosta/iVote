@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @authors joaocosta,zcbg
@@ -155,11 +157,153 @@ public class EleicaoDAO {
     return ronda;
   }
   
+  public int lastIDP() {
+        Connection con = null;
+        int r = -1;
+        
+        try {
+            con                     = Connect.connect();
+            PreparedStatement ps    = con.prepareStatement(
+                    "select id " +
+                    " from RondaPresidencial " +
+                    " order by id DESC " +
+                    " limit 1; "
+            );
+            ResultSet rs            = ps.executeQuery();
+            
+            if (rs.next()) {
+               r = rs.getInt("id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return r;
+    }
+  
+    public int lastIDL() {
+        Connection con = null;
+        int r = -1;
+        
+        try {
+            con                     = Connect.connect();
+            PreparedStatement ps    = con.prepareStatement(
+                    "select id" +
+                    " from Legislativa " +
+                    " order by id DESC " +
+                    " limit 1; "
+            );
+            ResultSet rs            = ps.executeQuery();
+            
+            if (rs.next()) {
+               r = rs.getInt("id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return r;
+    }
+  
+  
   //TODO @return number of rows updated on DB
-  public int criaEleicaoPresidencial(Calendar data){
-    return 1;
+  public int criaEleicaoPresidencial(Calendar data,int idEleicaoGeral, int idPresidencial, int ronda){
+        Connection con  = null;
+        //2015-12-29
+        int year      = data.getInstance().get(Calendar.YEAR);
+        int month     = data.getInstance().get(Calendar.MONTH);
+        int day       = data.getInstance().get(Calendar.DAY_OF_MONTH);
+        String dataI  ="'"+year+"-"+month+"-"+day+"'";
+        //Guarda o número de registos alterados
+        int count           = -1;
+         try {
+            con = Connect.connect();
+            con.setAutoCommit(false); //inicia transacao
+            
+            PreparedStatement eleicoesBD = con.prepareStatement(
+                    "insert into Eleicao (id) " +
+                    "values "+
+                    "("+idEleicaoGeral+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD .executeUpdate();
+           
+            eleicoesBD   = con.prepareStatement(
+                    "insert into RondaPresidencial (id, idEleicao, ronda, data) " +
+                    "values "+
+                    "("+idPresidencial+","+idEleicaoGeral+","+ronda+","+dataI+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            
+            
+            con.commit(); //efectua transacao
+
+        } catch ( SQLException | ClassNotFoundException e) {
+             try {
+                con.rollback(); //anula transacao
+            } catch (SQLException ex) {
+                Logger.getLogger(EleicaoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return count;
   }
-  public int criaEleicaoLegislativa(Calendar data){
-    return 1;
+ 
+  public int criaEleicaoLegislativa(Calendar data, int idEleicaoGeral, int idLegislativa){
+        Connection con  = null;
+        //2015-12-29 00:00:00
+        int year      = data.getInstance().get(Calendar.YEAR);
+        int month     = data.getInstance().get(Calendar.MONTH);
+        int day       = data.getInstance().get(Calendar.DAY_OF_MONTH);
+        String dataI  ="'"+year+"-"+month+"-"+day+" 00:00:00"+"'";
+        //Guarda o número de registos alterados
+        int count           = -1;
+         try {
+            
+            con = Connect.connect();
+            con.setAutoCommit(false); //inicia transacao
+            
+            PreparedStatement eleicoesBD = con.prepareStatement(
+                    "insert into Eleicao (id) " +
+                    "values "+
+                    "("+idEleicaoGeral+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD .executeUpdate();
+            
+            eleicoesBD  = con.prepareStatement(
+                    "insert into Legislativa (id, idEleicao, data) " +
+                    "values "+
+                    "("+idLegislativa+","+idEleicaoGeral+","+dataI+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+        
+            con.commit(); //efectua transacao
+
+        } catch ( SQLException | ClassNotFoundException e) {
+            try {
+                con.rollback(); //anula transacao
+            } catch (SQLException ex) {
+                Logger.getLogger(EleicaoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return count;
   }
 }

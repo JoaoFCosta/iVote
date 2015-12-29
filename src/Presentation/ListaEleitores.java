@@ -37,7 +37,7 @@ public class ListaEleitores extends javax.swing.JFrame implements Observer{
   
   @Override
     public void update(Observable o, Object arg) {
-        JOptionPane.showMessageDialog(this, "Eleitor criado: " + arg.toString());
+        JOptionPane.showMessageDialog(this, arg.toString());
         setListaEleitores(lista);
     }
     

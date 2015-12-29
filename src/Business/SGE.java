@@ -59,7 +59,7 @@ public class SGE extends Observable{
   public void removeEleitor (int cc) {
     cidadaos.remove(cc);
     setChanged();
-    notifyObservers(Integer.toString(cc));
+    notifyObservers("Eleitor Removido: "+Integer.toString(cc));
   }
   
   /** @return Lista dos eleitores presentes na base de dados. */
@@ -77,7 +77,7 @@ public class SGE extends Observable{
     cidadaos.put(ccidadao, 
       new Eleitor(nome,Integer.toString(ccidadao)), password);
     setChanged();
-    notifyObservers(nome);
+    notifyObservers("Eleitor Criado: "+nome);
     return 1;
   }
   
@@ -90,7 +90,7 @@ public class SGE extends Observable{
   public int addCandidato (int ccidadao, int lista){
     int res=candidatos.addCandidato(ccidadao, lista);
     setChanged();
-    notifyObservers(Integer.toString(ccidadao));
+    notifyObservers("Candidato Criado: "+Integer.toString(ccidadao));
     return res;
   }
   
@@ -122,16 +122,23 @@ public class SGE extends Observable{
   }
   
   public int criaEleicaoPresidencial(Calendar data){
-    int res=eleicoes.criaEleicaoPresidencial(data);
+    String d           = "Eleição Presidencial criada ";
+    int idEleicaoGeral = 1 + eleicoes.idMaisRecenteEleicao();
+    int ronda          = 1;
+    int idPresidencial = 1 + eleicoes.lastIDP();
+    int res            = eleicoes.criaEleicaoPresidencial(data,idEleicaoGeral,idPresidencial,ronda);
     setChanged();
-    notifyObservers(data);
+    notifyObservers(d);
     return res;
   }
   public int criaEleicaoLegislativa(Calendar data){
-   int res=eleicoes.criaEleicaoLegislativa(data);
+    String d             = "Eleição Legislativa criada ";
+    int idEleicaoGeral   = 1 + eleicoes.idMaisRecenteEleicao();
+    int idLegislativa    = 1 + eleicoes.lastIDL();
+    int res              = eleicoes.criaEleicaoLegislativa(data, idEleicaoGeral, idLegislativa);
     setChanged();
-    notifyObservers(data);
+    notifyObservers(d);
     return res;
   }
-  
+
 }
