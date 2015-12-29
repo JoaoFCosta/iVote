@@ -2,6 +2,7 @@ package Business;
 
 import Data.*;
 import Business.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Observable;
@@ -152,11 +153,40 @@ public class SGE extends Observable{
     int idAssembleiaVoto = 1 + eleicoes.lastIDAV();
     int res              = eleicoes.criaEleicaoLegislativa(data, idEleicaoGeral, idLegislativa, idCirculo, idAssembleiaVoto);
 */
-          setChanged();
+    setChanged();
     notifyObservers(d);
 
     return 0;
     //return res;
   }
-
+    //TODO UI AdicionarLista
+    /** Devolve a lista de candidatos de uma Assembleia de Voto do Partido nome*/
+    public ArrayList<Candidato> listas(String nome){
+        return new ArrayList<>();
+    }
+    
+    //TODO UI AdicionarLista
+    /** Actualiza a lista de candidatos de uma Assembleia de Voto do Partido nome na base de dados*/
+    public int guardarLista(String nome, ArrayList<Candidato> c){
+        String d = "Lista de Candidatos"+nome+" Alterada!";
+        setChanged();
+        notifyObservers(d);
+        return 1;
+    }
+    
+    //TODO UI VotoPresidenciais
+    /** String selecionado diz respeito ao nome do Candidato Escolhido */
+    /** Para registar voto na base de dados*/
+    public void votoPresidencial(int idEleicao, int ronda, int idCidadao, String selecionado){
+    
+    }
+    
+    //TODO UI VotoLegislativas
+    /** String selecionado contem uma destas Strings:
+     *  CDS/PP ou PAN ou PSD ou PS
+     *  Logo diz respeito ao nome da Lista */
+    /** Para registar voto na base de dados*/
+    public void votoLegislativa(int idEleicao, int idCidadao, String selecionado){
+     
+    }
 }

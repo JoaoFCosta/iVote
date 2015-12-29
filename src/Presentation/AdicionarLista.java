@@ -5,18 +5,56 @@
  */
 package Presentation;
 
+import Business.Candidato;
+import Business.Eleitor;
+import Business.SGE;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author joaocosta
  */
-public class AdicionarLista extends javax.swing.JFrame {
-
+public class AdicionarLista extends javax.swing.JFrame implements Observer{
+    private final SGE sge;
+    private ArrayList<Candidato> lista; 
+    private String nomeLista;
     /**
      * Creates new form AdicionarLista
      */
-    public AdicionarLista() {
+    public AdicionarLista(SGE s) {
         initComponents();
+        this.sge        = s;
+        sge.addObserver(this);
+        this.lista      = new ArrayList<Candidato>();
+        this.nomeLista  = jTextField1.getText(); 
         this.setTitle("Adicionar Lista");
+        //TODO
+        lista = sge.listas(nomeLista);
+        this.setListaCandidatos(lista);
+    }
+    
+    @Override
+    public void update(Observable o, Object arg) {
+        JOptionPane.showMessageDialog(this, arg.toString());
+        setListaCandidatos(lista);
+    }
+    
+    
+    private void setListaCandidatos (ArrayList<Candidato> c){
+    DefaultTableModel tmodel = new DefaultTableModel(0, 2);
+
+    tmodel.setColumnIdentifiers(new Object[] {"Nome", "Cartão de Cidadão"});
+    jTable1.setModel(tmodel);
+
+    // Povoar a tabela.
+      for (Eleitor e : c) {
+          tmodel.addRow(new Object[] { e.getNome(), Integer.toString(e.getCC()) });
+      }
     }
 
     /**
@@ -39,7 +77,6 @@ public class AdicionarLista extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jButton1.setText("Confirmar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -49,8 +86,18 @@ public class AdicionarLista extends javax.swing.JFrame {
         });
 
         jButton2.setText("Adicionar  Candidato");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("< Voltar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Partido da Lista"));
 
@@ -77,23 +124,12 @@ public class AdicionarLista extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"José Correia", "12345678"},
-                {"Pedro Teixeira", "02928102"},
-                {"Carlos Ramalho", "00158192"},
-                {"Carolina Moura", "05918201"}
+
             },
             new String [] {
-                "Nome", "Cartão de Cidadão"
+                "Title 1", "Title 2"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -151,13 +187,36 @@ public class AdicionarLista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       int decisao = JOptionPane.showConfirmDialog(this,
+                    "Deseja Guardar Alterações na lista? ");
+        if (decisao == JOptionPane.YES_OPTION) {
+            //Para registar lista
+            int ok = sge.guardarLista(nomeLista,lista); 
+            if(ok==1){
+               JOptionPane.showConfirmDialog(this,
+                    "Lista Guardada com Sucesso.");
+            }
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        AdicionarCandidatura AC = new AdicionarCandidatura(sge);
+        AC.setLocationRelativeTo(this);
+        AC.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -168,7 +227,7 @@ public class AdicionarLista extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdicionarLista().setVisible(true);
+                new AdicionarLista(sge).setVisible(true);
             }
         });
     }

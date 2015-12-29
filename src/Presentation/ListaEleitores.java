@@ -215,19 +215,18 @@ public class ListaEleitores extends javax.swing.JFrame implements Observer{
   }//GEN-LAST:event_pesquisarButtonActionPerformed
 
   private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    // TODO add your handling code here:
+
     AdicionarEleitor AE = new AdicionarEleitor(sge);
     AE.setLocationRelativeTo(this);
     AE.setVisible(true);
   }//GEN-LAST:event_jButton2ActionPerformed
 
   private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    // TODO add your handling code here:
+    
     this.dispose();
   }//GEN-LAST:event_jButton1ActionPerformed
 
   private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    // TODO add your handling code here:
     lista = sge.eleitores();
     this.setListaEleitores(lista);
   }//GEN-LAST:event_jButton3ActionPerformed

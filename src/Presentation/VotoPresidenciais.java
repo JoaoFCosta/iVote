@@ -168,7 +168,7 @@ public class VotoPresidenciais extends javax.swing.JFrame {
                 decisao = JOptionPane.showConfirmDialog(this,
                     "Confirma que quer votar na lista: " + selecionado + "?");
                 //Para registar voto
-                //sge.votoPresidencial(idEleicao,ronda,idCidadao,selecionado) 
+                sge.votoPresidencial(idEleicao,ronda,idCidadao,selecionado);
                 break;
             default:
                 decisao = JOptionPane.showConfirmDialog(this,

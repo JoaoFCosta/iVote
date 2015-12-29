@@ -17,5 +17,9 @@ public class Candidato extends Eleitor {
     public Candidato(String nome, String codigo, int cc) {
         super(nome, codigo, cc);
     }
+    
+    public Candidato(String nome, int cc) {
+        super(nome, cc);
+    }
    
 }
