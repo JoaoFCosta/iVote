@@ -2,9 +2,14 @@ package Business;
 
 import Data.*;
 import Business.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -123,31 +128,120 @@ public class SGE extends Observable{
   
   public int criaEleicaoPresidencial(Calendar data){
     String d             = "Eleição Presidencial criada ";
-    /*
-    int idEleicaoGeral   = 1 + eleicoes.idMaisRecenteEleicao();
-    int ronda            = 1;
-    int idPresidencial   = 1 + eleicoes.lastIDP();
-    int idAssembleiaVoto = 1 + eleicoes.lastIDAV();
-    int res              = eleicoes.criaEleicaoPresidencial(data,idEleicaoGeral,idPresidencial,ronda,idAssembleiaVoto);
-    */
+    eleicoes.criaEleicaoPresidencial(data);
     setChanged();
     notifyObservers(d);
     return 0;
   }
+  
   public int criaEleicaoLegislativa(Calendar data){
+    String d             = "Eleição Presidencial criada ";
+    eleicoes.criaEleicaoLegislativa(data);
+    setChanged();
+    notifyObservers(d);
+    return 0;
+  }
+  
+  
+  LegislativaSDAO legislativas = new LegislativaSDAO();
+  CirculoSDAO circulos = new CirculoSDAO();
+  AssembleiaVotoSDAO assembleias = new AssembleiaVotoSDAO();
+  
+  /* Versão sem conecção, sem ser uma transaction
+     Assume que as freguesias estão distribuidas pelos distritos por ordem
+  */ 
+  public int criaEleicaoLegislativa(Calendar data,Collection<String> distritos,Collection<String> freguesias){
     String d             = "Eleição Legislativa criada ";
-  /*
+  
     int idEleicaoGeral   = 1 + eleicoes.idMaisRecenteEleicao();
-    int idLegislativa    = 1 + eleicoes.lastIDL();
-    int idCirculo        = 1 + eleicoes.lastIDCR();
-    int idAssembleiaVoto = 1 + eleicoes.lastIDAV();
-    int res              = eleicoes.criaEleicaoLegislativa(data, idEleicaoGeral, idLegislativa, idCirculo, idAssembleiaVoto);
-*/
-          setChanged();
+    
+    int idLegislativa    = 1 + legislativas.lastID();
+    int idCirculo        = 1 + circulos.lastID();
+    int idAssembleiaVoto = 1 + assembleias.lastID();
+    String dataE = "'" + data.get(Calendar.YEAR) + "-" + 
+              data.get(Calendar.MONTH) + "-" + data.get(Calendar.DAY_OF_MONTH) + "'";
+      
+
+      
+    eleicoes.insert(idEleicaoGeral);
+    ArrayList<Integer> circulosIds = new ArrayList<Integer>();
+    for(String distrito : distritos){
+        circulos.insert(idCirculo, distrito , idLegislativa);
+        circulosIds.add(idCirculo); 
+        idCirculo++;
+    }
+    
+    int ncirculos = circulosIds.size();
+    int iC = 0;
+    for(String freguesia : freguesias){
+        assembleias.insert(idLegislativa,freguesia,circulosIds.get(iC));
+        idLegislativa++;
+        iC++;
+        if(iC == ncirculos ) iC = 0;    
+    } 
+    
+    
+    setChanged();
     notifyObservers(d);
 
     return 0;
     //return res;
   }
 
+  /*
+    Versao com transação
+  */
+ public int criaEleicaoLegislativa2(Calendar data,Collection<String> distritos,Collection<String> freguesias){
+    String d             = "Eleição Legislativa criada ";
+  
+    int idEleicaoGeral   = 1 + eleicoes.idMaisRecenteEleicao();
+    
+    int idLegislativa    = 1 + legislativas.lastID();
+    int idCirculo        = 1 + circulos.lastID();
+    int idAssembleiaVoto = 1 + assembleias.lastID();
+    String dataE = "'" + data.get(Calendar.YEAR) + "-" + 
+              data.get(Calendar.MONTH) + "-" + data.get(Calendar.DAY_OF_MONTH) + "'";
+      
+    Connection con = null;
+    try {
+        con = Connect.connect();
+        con.setAutoCommit(false);
+        eleicoes.insert(con,idEleicaoGeral);
+    ArrayList<Integer> circulosIds = new ArrayList<Integer>();
+    for(String distrito : distritos){
+        circulos.insert(con,idCirculo, distrito , idLegislativa);
+        circulosIds.add(idCirculo); 
+        idCirculo++;
+    }
+    
+    int ncirculos = circulosIds.size();
+    int iC = 0;
+    for(String freguesia : freguesias){
+        assembleias.insert(con,idLegislativa,freguesia,circulosIds.get(iC));
+        idLegislativa++;
+        iC++;
+        if(iC == ncirculos ) iC = 0;    
+    } 
+    
+       con.commit(); // transaction block end
+      return idEleicaoGeral;
+    } catch (Exception e) {
+           try {
+                con.rollback(); //anula transacao
+            } catch (SQLException ex) {
+                Logger.getLogger(EleicaoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+    
+    setChanged();
+    notifyObservers(d);
+
+    return 0;
+    //return res;
+  }
+  
 }

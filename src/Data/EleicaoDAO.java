@@ -169,6 +169,28 @@ public class EleicaoDAO {
   /*
     Cria uma eleicao presidencial, uma ronda presidencial e todas as assembleias de voto 
   */
+  
+  public void insert(Connection con,int idEleicao) throws Exception{
+    PreparedStatement insertEleicaoSt = con.prepareStatement(
+        "insert into Eleicao (id) values ("+idEleicao+");");
+    insertEleicaoSt.executeUpdate();
+  }
+  
+  public void insert(int idEleicao){
+    Connection con  = null;  
+    try {
+      con = Connect.connect();
+          PreparedStatement insertEleicaoSt = con.prepareStatement(
+        "insert into Eleicao (id) values ("+idEleicao+");");
+         insertEleicaoSt.executeUpdate();}
+        catch (SQLException | ClassNotFoundException e) {
+        System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+  }
+  
   public int criaEleicaoPresidencial(Calendar data){
     Connection con  = null;
     int idEleicao = -1;
@@ -268,6 +290,8 @@ public class EleicaoDAO {
   /*
     Cria  uma eleicao legislativa, os seus circulos e as assembleias de voto
   */
+  
+  
    public int criaEleicaoLegislativa(Calendar data){
     Connection con  = null;
     int idEleicao = -1;
@@ -376,4 +400,6 @@ public class EleicaoDAO {
     
     return -1;
   }
+   
+   
 }
