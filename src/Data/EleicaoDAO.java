@@ -156,6 +156,7 @@ public class EleicaoDAO {
 
     return ronda;
   }
+<<<<<<< HEAD
   
   public int lastIDP() {
         Connection con = null;
@@ -813,5 +814,206 @@ public class EleicaoDAO {
             catch (Exception e) { System.out.println(e); }
         }
         return count;
+=======
+  /*
+    Cria uma eleicao presidencial, uma ronda presidencial e todas as assembleias de voto 
+  */
+  public int criaEleicaoPresidencial(Calendar data){
+    Connection con  = null;
+    int idEleicao = -1;
+    int idRondaP = -1;
+    int idAV = -1;
+    
+    try {
+      con = Connect.connect();
+      
+      con.setAutoCommit(false); // transaction block start
+       
+      /*FIND last id's */
+      PreparedStatement idEleicaoSt  = con.prepareStatement(
+      "SELECT id FROM Eleicao ORDER BY id DESC LIMIT 1;");
+      ResultSet rsE = idEleicaoSt.executeQuery();
+      if (rsE.next())
+        idEleicao = rsE.getInt("id") + 1;
+      
+      PreparedStatement idRondaPSt  = con.prepareStatement(
+      "SELECT id FROM rondapresidencial ORDER BY id DESC LIMIT 1;");
+      ResultSet rsRP = idEleicaoSt.executeQuery();
+      if (rsRP.next())
+        idRondaP = rsRP.getInt("id") + 1;
+   
+      PreparedStatement idAVSt = con.prepareStatement(
+      "select id from assembleiavoto order by id DESC LIMIT 1;");
+      ResultSet rsAV = idAVSt.executeQuery();
+      if (rsAV.next())
+          idAV = rsAV.getInt("id") + 1;
+      
+      /*INSERT Statements*/
+      PreparedStatement insertEleicaoSt = con.prepareStatement(
+        "insert into Eleicao (id) values ("+idEleicao+");");
+      
+      String dataE = "'" + data.get(Calendar.YEAR) + "-" + 
+              data.get(Calendar.MONTH) + "-" + data.get(Calendar.DAY_OF_MONTH) + "'";
+      
+      PreparedStatement insertRondaPresidencialSt = con.prepareStatement(
+        "insert into rondapresidencial (id, idEleicao, ronda, data) " +
+"	VALUES " +
+"	("+idRondaP+","+idEleicao+",1,"+ dataE +");");
+      
+      PreparedStatement insertAssembleiaVotoSt = con.prepareStatement("INSERT INTO AssembleiaVoto" +
+"	(id, nome, idRondaPresidencial)" +
+"	VALUES" +
+           "	("+idAV+",'Gualtar',"+idRondaP+"), " +
+"	(" +(idAV + 1) +",'Parque das Nações',"+idRondaP+"), " +
+"	(" +(idAV + 2) +",'Campolide',"+idRondaP+"), " +
+"	(" +(idAV + 3) +",'Mouros',"+idRondaP+")," +
+"	(" +(idAV + 4) +",'São João',"+idRondaP+"), " +
+"	(" +(idAV + 5) +",'Grândola',"+idRondaP +"), " +
+
+"	(" +(idAV + 6) +",'São Vicente',"+idRondaP+"), " +
+"	(" +(idAV + 7) +",'São Lázaro',"+idRondaP + "), " +
+"	(" +(idAV + 8) +",'Santa Maria'," +idRondaP +"), " +
+"	(" +(idAV + 9) +",'Feira',"+idRondaP +"), " +
+"	(" +(idAV + 10) +",'Bandidos',"+idRondaP +"), " +
+"	(" +(idAV + 11) +",'Alvalade',"+idRondaP +"), " +
+               
+"	(" +(idAV + 12) +",'Santo Tirso',"+idRondaP+"), " +
+"	(" +(idAV + 13) +",'Santidade',"+idRondaP+"), " +
+"	(" +(idAV + 14) +",'São Demagogo',"+idRondaP+"), " +
+"	(" +(idAV + 15) +",'Dão',"+idRondaP + "), " +
+"	(" +(idAV + 16) +",'Dona',"+ idRondaP + "), " +
+"	(" +(idAV + 17) +",'Balte',"+ idRondaP +"), " +
+               
+"	(" +(idAV + 18) +",'Malte'," +idRondaP + "), " +
+"	(" +(idAV + 19) +",'Ranhoso'," +idRondaP +"), " +
+"	(" +(idAV + 20) +",'Campolide'," +idRondaP +"), " +
+"	(" +(idAV + 21) +",'Mouros'," +idRondaP +"), " +
+"	(" +(idAV + 22) +",'São João'," +idRondaP +"), " +
+"	(" +(idAV + 23) +",'Grândola'," +idRondaP +");"
+      );
+      
+      insertEleicaoSt.executeUpdate();
+      insertRondaPresidencialSt.executeUpdate();
+      insertAssembleiaVotoSt.executeUpdate();
+      
+      con.commit(); // transaction block end
+      return idEleicao;
+    }catch (SQLException | ClassNotFoundException e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+       
+       return -1;
+   }
+   
+   
+  /*
+    Cria  uma eleicao legislativa, os seus circulos e as assembleias de voto
+  */
+   public int criaEleicaoLegislativa(Calendar data){
+    Connection con  = null;
+    int idEleicao = -1;
+    int idLegislativa = -1;
+    int idCirculo = -1;
+    int idAV = -1;
+    try {
+      con = Connect.connect();
+      
+      con.setAutoCommit(false); // transaction block start
+
+            /*FIND last id's */
+      PreparedStatement idEleicaoSt  = con.prepareStatement(
+      "SELECT id FROM Eleicao ORDER BY id DESC LIMIT 1;");
+      ResultSet rsE = idEleicaoSt.executeQuery();
+      if (rsE.next())
+        idEleicao = rsE.getInt("id") + 1;
+      
+      PreparedStatement idLegislativaSt = con.prepareStatement(
+      "select id from legislativa order by id DESC LIMIT 1;");
+      ResultSet rsL = idLegislativaSt.executeQuery();
+      if (rsL.next())
+          idLegislativa = rsL.getInt("id") + 1;
+      
+      PreparedStatement idCirculoSt = con.prepareStatement(
+      "select id from circulo order by id DESC LIMIT 1;");
+      ResultSet rsC = idCirculoSt.executeQuery(); 
+      if (rsC.next())
+          idCirculo = rsC.getInt("id") + 1;
+
+      PreparedStatement idAVSt = con.prepareStatement(
+      "select id from assembleiavoto order by id DESC LIMIT 1;");
+      ResultSet rsAV = idAVSt.executeQuery();
+      if (rsAV.next())
+          idAV = rsAV.getInt("id") + 1;
+      
+      String dataE = "'" + data.get(Calendar.YEAR) + "-" + 
+              data.get(Calendar.MONTH) + "-" + data.get(Calendar.DAY_OF_MONTH) + "'";
+      
+            /*INSERT Statements*/
+      PreparedStatement insertEleicaoSt = con.prepareStatement(
+        "insert into Eleicao (id) values ("+idEleicao+");");
+      PreparedStatement insertEleicaoLSt = con.prepareStatement(
+        "insert into legislativa (id,idEleicao,data)"
+                + " values ("+idLegislativa+","+idEleicao+","+dataE+ ");");
+      PreparedStatement insertCirculosSt = con.prepareStatement(
+      "Insert into circulo (id, distrito, idlegislativa) values" +
+		 "(" + (idCirculo) +",'Braga',"+idLegislativa + ")," +
+		 "(" + (idCirculo + 1) +",'Porto',"+idLegislativa +")," +
+		 "(" + (idCirculo + 2) +",'Lisboa',"+idLegislativa +")," +
+		"(" + (idCirculo + 3) +",'Setúbal',"+idLegislativa +")," +
+		"(" + (idCirculo + 4) + ",'Bragança',"+idLegislativa+ ")," +
+		"(" + (idCirculo + 5) + ",'Vila Real',"+idLegislativa+");"
+      );
+      PreparedStatement insertAssembleiaVotoSt = con.prepareStatement(
+       "INSERT INTO AssembleiaVoto " +
+"	(id, nome, idCirculo) " +
+"	VALUES " +
+      "	("+idAV+",'Gualtar',"+idCirculo+"), " +
+"	(" +(idAV + 1) +",'Parque das Nações',"+(idCirculo+1)+"), " +
+"	(" +(idAV + 2) +",'Campolide',"+(idCirculo+2)+"), " +
+"	(" +(idAV + 3) +",'Mouros',"+(idCirculo+3)+")," +
+"	(" +(idAV + 4) +",'São João',"+(idCirculo+4)+"), " +
+"	(" +(idAV + 5) +",'Grândola',"+(idCirculo+5) +"), " +
+
+"	(" +(idAV + 6) +",'São Vicente',"+idCirculo+"), " +
+"	(" +(idAV + 7) +",'São Lázaro',"+(idCirculo+1) + "), " +
+"	(" +(idAV + 8) +",'Santa Maria'," +(idCirculo +2) +"), " +
+"	(" +(idAV + 9) +",'Feira',"+(idCirculo +3) +"), " +
+"	(" +(idAV + 10) +",'Bandidos',"+(idCirculo + 4) +"), " +
+"	(" +(idAV + 11) +",'Alvalade',"+(idCirculo + 5) +"), " +
+               
+"	(" +(idAV + 12) +",'Santo Tirso',"+idCirculo+"), " +
+"	(" +(idAV + 13) +",'Santidade',"+(idCirculo+1)+"), " +
+"	(" +(idAV + 14) +",'São Demagogo',"+(idCirculo+2)+"), " +
+"	(" +(idAV + 15) +",'Dão',"+(idCirculo+3) + "), " +
+"	(" +(idAV + 16) +",'Dona',"+ (idCirculo+4) + "), " +
+"	(" +(idAV + 17) +",'Balte',"+ (idCirculo+5) +"), " +
+               
+"	(" +(idAV + 18) +",'Malte'," +idCirculo + "), " +
+"	(" +(idAV + 19) +",'Ranhoso'," +(idCirculo + 1) +"), " +
+"	(" +(idAV + 20) +",'Campolide'," +(idCirculo + 2) +"), " +
+"	(" +(idAV + 21) +",'Mouros'," +(idCirculo + 3) +"), " +
+"	(" +(idAV + 22) +",'São João'," +(idCirculo + 4) +"), " +
+"	(" +(idAV + 23) +",'Grândola'," +(idCirculo + 5) +");"
+      );
+      
+      insertEleicaoSt.executeUpdate();
+      insertEleicaoLSt.executeUpdate();
+      insertCirculosSt.executeUpdate();
+      insertAssembleiaVotoSt.executeUpdate();
+      
+      con.commit(); // transaction block end
+      return idEleicao;
+    } catch (SQLException | ClassNotFoundException e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+    
+    return -1;
+>>>>>>> dao-dev
   }
 }
