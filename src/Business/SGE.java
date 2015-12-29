@@ -50,6 +50,15 @@ public class SGE extends Observable{
     return eleicoes.eleicoes();
   }
   
+  /** @return Id da eleição mais recente na base de dados. */
+  public int idMaisRecenteEleicao () {
+    return eleicoes.idMaisRecenteEleicao ();
+  }
+  
+  /** @return Ronda da eleição presidencial mais recente na base de dados. */
+  public int rondaMaisRecente (int idEleicao){
+    return eleicoes.rondaMaisRecente(idEleicao);
+  }
   /** @param cc Número do cartão de cidadão do eleitor.
    *  @return Eleitor com um dado número de cidadão. */
   public Eleitor eleitorComCC (int cc) {

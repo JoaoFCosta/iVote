@@ -5,17 +5,36 @@
  */
 package Presentation;
 
+import Business.SGE;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+
 /**
  *
  * @author joaocosta
  */
 public class VotoPresidenciais extends javax.swing.JFrame {
+        private ArrayList<JRadioButton> opcoes;
+        private final SGE sge;
+
+        private int ronda;
+        private int idEleicao;
+        private int idCidadao;
 
     /**
      * Creates new form Presidenciais
      */
-    public VotoPresidenciais() {
+    public VotoPresidenciais(SGE s, int idEleicao, int idCidadao, int ronda) {
         initComponents();
+        this.sge=s;
+        this.ronda=ronda;
+        this.idEleicao=idEleicao;
+        this.idCidadao=idCidadao;
+        opcoes = new ArrayList<>();
+        opcoes.add(jRadioButton1);
+        opcoes.add(jRadioButton2);
+        opcoes.add(jRadioButton3);
         // Set window title.
         this.setTitle("Presidenciais");
     }
@@ -43,6 +62,11 @@ public class VotoPresidenciais extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         voteButton.setText("Votar");
+        voteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voteButtonActionPerformed(evt);
+            }
+        });
 
         jRadioButton2.setText("Aníbal Cavaco Silva");
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -118,10 +142,53 @@ public class VotoPresidenciais extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
+    private void voteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voteButtonActionPerformed
+         // Verificar quantas opções foram selecionadas.
+        String selecionado = null;
+        int nSelecionados = 0;
+        /* Os valores possiveis para a decisão são
+         * 0 - Yes
+         * 1 - No
+         * 2 - Cancel */ 
+        int decisao;
+        
+        for (JRadioButton opcao : opcoes) {
+            if (opcao.isSelected()) {
+                selecionado = opcao.getText();
+                nSelecionados++;
+            }
+        }
+        
+        switch (nSelecionados) {
+            case 0:
+                decisao = JOptionPane.showConfirmDialog(this, 
+                    "Tem a certeza que pretende votar em branco?");
+                break;
+            case 1:
+                decisao = JOptionPane.showConfirmDialog(this,
+                    "Confirma que quer votar na lista: " + selecionado + "?");
+                //Para registar voto
+                //sge.votoPresidencial(idEleicao,ronda,idCidadao,selecionado) 
+                break;
+            default:
+                decisao = JOptionPane.showConfirmDialog(this,
+                    "Tem a certeza que pretende fazer um voto nulo?");
+                break;
+        }
+        
+        // Em caso de resposta positiva voltar para o ecrã de login.
+        if (decisao == JOptionPane.YES_OPTION) {
+            Login login = new Login();
+            login.setLocationRelativeTo(this);
+            this.dispose();
+            login.setVisible(true);
+        }
+    }//GEN-LAST:event_voteButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -134,7 +201,7 @@ public class VotoPresidenciais extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VotoPresidenciais().setVisible(true);
+                new VotoPresidenciais(sge, idEleicao, idCidadao, ronda).setVisible(true);
             }
         });
     }

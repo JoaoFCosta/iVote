@@ -5,6 +5,7 @@
  */
 package Presentation;
 
+import Business.SGE;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -15,12 +16,18 @@ import javax.swing.JRadioButton;
  */
 public class VotoLegislativas extends javax.swing.JFrame {
     private ArrayList<JRadioButton> opcoes;
-
+    private final SGE sge;
+    
+    private int idEleicao;
+    private int idCidadao;
     /**
      * Creates new form Legislativas
      */
-    public VotoLegislativas() {
+    public VotoLegislativas(SGE s, int idEleicao, int idCidadao) {
         initComponents();
+        this.sge       = s;
+        this.idEleicao = idEleicao;
+        this.idCidadao = idCidadao;
         // TODO: Adicionar codigo que automaticamente adiciona
         // os radio buttons associados as listas.
         opcoes = new ArrayList<>();
@@ -177,6 +184,8 @@ public class VotoLegislativas extends javax.swing.JFrame {
             case 1:
                 decisao = JOptionPane.showConfirmDialog(this,
                     "Confirma que quer votar na lista: " + selecionado + "?");
+                //Para registar voto
+                //sge.votoLegislativa(idEleicao,idCidadao,selecionado) 
                 break;
             default:
                 decisao = JOptionPane.showConfirmDialog(this,
@@ -196,7 +205,7 @@ public class VotoLegislativas extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
@@ -207,7 +216,7 @@ public class VotoLegislativas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VotoLegislativas().setVisible(true);
+                new VotoLegislativas(sge,idEleicao,idCidadao).setVisible(true);
             }
         });
     }

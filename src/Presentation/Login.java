@@ -257,7 +257,7 @@ public class Login extends javax.swing.JFrame {
             votoEfetuado = sge.votoEfetuado(Integer.parseInt(ccidadao));
             if (votoEfetuado) {
                 JOptionPane.showMessageDialog(this, 
-                    "O campo de cartão de cidadão e password não pode estar vazio.");
+                    "O eleitor já efectou o seu voto nestas Eleições.");
             }
             /** Caso o eleitor ainda não tenha votado. */
             else{
@@ -269,14 +269,30 @@ public class Login extends javax.swing.JFrame {
 
   private void loginEleitor(String ccidadao, String password) {
     // Verificar se os dados estão correctos.
-    boolean r = sge.loginEleitor(Integer.parseInt(ccidadao), password);
+    boolean r           = sge.loginEleitor(Integer.parseInt(ccidadao), password);
+    //0 ou outro qualquer caso->Não, 1->Presidencial, 2->Legislativa
+    int eleicaoAberta   = 1;
+    int idEleicao       = sge.idMaisRecenteEleicao();
+    int idCidadao       = Integer.parseInt(ccidadao);
 
     if (r) {
-      // TODO: Verificar que eleitor não vota duas vezes.
-      VotoLegislativas VL = new VotoLegislativas();
-      VL.setLocationRelativeTo(this);
-      this.dispose();
-      VL.setVisible(true);
+        if(eleicaoAberta==1){
+            int ronda = sge.rondaMaisRecente(idEleicao);
+            VotoPresidenciais VP = new VotoPresidenciais(sge, idEleicao, idCidadao, ronda);
+            VP.setLocationRelativeTo(this);
+            this.dispose();
+            VP.setVisible(true);
+        }
+        if(eleicaoAberta==2){
+            VotoLegislativas VL = new VotoLegislativas(sge, idEleicao, idCidadao);
+            VL.setLocationRelativeTo(this);
+            this.dispose();
+            VL.setVisible(true);
+        }
+        if(eleicaoAberta!=1 && eleicaoAberta!=2){
+            JOptionPane.showMessageDialog(this,
+            "Não existe nenhuma Eleição Aberta.");
+        }
     } else {
       JOptionPane.showMessageDialog(this,
           "Dados inválidos.");

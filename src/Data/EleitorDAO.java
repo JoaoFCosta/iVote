@@ -47,7 +47,7 @@ public class EleitorDAO {
 
     boolean booleanVotou;
 
-    if (ronda == 0)
+    if (votou == 1)
       booleanVotou = true;
     else
       booleanVotou = false;
@@ -67,7 +67,7 @@ public class EleitorDAO {
       "ON LL.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV " +
       "ON C.id = AV.idCirculo INNER JOIN Eleitor AS E " +
       "ON AV.id = E.idAssembleiaVoto " +
-      "WHERE AV.idEleicao = " + idEleicao +
+      "WHERE LL.idEleicao = " + idEleicao +
       " AND E.idCidadao = " + idCidadao + ";");
 
       ResultSet rs = seVotou.executeQuery();
@@ -84,7 +84,7 @@ public class EleitorDAO {
 
     boolean booleanVotou;
 
-    if (votou == 0)
+    if (votou == 1)
       booleanVotou = true;
     else
       booleanVotou = false;
