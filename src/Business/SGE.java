@@ -122,11 +122,12 @@ public class SGE extends Observable{
   }
   
   public int criaEleicaoPresidencial(Calendar data){
-    String d           = "Eleição Presidencial criada ";
-    int idEleicaoGeral = 1 + eleicoes.idMaisRecenteEleicao();
-    int ronda          = 1;
-    int idPresidencial = 1 + eleicoes.lastIDP();
-    int res            = eleicoes.criaEleicaoPresidencial(data,idEleicaoGeral,idPresidencial,ronda);
+    String d             = "Eleição Presidencial criada ";
+    int idEleicaoGeral   = 1 + eleicoes.idMaisRecenteEleicao();
+    int ronda            = 1;
+    int idPresidencial   = 1 + eleicoes.lastIDP();
+    int idAssembleiaVoto = 1 + eleicoes.lastIDAV();
+    int res              = eleicoes.criaEleicaoPresidencial(data,idEleicaoGeral,idPresidencial,ronda,idAssembleiaVoto);
     setChanged();
     notifyObservers(d);
     return res;
@@ -135,7 +136,9 @@ public class SGE extends Observable{
     String d             = "Eleição Legislativa criada ";
     int idEleicaoGeral   = 1 + eleicoes.idMaisRecenteEleicao();
     int idLegislativa    = 1 + eleicoes.lastIDL();
-    int res              = eleicoes.criaEleicaoLegislativa(data, idEleicaoGeral, idLegislativa);
+    int idCirculo        = 1 + eleicoes.lastIDCR();
+    int idAssembleiaVoto = 1 + eleicoes.lastIDAV();
+    int res              = eleicoes.criaEleicaoLegislativa(data, idEleicaoGeral, idLegislativa, idCirculo, idAssembleiaVoto);
     setChanged();
     notifyObservers(d);
     return res;

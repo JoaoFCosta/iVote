@@ -208,16 +208,68 @@ public class EleicaoDAO {
         }
         return r;
     }
+    
+        public int lastIDCR() {
+        Connection con = null;
+        int r = -1;
+        
+        try {
+            con                     = Connect.connect();
+            PreparedStatement ps    = con.prepareStatement(
+                    "select id" +
+                    " from Circulo " +
+                    " order by id DESC " +
+                    " limit 1; "
+            );
+            ResultSet rs            = ps.executeQuery();
+            
+            if (rs.next()) {
+               r = rs.getInt("id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return r;
+    }
+        public int lastIDAV() {
+        Connection con = null;
+        int r = -1;
+        
+        try {
+            con                     = Connect.connect();
+            PreparedStatement ps    = con.prepareStatement(
+                    "select id" +
+                    " from AssembleiaVoto " +
+                    " order by id DESC " +
+                    " limit 1; "
+            );
+            ResultSet rs            = ps.executeQuery();
+            
+            if (rs.next()) {
+               r = rs.getInt("id");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return r;
+    }
   
   
   //TODO @return number of rows updated on DB
-  public int criaEleicaoPresidencial(Calendar data,int idEleicaoGeral, int idPresidencial, int ronda){
+  public int criaEleicaoPresidencial(Calendar data,int idEleicaoGeral, int idPresidencial, int ronda, int AssembleiaVoto){
         Connection con  = null;
         //2015-12-29
-        int year      = data.getInstance().get(Calendar.YEAR);
-        int month     = data.getInstance().get(Calendar.MONTH);
-        int day       = data.getInstance().get(Calendar.DAY_OF_MONTH);
-        String dataI  ="'"+year+"-"+month+"-"+day+"'";
+        int year             = data.getInstance().get(Calendar.YEAR);
+        int month            = data.getInstance().get(Calendar.MONTH);
+        int day              = data.getInstance().get(Calendar.DAY_OF_MONTH);
+        String dataI         ="'"+year+"-"+month+"-"+day+"'";
+        int idAssembleiaVoto = AssembleiaVoto;
         //Guarda o número de registos alterados
         int count           = -1;
          try {
@@ -242,6 +294,205 @@ public class EleicaoDAO {
             // Executar inserção
             count = eleicoesBD.executeUpdate();
             
+         
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Gualtar'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Parque das Nações'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Campolide'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Mouros'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São João'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Grândola'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São Vicente'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São Lázaro'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Santa Maria'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Feira'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Bandidos'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Alvalade'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Santo Tirso'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Santidade'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São Demagogo'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Dão'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Dona'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Balte'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+             eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Malte'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idRondaPresidencial)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Ranhoso'"+","+ronda+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
             
             con.commit(); //efectua transacao
 
@@ -259,13 +510,15 @@ public class EleicaoDAO {
         return count;
   }
  
-  public int criaEleicaoLegislativa(Calendar data, int idEleicaoGeral, int idLegislativa){
+  public int criaEleicaoLegislativa(Calendar data, int idEleicaoGeral, int idLegislativa, int circulo, int AssembleiaVoto){
         Connection con  = null;
         //2015-12-29 00:00:00
-        int year      = data.getInstance().get(Calendar.YEAR);
-        int month     = data.getInstance().get(Calendar.MONTH);
-        int day       = data.getInstance().get(Calendar.DAY_OF_MONTH);
-        String dataI  ="'"+year+"-"+month+"-"+day+" 00:00:00"+"'";
+        int year             = data.getInstance().get(Calendar.YEAR);
+        int month            = data.getInstance().get(Calendar.MONTH);
+        int day              = data.getInstance().get(Calendar.DAY_OF_MONTH);
+        String dataI         ="'"+year+"-"+month+"-"+day+" 00:00:00"+"'";
+        int idCirculo        = circulo;
+        int idAssembleiaVoto = AssembleiaVoto;
         //Guarda o número de registos alterados
         int count           = -1;
          try {
@@ -290,7 +543,262 @@ public class EleicaoDAO {
 
             // Executar inserção
             count = eleicoesBD.executeUpdate();
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO Circulo (id, distrito, idlegislativa)" +
+                    "values "+
+                    "("+idCirculo+","+"'Braga'"+","+idLegislativa+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idCirculo++;
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO Circulo (id, distrito, idlegislativa)" +
+                    "values "+
+                    "("+idCirculo+","+"'Porto'"+","+idLegislativa+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idCirculo++;
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO Circulo (id, distrito, idlegislativa)" +
+                    "values "+
+                    "("+idCirculo+","+"'Lisboa'"+","+idLegislativa+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idCirculo++;
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO Circulo (id, distrito, idlegislativa)" +
+                    "values "+
+                    "("+idCirculo+","+"'Setúbal'"+","+idLegislativa+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idCirculo++;
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO Circulo (id, distrito, idlegislativa)" +
+                    "values "+
+                    "("+idCirculo+","+"'Bragança'"+","+idLegislativa+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idCirculo++;
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO Circulo (id, distrito, idlegislativa)" +
+                    "values "+
+                    "("+idCirculo+","+"'Vila Real'"+","+idLegislativa+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
         
+            
+            idCirculo = circulo;
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Gualtar'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Parque das Nações'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Campolide'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Mouros'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São João'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Grândola'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São Vicente'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São Lázaro'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Santa Maria'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Feira'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Bandidos'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Alvalade'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Santo Tirso'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Santidade'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'São Demagogo'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Dão'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Dona'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Balte'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+             eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Malte'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();
+            idAssembleiaVoto++;
+            
+            eleicoesBD  = con.prepareStatement(
+                    "INSERT INTO AssembleiaVoto (id, nome, idCirculo)" +
+                    "values "+
+                    "("+idAssembleiaVoto+","+"'Ranhoso'"+","+idCirculo+");"
+                    );
+
+            // Executar inserção
+            count = eleicoesBD.executeUpdate();            
+            
             con.commit(); //efectua transacao
 
         } catch ( SQLException | ClassNotFoundException e) {
