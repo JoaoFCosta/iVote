@@ -11,10 +11,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author joaocosta
@@ -83,7 +80,7 @@ public class EleicaoDAO {
     try {
       con = Connect.connect();
 
-      PreparedStatement idEleicao  = con.prepareStatement(
+      PreparedStatement idEleicao = con.prepareStatement(
       "SELECT id FROM Eleicao ORDER BY id DESC LIMIT 1;");
 
       ResultSet rs = idEleicao.executeQuery();
@@ -109,7 +106,7 @@ public class EleicaoDAO {
     try {
       con = Connect.connect();
 
-      PreparedStatement rondasPresendenciais  = con.prepareStatement(
+      PreparedStatement rondasPresendenciais = con.prepareStatement(
       "SELECT * FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP " +
       "ON E.id = RP.idEleicao WHERE E.id = " + idEleicao + ";");
 
@@ -135,7 +132,7 @@ public class EleicaoDAO {
     try {
       con = Connect.connect();
 
-      PreparedStatement rondaPresidencial  = con.prepareStatement(
+      PreparedStatement rondaPresidencial = con.prepareStatement(
       "SELECT RP.ronda FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP " +
       "ON E.id = RP.idEleicao WHERE E.id = " + idEleicao +
       " ORDER BY RP.ronda DESC LIMIT 1;");
@@ -153,5 +150,86 @@ public class EleicaoDAO {
     }
 
     return ronda;
+  }
+
+  public Map<Integer, Integer> votosNulosPorAssembleia (int idEleicao) {
+        Connection con = null;
+
+      Map<Integer,Integer> votosNulosPorAssembleia = new HashMap<>();
+
+      try {
+          con = Connect.connect();
+
+          PreparedStatement votosNulosResult = con.prepareStatement(
+                  "SELECT idAssembleiaVoto, votosNulos\n" +
+                          "FROM (SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, votosBrancos, votosNulos\n" +
+                          "FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP\n" +
+                          "ON E.id = RP.idEleicao INNER JOIN AssembleiaVoto AS AV\n" +
+                          "ON RP.id = AV.idRondaPresidencial\n" +
+                          "UNION\n" +
+                          "SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, votosBrancos, votosNulos\n" +
+                          "FROM Eleicao AS E INNER JOIN Legislativa AS L\n" +
+                          "ON E.id = L.idEleicao INNER JOIN Circulo AS C\n" +
+                          "ON L.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
+                          "ON C.id = AV.idCirculo) AS Eleicoes\n" +
+                          "WHERE idEleicao = " + idEleicao + ";");
+
+          ResultSet rs = votosNulosResult.executeQuery();
+
+          Integer idAssembleiaVoto, votosNulos;
+          while (rs.next()) {
+              idAssembleiaVoto = rs.getInt("idAssembleiaVoto");
+              votosNulos = rs.getInt("votosNulos");
+              votosNulosPorAssembleia.put(idAssembleiaVoto, votosNulos);
+          }
+
+      } catch (SQLException | ClassNotFoundException e) {
+          System.out.println(e);
+      } finally {
+          try { con.close(); }
+          catch (Exception e) { System.out.println(e); }
+      }
+
+      return votosNulosPorAssembleia;
+    }
+
+  public Map<Integer, Integer> votosBrancosPorAssembleia (int idEleicao) {
+      Connection con  = null;
+      Map<Integer,Integer> votosBrancosPorAssembleia = new HashMap<>();
+
+      try {
+          con = Connect.connect();
+
+          PreparedStatement votosBrancosResult = con.prepareStatement(
+                  "SELECT idAssembleiaVoto, votosBrancos\n" +
+                          "FROM (SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, votosBrancos, votosNulos\n" +
+                          "FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP\n" +
+                          "ON E.id = RP.idEleicao INNER JOIN AssembleiaVoto AS AV\n" +
+                          "ON RP.id = AV.idRondaPresidencial\n" +
+                          "UNION\n" +
+                          "SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, votosBrancos, votosNulos\n" +
+                          "FROM Eleicao AS E INNER JOIN Legislativa AS L\n" +
+                          "ON E.id = L.idEleicao INNER JOIN Circulo AS C\n" +
+                          "ON L.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
+                          "ON C.id = AV.idCirculo) AS Eleicoes\n" +
+                  "WHERE idEleicao = " + idEleicao + ";");
+
+          ResultSet rs = votosBrancosResult.executeQuery();
+
+          Integer idAssembleiaVoto, votosBrancos;
+          while (rs.next()) {
+              idAssembleiaVoto = rs.getInt("idAssembleiaVoto");
+              votosBrancos = rs.getInt("votosBrancos");
+              votosBrancosPorAssembleia.put(idAssembleiaVoto, votosBrancos);
+          }
+
+      } catch (SQLException | ClassNotFoundException e) {
+          System.out.println(e);
+      } finally {
+          try { con.close(); }
+          catch (Exception e) { System.out.println(e); }
+      }
+
+      return votosBrancosPorAssembleia;
   }
 }

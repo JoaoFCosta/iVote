@@ -28,7 +28,6 @@ createVotes n = do
   let votes = take n $ randomRs (0,5) g
   return votes
 
-
 legislativeParishesByCircle parishes =
   let circlesID = zip [1,7..31] [6,12..36]
       circlesIDLists = map (\ (nMin, nMax) -> [nMin..nMax]) circlesID

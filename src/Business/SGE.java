@@ -58,4 +58,20 @@ public class SGE {
       // TODO: Implementar.
       return null;
     }
+    
+    public int votosBrancos (int id) {
+        int votos = 0;
+        
+        for (Integer votosAssembleia : eleicoes.votosBrancosPorAssembleia(id).values())
+            votos += votosAssembleia;
+        return votos;
+    }
+    
+    public int votosNulos (int id) {
+        int votos = 0;
+        
+        for (Integer votosAssembleia : eleicoes.votosNulosPorAssembleia(id).values())
+            votos += votosAssembleia;
+        return votos;
+    }
 }
