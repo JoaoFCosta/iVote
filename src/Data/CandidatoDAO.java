@@ -31,7 +31,7 @@ public class CandidatoDAO {
     *   Devolve os candidatos da eleiçao presidencial id
     */
     
-    public List<Candidato> getCandidatosP(int id){
+    public List<Candidato> getCandidatosP(int id,int nr){
     
     Connection con  = null;
     List lista      = (List) new ArrayList<Candidato>();
@@ -51,7 +51,7 @@ public class CandidatoDAO {
                         "                on CA.idCidadao=AC.idCidadao" +
                                             " inner join Cidadao as C" +
 						"	on CA.idCidadao = C.id" +
-"                where E.id=" + id +";");
+"                where E.id=" + id +" AND RP.ronda=" + nr +";");
       
       
       ResultSet rs = candidatos.executeQuery();
@@ -73,6 +73,47 @@ public class CandidatoDAO {
 
     return lista;
     }
+    
+    public List<Candidato> getCandidatosUltimaP(){
+        Connection con  = null;
+        List lista      = (List) new ArrayList<Candidato>();
+    
+    try {
+      con                     = Connect.connect();
+
+      PreparedStatement candidatos  = con.prepareStatement(
+          " select distinct Ci.nome , Ci.id,Ci.password\n" +
+"	from (Select * from rondapresidencial order by data DESC LIMIT 1) as RP\n" +
+"		inner join assembleiavoto as AV\n" +
+"			ON AV.idRondaPresidencial = RP.id\n" +
+"				inner join assembleiacandidato as ac\n" +
+"					on ac.idAssembleiaVoto = av.id\n" +
+"						inner join candidato as C\n" +
+"							on C.idCidadao = ac.idCidadao\n" +
+"								inner join Cidadao as Ci\n" +
+"									on Ci.id = C.idCidadao;");
+      
+      
+      ResultSet rs = candidatos.executeQuery();
+
+      while (rs.next()) {       
+        int idCidadao = rs.getInt("id");
+        String pass   = rs.getString("password");
+        String nome   = rs.getString("nome");
+        Candidato c   = new Candidato(nome,pass,idCidadao);
+        lista.add(c);
+      }
+      
+    } catch (SQLException | ClassNotFoundException e) {
+      System.out.println(e);
+    } finally {
+      try { con.close(); }
+      catch (Exception e) { System.out.println(e); }
+    }
+
+    return lista;
+    }
+
     
      public int lastID() {
         Connection con = null;

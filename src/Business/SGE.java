@@ -146,7 +146,28 @@ public class SGE extends Observable{
             votos += votosAssembleia;
         return votos;
     }
-  
+  /**
+   *    Obtem as listas possíveis para o eleitor votar
+   * 
+   * @param idEleicao id da eleicao
+   * @param cc cartao de cidadao do eleitor
+   * @return Colecçao com strings do tipo "Lista " + idLista,exemplo "Lista 1"
+   */
+    
+   public Collection<String> opcoesVotoLegislativa(int idEleicao,int cc){
+       return eleicoes.opcoesVotoLegislativa(idEleicao, cc);
+   } 
+ 
+   
+   /**
+    *   Devolve os candidatos da eleiçao presidencial mais recente
+    * 
+    * @return Lista de candidatos
+    */
+   public Collection<Candidato> opcoesVotoPresidencial(){
+       return candidatos.getCandidatosUltimaP();
+   }
+    
   public int criaEleicaoPresidencial(Calendar data){
     String d             = "Eleição Presidencial criada ";
     eleicoes.criaEleicaoPresidencial(data);
