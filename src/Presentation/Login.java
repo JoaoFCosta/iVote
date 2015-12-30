@@ -204,12 +204,12 @@ public class Login extends javax.swing.JFrame {
         electionsList.getSelectedIndex());
 
     if (selecao instanceof EleicaoPresidencial) {
-      ResultadoPresidencial RP = new ResultadoPresidencial();
+      ResultadoPresidencial RP = new ResultadoPresidencial(sge, selecao.id());
       RP.setLocationRelativeTo(this);
       this.dispose();
       RP.setVisible(true);
     } else {
-      ResultadoLegislativaGeral RL = new ResultadoLegislativaGeral();
+      ResultadoLegislativaGeral RL = new ResultadoLegislativaGeral(sge, selecao.id());
       RL.setLocationRelativeTo(this);
       this.dispose();
       RL.setVisible(true);

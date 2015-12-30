@@ -5,20 +5,41 @@
  */
 package Presentation;
 
+import Business.SGE;
+
 /**
- *
  * @author joaocosta
  */
 public class ResultadoLegislativaGeral extends javax.swing.JFrame {
+  private final int idEleicao;
+  private final SGE sge;
 
+  public ResultadoLegislativaGeral (SGE sge, int idEleicao) {
+    initComponents();
+    this.idEleicao  = idEleicao;
+    this.sge        = sge;
+    
+    setResultados();
+  }
+  
   /**
    * Creates new form ResultadoLegislativaGeral
    */
   public ResultadoLegislativaGeral() {
     initComponents();
     this.setTitle("Resultado Eleições Legislativas 2015");
+    this.idEleicao  = 0;
+    this.sge        = null;
   }
 
+  /** Configurar as labels para apresentarem os resultados. */
+  public void setResultados () {
+    // TODO: Terminar implementação.
+    totalVotos.setText("Implementar");
+    votosBrancos.setText("" + sge.votosBrancosLegislativa(idEleicao));
+    votosNulos.setText("" + sge.votosNulosLegislativa(idEleicao));
+  }
+  
   /**
    * This method is called from within the constructor to initialize the form.
    * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,12 +59,12 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
     jLabel2 = new javax.swing.JLabel();
     jLabel3 = new javax.swing.JLabel();
     jLabel4 = new javax.swing.JLabel();
-    jLabel5 = new javax.swing.JLabel();
-    jLabel6 = new javax.swing.JLabel();
-    jLabel7 = new javax.swing.JLabel();
-    jLabel8 = new javax.swing.JLabel();
+    votosBrancos = new javax.swing.JLabel();
+    totalVotos = new javax.swing.JLabel();
+    votosValidos = new javax.swing.JLabel();
+    votosNulos = new javax.swing.JLabel();
     jLabel9 = new javax.swing.JLabel();
-    jLabel10 = new javax.swing.JLabel();
+    abstencao = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setMinimumSize(new java.awt.Dimension(800, 600));
@@ -107,17 +128,17 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
 
     jLabel4.setText("Número de votos nulos:");
 
-    jLabel5.setText("700000");
+    votosBrancos.setText("700000");
 
-    jLabel6.setText("7000000");
+    totalVotos.setText("7000000");
 
-    jLabel7.setText("5900000");
+    votosValidos.setText("5900000");
 
-    jLabel8.setText("400000");
+    votosNulos.setText("400000");
 
     jLabel9.setText("Abstenção:");
 
-    jLabel10.setText("53.3%");
+    abstencao.setText("53.3%");
 
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
@@ -129,7 +150,7 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
           .addGroup(jPanel2Layout.createSequentialGroup()
             .addComponent(jLabel2)
             .addGap(18, 18, 18)
-            .addComponent(jLabel7))
+            .addComponent(votosValidos))
           .addGroup(jPanel2Layout.createSequentialGroup()
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(jLabel3)
@@ -137,14 +158,14 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
               .addComponent(jLabel4))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabel8)
+              .addComponent(votosNulos)
               .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel6)
+                .addComponent(totalVotos)
                 .addGap(140, 140, 140)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10))
-              .addComponent(jLabel5))))
+                .addComponent(abstencao))
+              .addComponent(votosBrancos))))
         .addContainerGap(277, Short.MAX_VALUE))
     );
     jPanel2Layout.setVerticalGroup(
@@ -153,21 +174,21 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel1)
-          .addComponent(jLabel6)
+          .addComponent(totalVotos)
           .addComponent(jLabel9)
-          .addComponent(jLabel10))
+          .addComponent(abstencao))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel2)
-          .addComponent(jLabel7))
+          .addComponent(votosValidos))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel3)
-          .addComponent(jLabel5))
+          .addComponent(votosBrancos))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel4)
-          .addComponent(jLabel8))
+          .addComponent(votosNulos))
         .addContainerGap())
     );
 
@@ -200,6 +221,7 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /** Voltar ao ecrã de login. */
   private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
     Login l = new Login();
     l.setLocationRelativeTo(this);
@@ -227,21 +249,21 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel abstencao;
   private javax.swing.JButton jButton2;
   private javax.swing.JLabel jLabel1;
-  private javax.swing.JLabel jLabel10;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JLabel jLabel3;
   private javax.swing.JLabel jLabel4;
-  private javax.swing.JLabel jLabel5;
-  private javax.swing.JLabel jLabel6;
-  private javax.swing.JLabel jLabel7;
-  private javax.swing.JLabel jLabel8;
   private javax.swing.JLabel jLabel9;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JPanel jPanel2;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JTable jTable1;
+  private javax.swing.JLabel totalVotos;
   private javax.swing.JButton voltar;
+  private javax.swing.JLabel votosBrancos;
+  private javax.swing.JLabel votosNulos;
+  private javax.swing.JLabel votosValidos;
   // End of variables declaration//GEN-END:variables
 }
