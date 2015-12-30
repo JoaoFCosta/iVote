@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -532,4 +533,50 @@ public int criaEleicaoPresidencial(Calendar data){
         }
     }
 
+    public Collection<String> opcoesVotoLegislativa(int idEleicao,int cc){
+        
+        Connection con  = null;
+        ArrayList<String> listas = new ArrayList<String>();
+        try {
+            con = Connect.connect();
+
+            PreparedStatement listasParaVotar = con.prepareStatement("select distinct L.id " +
+"	from cidadao AS C " +
+"		inner join eleitor as E " +
+"			ON E.idCidadao = C.id " +
+"				inner join (select av.id " +
+"						from Eleicao as E " +
+"						 inner join Legislativa as L " +
+"							ON L.idEleicao = E.id " +
+"							  inner join circulo as C " +
+"							    ON C.idLegislativa = L.id" +
+"							     inner join assembleiavoto as av" +
+"							      ON av.idCirculo = C.id" +
+"							        where E.id = "+ idEleicao + ") as av" +
+"					ON E.idAssembleiaVoto = av.id " +
+"					  inner join AssembleiaLista as AL " +
+"						ON AL.idAssembleiaVoto = av.id " +
+"					          inner join Lista as L " +
+"				        		ON L.id = AL.idLista " +
+"    where c.id =" + cc +
+"    order by L.id;"
+                    );
+            
+            ResultSet rs = listasParaVotar.executeQuery();
+
+            while (rs.next()) {
+                int lista = rs.getInt("id");
+                listas.add("Lista "+lista);
+            }
+            
+      }catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        
+     return listas;
+    }
+    
 }
