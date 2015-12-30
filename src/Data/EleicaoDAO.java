@@ -1,9 +1,11 @@
 package Data;
 
 // Imports.
+import Business.AssembleiaCandidato;
 import Business.Eleicao;
 import Business.EleicaoPresidencial;
 import Business.EleicaoLegislativa;
+import Business.Lista;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -159,7 +161,7 @@ public class EleicaoDAO {
         return ronda;
     }
 
-    public Map<Integer, Integer> votosNulosPorAssembleia (int idEleicao) {
+    public Map<Integer, Integer> votosNulosPorAssembleia (int idEleicao, int idRonda) {
         Connection con = null;
 
         Map<Integer,Integer> votosNulosPorAssembleia = new HashMap<>();
@@ -173,6 +175,7 @@ public class EleicaoDAO {
                             "FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP\n" +
                             "ON E.id = RP.idEleicao INNER JOIN AssembleiaVoto AS AV\n" +
                             "ON RP.id = AV.idRondaPresidencial\n" +
+                            "WHERE RP.ronda = " + idRonda + "\n" +
                             "UNION\n" +
                             "SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, votosBrancos, votosNulos\n" +
                             "FROM Eleicao AS E INNER JOIN Legislativa AS L\n" +
@@ -202,7 +205,7 @@ public class EleicaoDAO {
 
 
 
-    public Map<Integer, Integer> votosBrancosPorAssembleia (int idEleicao) {
+    public Map<Integer, Integer> votosBrancosPorAssembleia (int idEleicao, int idRonda) {
         Connection con  = null;
         Map<Integer,Integer> votosBrancosPorAssembleia = new HashMap<>();
 
@@ -215,6 +218,7 @@ public class EleicaoDAO {
                             "FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP\n" +
                             "ON E.id = RP.idEleicao INNER JOIN AssembleiaVoto AS AV\n" +
                             "ON RP.id = AV.idRondaPresidencial\n" +
+                            "WHERE RP.ronda = " + idRonda + "\n" +
                             "UNION\n" +
                             "SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, votosBrancos, votosNulos\n" +
                             "FROM Eleicao AS E INNER JOIN Legislativa AS L\n" +
@@ -479,7 +483,7 @@ public class EleicaoDAO {
                             "ON AV.id = EL.idAssembleiaVoto\n" +
                             "WHERE E.id = " + idEleicao + " AND EL.idCidadao = " + idCidadao +");");
 
-            votoPresidencial.executeQuery();
+            votoPresidencial.executeUpdate();
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
@@ -505,7 +509,7 @@ public class EleicaoDAO {
                             "ON AV.id = EL.idAssembleiaVoto\n" +
                             "WHERE E.id = " + idEleicao + " AND RP.ronda = " + ronda + " AND EL.idCidadao = " + idCidadao +");");
 
-            votoPresidencial.executeQuery();
+            votoPresidencial.executeUpdate();
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
@@ -568,7 +572,7 @@ public class EleicaoDAO {
                     set + 
                     "WHERE id = " + idAssembleiaVoto + ";");
             
-            idAssembleiaVotoQuery.executeQuery();
+            idAssembleiaVotoQuery.executeUpdate();
         
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
@@ -579,5 +583,210 @@ public class EleicaoDAO {
     }    
     
      public int eleicaoAberta  () {
-     }
+        Connection con  = null;
+        int eleicao = 0;
+
+        try {
+            con = Connect.connect();
+
+            // Statement para as eleições legislativas e presidenciais.
+            PreparedStatement eleicoes = con.prepareStatement(
+                "SELECT DISTINCT idEleicao, data\n" +
+                "FROM (SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, EL.idCidadao, RP.data\n" +
+                "FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP\n" +
+                "ON E.id = RP.idEleicao INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON RP.id = AV.idRondaPresidencial INNER JOIN Eleitor AS EL\n" +
+                "ON AV.id = EL.idAssembleiaVoto\n" +
+                "UNION\n" +
+                "SELECT E.id AS idEleicao, AV.id AS idAssembleiaVoto, EL.idCidadao, L.data\n" +
+                "FROM Eleicao AS E INNER JOIN Legislativa AS L\n" +
+                "ON E.id = L.idEleicao INNER JOIN Circulo AS C\n" +
+                "ON L.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON C.id = AV.idCirculo INNER JOIN Eleitor AS EL\n" +
+                "ON AV.id = EL.idAssembleiaVoto) AS eleicoes" +
+                "ORDER BY data DESC;");
+
+            // Consultar eleições presidenciais.
+            ResultSet rs = eleicoes.executeQuery();
+            
+            Date hoje = Calendar.getInstance().getTime();
+
+            while (rs.next()) {
+                int id          = rs.getInt("idEleicao");
+
+                DateFormat df   = new SimpleDateFormat("yyyy-MM-dd");
+                Date diaEleicao = df.parse(rs.getString("data"));     
+                
+                if (hoje.equals(diaEleicao))
+                    eleicao = id;
+            }
+            
+  
+            
+        } catch (ParseException | SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+
+        return eleicao;
+    }
+     
+    public Map<Integer, Integer> votosCandidatos (int idEleicao) {
+        Connection con  = null;
+        Map votosCandidatos = (Map) new HashMap<Integer, Integer>();
+
+        try {
+            con = Connect.connect();
+            
+            PreparedStatement rondaPresidencial = con.prepareStatement(
+                    "SELECT RP.ronda FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP " +
+                            "ON E.id = RP.idEleicao WHERE E.id = " + idEleicao +
+                            " ORDER BY RP.ronda DESC LIMIT 1;");
+
+            ResultSet rs = rondaPresidencial.executeQuery();
+            
+            int ronda = 1;
+            if (rs.next())
+                ronda = rs.getInt("ronda");
+
+            PreparedStatement presidencial = con.prepareStatement(
+                    "SELECT AC.idCidadao, SUM(AC.votos) AS votos\n" +
+                    "FROM AssembleiaCandidato AS AC INNER JOIN AssembleiaVoto AS AV\n" +
+                    "ON AC.idAssembleiaVoto = AV.id INNER JOIN RondaPresidencial AS RP\n" +
+                    "ON AV.idRondaPresidencial = RP.id\n" +
+                    "WHERE RP.idEleicao = "+ idEleicao + " AND RP.ronda = " + ronda +"\n" +
+                    "GROUP BY AC.idCidadao\n" + 
+                    "ORDER BY votos DESC;");
+
+            // Consultar eleições presidenciais.
+            rs = presidencial.executeQuery();
+
+            while (rs.next()) {
+                // Fazer parse da data e criar nova eleicao.
+            
+                int id    = rs.getInt("idCandidato");
+                int votos = rs.getInt("votos");
+                
+                votosCandidatos.put(id, votos);
+                
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+
+        return votosCandidatos;
+    }
+    
+    public Map<Integer, List<Lista>> votosCirculoLista (int idEleicao) {
+        Connection con  = null;
+        Map votosCirculoLista = new HashMap<Integer, List<Lista>>();
+
+        try {
+            con = Connect.connect();
+
+            PreparedStatement legislativa = con.prepareStatement(
+                "SELECT C.id AS idCirculo, AL.idLista, SUM(AL.votos) AS votos\n" +
+                "FROM AssembleiaLista AS AL INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON AL.idAssembleiaVoto = AV.id INNER JOIN Circulo AS C\n" +
+                "ON AV.idCirculo = C.id INNER JOIN Legislativa AS L\n" +
+                "ON C.idLegislativa = L.id\n" +
+                "WHERE L.idEleicao = " + idEleicao + "\n" +
+                "GROUP BY C.id, AL.idLista;");
+
+            // Consultar eleições presidenciais.
+            ResultSet rs = legislativa.executeQuery();
+            
+            List lista = new ArrayList<Lista>();
+            while (rs.next()) {
+                // Fazer parse da data e criar nova eleicao.
+                
+                int idCirculo = rs.getInt("idCirculo");
+                int idLista   = rs.getInt("idLista");
+                int votos     = rs.getInt("votos");
+                
+
+                if (votosCirculoLista.containsKey(idCirculo))
+                    lista = (List) votosCirculoLista.get(idCirculo);
+                else 
+                    lista = new ArrayList<Lista>();
+                
+                lista.add(new Lista(idLista, votos));
+                
+                votosCirculoLista.put(idCirculo, lista);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+
+        return votosCirculoLista;
+    }
+    
+    public int totalEleitoresPresidencial (int idEleicao, int ronda) {
+        Connection con  = null;
+        int total = 0;
+
+        try {
+            con = Connect.connect();
+
+            PreparedStatement rondaPresidencial = con.prepareStatement(
+                "SELECT COUNT(E.idCidadao) AS total\n" +
+                "FROM RondaPresidencial AS RP INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON RP.id = AV.idRondaPresidencial INNER JOIN Eleitor AS E\n" +
+                "ON AV.id = E.idAssembleiaVoto\n" +
+                "WHERE RP.idEleicao = " + idEleicao + " AND Ronda = " + ronda +";");
+
+            ResultSet rs = rondaPresidencial.executeQuery();
+
+            if (rs.next())
+                total = rs.getInt("total");
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+
+        return total;
+    }
+    
+    public int totalEleitoresLegislativa (int idEleicao) {
+        Connection con  = null;
+        int total = 0;
+
+        try {
+            con = Connect.connect();
+
+            PreparedStatement rondaPresidencial = con.prepareStatement(
+                "SELECT COUNT(E.idCidadao) AS total\n" +
+                "FROM Legislativa AS L INNER JOIN Circulo AS C\n" +
+                "ON L.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
+                "ON C.id = AV.idCirculo INNER JOIN Eleitor AS E\n" +
+                "ON AV.id = E.idAssembleiaVoto\n" +
+                "WHERE L.idEleicao = " + idEleicao + ";");
+
+            ResultSet rs = rondaPresidencial.executeQuery();
+
+            if (rs.next())
+                total = rs.getInt("total");
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+
+        return total;
+    }
 }
