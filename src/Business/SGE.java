@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -147,10 +148,12 @@ public class SGE extends Observable{
     public List<Candidato> votosPorCandidatos (int idEleicao, int ronda) {
         Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao, ronda);
         List<Candidato> candidatos = new ArrayList<Candidato>();
-
+        Eleitor e;
+        Candidato c;
         for (Integer idCidadao : resultados.keySet()) {
-          Eleitor e = cidadaos.get(idCidadao);
-          candidatos.add(new Candidato(e.getNome(), e.getCodigo(), e.getCC()));
+            e = cidadaos.get(idCidadao);
+            c = new Candidato(e.getNome(), e.getCodigo(), e.getCC(), resultados.get(idCidadao));
+            candidatos.add(c);
         }
 
         return candidatos;
@@ -422,4 +425,29 @@ public class SGE extends Observable{
      public boolean ePresidencial (int idEleicao) {
        return eleicoes.ePresidencial(idEleicao);
      }
+
+    public Map<Integer, List<String>> alocarMandatos (int idEleicao) {
+        Map<Integer, List<Lista>> votosCirculoLista = votosCirculoLista(idEleicao);
+        EleicaoLegislativa eleicaoL = new EleicaoLegislativa(Calendar.getInstance(), 1);
+        
+        Map<Integer, List<String>> resultados = new HashMap<Integer, List<String>>();
+                
+        List<Integer> mandatos = new ArrayList<Integer>();
+        
+        for (Integer idCirculo : votosCirculoLista.keySet()) {
+            List<Lista> listas = votosCirculoLista.get(idCirculo);
+            
+            mandatos = eleicaoL.alocarMandatos(listas);
+            
+            List<String> deputados = new ArrayList<String>();
+            for (Lista lista : listas) {
+                
+                deputados.addAll(circulos.alocarMandatos(idEleicao, idCirculo, lista.idLista, mandatos.get(lista.idLista)));
+            }
+            
+            resultados.put(idCirculo, deputados);
+        }
+        
+        return resultados;
+    }
 }
