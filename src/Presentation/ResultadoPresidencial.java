@@ -105,15 +105,22 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
 
       },
       new String [] {
-        "Candidato", "Nº Candidato"
+        "Candidato", "Nº Candidato", "Votos"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.String.class, java.lang.Integer.class
+        java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+      };
+      boolean[] canEdit = new boolean [] {
+        false, false, false
       };
 
       public Class getColumnClass(int columnIndex) {
         return types [columnIndex];
+      }
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
       }
     });
     jScrollPane1.setViewportView(candidatosR1);
@@ -190,14 +197,14 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
 
       },
       new String [] {
-        "Candidato", "Nº Candidato"
+        "Candidato", "Nº Candidato", "Votos"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.String.class, java.lang.Integer.class
+        java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
       };
       boolean[] canEdit = new boolean [] {
-        false, false
+        false, false, false
       };
 
       public Class getColumnClass(int columnIndex) {
@@ -334,7 +341,7 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     dtm = (DefaultTableModel) candidatosR1.getModel();
     
     for (Candidato c : votos1)
-      dtm.addRow(new Object[] {c.getNome(), c.getCC()});
+      dtm.addRow(new Object[] {c.getNome(), c.getCC(), c.getVotos()});
     
     // Votos da 2ª ronda.
     totalVotosR2.setText("" + sge.votosTotaisPresidencial(idEleicao, 2));
@@ -343,11 +350,10 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     abstencaoR2.setText("" + sge.abstencaoPresidencial(idEleicao, 2) + "%");
     
     votos2 = sge.votosPorCandidatos(idEleicao, 2);
-    dtm = (DefaultTableModel) candidatosR2.getModel();
-    System.out.println(votos2);
+    dtm = (DefaultTableModel) candidatosR2.getModel();   
     
     for (Candidato c : votos2)
-      dtm.addRow(new Object[] {c.getNome(), c.getCC()});
+      dtm.addRow(new Object[] {c.getNome(), c.getCC(), c.getVotos()});
     
     // Vencedor.
     if (votos2.isEmpty()) {
