@@ -144,6 +144,15 @@ public class SGE extends Observable{
         return candidatos;
     }
     
+    /*
+        Map de idCirculo para uma List com classe Lista.
+        Cada Lista tem informação sobre o idLista e votos.
+        As variáveis são públicas para aceder rapidamente.
+    */
+    public Map<Integer, List<Lista>> votosCirculoLista (int idEleicao) {
+        return eleicoes.votosCirculoLista(idEleicao);
+    }
+    
     public int abstencaoPresidencial (int idEleicao, int ronda) {
         int abstencao = eleicoes.totalEleitoresPresidencial(idEleicao, ronda) - votosTotaisPresidencial(idEleicao, ronda);
         
@@ -152,10 +161,15 @@ public class SGE extends Observable{
         
         return abstencao;
     }
-    /*
+    
     public int abstencaoLegislativa (int idEleicao) {
-        return eleicoes.totalEleitoresLegislativa(idEleicao) - votosTotaisLegislativa(idEleicao);
-    }*/
+        int abstencao = eleicoes.totalEleitoresLegislativa(idEleicao) - votosTotaisLegislativa(idEleicao);
+        
+        if (abstencao < 0)
+            abstencao = 0;
+        
+        return abstencao;
+    }
     
     public int votosTotaisPresidencial (int idEleicao, int ronda) {
         Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao, ronda);
@@ -168,9 +182,16 @@ public class SGE extends Observable{
         
     }
     
-    /*public int votosTotaisLegislativa (int idEleicao) {
+    public int votosTotaisLegislativa (int idEleicao) {
+        Map<Integer, List<Lista>> votosCirculoLista = eleicoes.votosCirculoLista(idEleicao);
+        int votosValidos = 0;
         
-    }*/
+        for (List<Lista> l : votosCirculoLista.values())
+            for (Lista lista : l)
+                votosValidos += lista.votos;
+        
+        return votosBrancosLegislativa(idEleicao) + votosNulosLegislativa(idEleicao) + votosValidos;
+    }
 
     public int votosBrancosPresidencial (int idEleicao, int ronda) {
         int votos = 0;

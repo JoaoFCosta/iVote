@@ -79,10 +79,17 @@ public class SGETest {
         
         assertEquals(true, sge.votouPresidencial(4, 1, 12345682));
         assertEquals(16106, sge.votosTotaisPresidencial(4, 1));
-
     }
-/*
-    private void assertEquals(int i, int votosBrancosPresidencial) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }*/
+    
+    @Test
+    public void votosValidosLegislativas() throws Exception {
+        assertEquals(0, sge.abstencaoLegislativa(3));
+        assertEquals(false, sge.votouLegislativa(3, 12345682));
+        assertEquals(13535, sge.votosTotaisLegislativa(3));
+        
+        sge.votoLegislativa(3, 12345682, 1);
+        
+        assertEquals(true, sge.votouLegislativa(3, 12345682));
+        assertEquals(13536, sge.votosTotaisLegislativa(3));
+    }
 }
