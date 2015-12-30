@@ -25,5 +25,3 @@ createVotes n = do
   g <- newStdGen
   let vote = take n $ (randomRs (0,200) g)
   return vote
-
-

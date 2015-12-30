@@ -5,20 +5,59 @@
  */
 package Presentation;
 
+import Business.Lista;
+import Business.SGE;
+import java.util.List;
+import java.util.Map;
+import javax.swing.table.DefaultTableModel;
+
 /**
- *
  * @author joaocosta
  */
 public class ResultadoLegislativaGeral extends javax.swing.JFrame {
+  private final int idEleicao;
+  private final SGE sge;
 
+  public ResultadoLegislativaGeral (SGE sge, int idEleicao) {
+    initComponents();
+    this.idEleicao  = idEleicao;
+    this.sge        = sge;
+    
+    setResultados();
+  }
+  
   /**
    * Creates new form ResultadoLegislativaGeral
    */
   public ResultadoLegislativaGeral() {
     initComponents();
     this.setTitle("Resultado Eleições Legislativas 2015");
+    this.idEleicao  = 0;
+    this.sge        = null;
   }
 
+  /** Configurar as labels para apresentarem os resultados. */
+  public void setResultados () {
+    // TODO: Terminar implementação.
+    totalVotos.setText("" + sge.votosTotaisLegislativa(idEleicao));
+    votosBrancos.setText("" + sge.votosBrancosLegislativa(idEleicao));
+    votosNulos.setText("" + sge.votosNulosLegislativa(idEleicao));
+    abstencao.setText("" + sge.abstencaoLegislativa(idEleicao) + "%");
+    
+    DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+    Map<Integer, List<Lista>> resultados = sge.votosCirculoLista(idEleicao);
+    
+    for (Integer i : resultados.keySet()) {
+      List<Lista> listas = resultados.get(i);
+      
+      int votos = 0;
+      for (Lista l : listas)
+        votos += l.votos;
+      
+      dtm.addRow(new Object[] {i, votos});
+    }
+  }
+  
   /**
    * This method is called from within the constructor to initialize the form.
    * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,15 +74,13 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
     jButton2 = new javax.swing.JButton();
     jPanel2 = new javax.swing.JPanel();
     jLabel1 = new javax.swing.JLabel();
-    jLabel2 = new javax.swing.JLabel();
     jLabel3 = new javax.swing.JLabel();
     jLabel4 = new javax.swing.JLabel();
-    jLabel5 = new javax.swing.JLabel();
-    jLabel6 = new javax.swing.JLabel();
-    jLabel7 = new javax.swing.JLabel();
-    jLabel8 = new javax.swing.JLabel();
+    votosBrancos = new javax.swing.JLabel();
+    totalVotos = new javax.swing.JLabel();
+    votosNulos = new javax.swing.JLabel();
     jLabel9 = new javax.swing.JLabel();
-    jLabel10 = new javax.swing.JLabel();
+    abstencao = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setMinimumSize(new java.awt.Dimension(800, 600));
@@ -59,17 +96,20 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
 
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
-        {"Porto", "24"},
-        {"Braga", "49"},
-        {"Lisboa", "5"},
-        {"Aveiro", "23"},
-        {"Faro", "14"},
-        {"Guarda", "6"}
+
       },
       new String [] {
-        "Círculo Eleitoral", "Nº de Mandatos"
+        "Círculo Eleitoral", "Nº de Votos"
       }
-    ));
+    ) {
+      Class[] types = new Class [] {
+        java.lang.Integer.class, java.lang.Integer.class
+      };
+
+      public Class getColumnClass(int columnIndex) {
+        return types [columnIndex];
+      }
+    });
     jScrollPane1.setViewportView(jTable1);
 
     jButton2.setText("Consultar Círculo");
@@ -81,7 +121,7 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
       .addGroup(jPanel1Layout.createSequentialGroup()
         .addContainerGap()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jScrollPane1)
+          .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(jButton2)))
@@ -90,8 +130,8 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel1Layout.createSequentialGroup()
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap()
+        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jButton2)
         .addContainerGap())
@@ -101,23 +141,19 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
 
     jLabel1.setText("Número total de votos:");
 
-    jLabel2.setText("Número de votos válidos:");
-
     jLabel3.setText("Número de votos brancos:");
 
     jLabel4.setText("Número de votos nulos:");
 
-    jLabel5.setText("700000");
+    votosBrancos.setText("0");
 
-    jLabel6.setText("7000000");
+    totalVotos.setText("0");
 
-    jLabel7.setText("5900000");
-
-    jLabel8.setText("400000");
+    votosNulos.setText("0");
 
     jLabel9.setText("Abstenção:");
 
-    jLabel10.setText("53.3%");
+    abstencao.setText("0%");
 
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
@@ -126,49 +162,41 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
       .addGroup(jPanel2Layout.createSequentialGroup()
         .addContainerGap()
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jLabel1)
+          .addComponent(jLabel3)
+          .addComponent(jLabel4))
+        .addGap(12, 12, 12)
+        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(votosBrancos)
+          .addComponent(votosNulos)
           .addGroup(jPanel2Layout.createSequentialGroup()
-            .addComponent(jLabel2)
-            .addGap(18, 18, 18)
-            .addComponent(jLabel7))
-          .addGroup(jPanel2Layout.createSequentialGroup()
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabel3)
-              .addComponent(jLabel1)
-              .addComponent(jLabel4))
+            .addComponent(totalVotos)
+            .addGap(140, 140, 140)
+            .addComponent(jLabel9)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabel8)
-              .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel6)
-                .addGap(140, 140, 140)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10))
-              .addComponent(jLabel5))))
-        .addContainerGap(277, Short.MAX_VALUE))
+            .addComponent(abstencao)))
+        .addContainerGap(345, Short.MAX_VALUE))
     );
     jPanel2Layout.setVerticalGroup(
       jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanel2Layout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabel1)
-          .addComponent(jLabel6)
-          .addComponent(jLabel9)
-          .addComponent(jLabel10))
+        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(totalVotos)
+            .addComponent(jLabel9)
+            .addComponent(abstencao))
+          .addGroup(jPanel2Layout.createSequentialGroup()
+            .addComponent(jLabel1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+              .addComponent(jLabel3)
+              .addComponent(votosBrancos))))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabel2)
-          .addComponent(jLabel7))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabel3)
-          .addComponent(jLabel5))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel4)
-          .addComponent(jLabel8))
-        .addContainerGap())
+          .addComponent(votosNulos))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,9 +217,9 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
         .addContainerGap()
-        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(voltar)
         .addContainerGap())
@@ -200,6 +228,7 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  /** Voltar ao ecrã de login. */
   private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
     Login l = new Login();
     l.setLocationRelativeTo(this);
@@ -227,21 +256,19 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel abstencao;
   private javax.swing.JButton jButton2;
   private javax.swing.JLabel jLabel1;
-  private javax.swing.JLabel jLabel10;
-  private javax.swing.JLabel jLabel2;
   private javax.swing.JLabel jLabel3;
   private javax.swing.JLabel jLabel4;
-  private javax.swing.JLabel jLabel5;
-  private javax.swing.JLabel jLabel6;
-  private javax.swing.JLabel jLabel7;
-  private javax.swing.JLabel jLabel8;
   private javax.swing.JLabel jLabel9;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JPanel jPanel2;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JTable jTable1;
+  private javax.swing.JLabel totalVotos;
   private javax.swing.JButton voltar;
+  private javax.swing.JLabel votosBrancos;
+  private javax.swing.JLabel votosNulos;
   // End of variables declaration//GEN-END:variables
 }

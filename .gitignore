@@ -8,3 +8,4 @@ dist/iVote.jar
 nbproject/private
 
 .DS_Store
+/dist/

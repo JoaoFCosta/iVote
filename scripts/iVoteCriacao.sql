@@ -4,7 +4,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- DROP SCHEMA iVoteDB;
+DROP SCHEMA iVoteDB;
 
 -- -----------------------------------------------------
 -- Schema iVoteDB
@@ -81,6 +81,8 @@ CREATE TABLE IF NOT EXISTS `iVoteDB`.`AssembleiaVoto` (
   `nome` VARCHAR(45) NOT NULL COMMENT '',
   `idCirculo` INT NULL COMMENT '',
   `idRondaPresidencial` INT NULL COMMENT '',
+  `votosBrancos` INT NOT NULL DEFAULT 0 COMMENT '',
+  `votosNulos` INT NOT NULL DEFAULT 0 COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `fk_Freguesia_Circulo1_idx` (`idCirculo` ASC)  COMMENT '',
   INDEX `fk_AssembleiaVoto_rondaPresidencial1_idx` (`idRondaPresidencial` ASC)  COMMENT '',
@@ -147,7 +149,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `iVoteDB`.`AssembleiaLista` (
   `idLista` INT NOT NULL COMMENT '',
   `idAssembleiaVoto` INT NOT NULL COMMENT '',
-  `votos` INT NULL DEFAULT 0 COMMENT '',
+  `votos` INT NOT NULL DEFAULT 0 COMMENT '',
   PRIMARY KEY (`idLista`, `idAssembleiaVoto`)  COMMENT '',
   INDEX `fk_Lista_has_Freguesia_Freguesia1_idx` (`idAssembleiaVoto` ASC)  COMMENT '',
   INDEX `fk_Lista_has_Freguesia_Lista1_idx` (`idLista` ASC)  COMMENT '',

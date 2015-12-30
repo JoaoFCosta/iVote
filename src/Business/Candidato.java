@@ -13,9 +13,23 @@ import java.util.GregorianCalendar;
  * @author joaocosta
  */
 public class Candidato extends Eleitor {
+    int votos;
 
-    public Candidato(String nome, String codigo, int cc) {
+    public Candidato(String nome, String codigo, int cc, int votos) {
         super(nome, codigo, cc);
+        this.votos = votos;
+    }
+    
+    public Candidato (String nome, String codigo, int cc) {
+      super(nome, codigo, cc);
+      this.votos = 0;
+    }
+    
+    public Candidato(String nome, int cc) {
+        super(nome, cc);
     }
    
+    public int getVotos () {
+        return votos;
+    }
 }

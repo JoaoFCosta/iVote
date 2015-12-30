@@ -28,6 +28,11 @@ public class Eleitor {
       this.nome           = nome;
       this.codigoEleitor  = codigo;
     }
+    
+    public Eleitor (String nome, int cc) {
+      this.nome           = nome;
+      this.ccidadao       = cc;
+    }
 
     /** Nome do eleitor. */
     public String getNome () { return this.nome; }
