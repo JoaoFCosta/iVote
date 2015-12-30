@@ -104,7 +104,7 @@ public class EleitorDAO {
         "SELECT AV.id FROM RondaPresidencial AS RP INNER JOIN AssembleiaVoto AS AV\n" +
         "ON RP.id = AV.idRondaPresidencial INNER JOIN Eleitor AS E\n" +
         "ON AV.id = E.idAssembleiaVoto\n" +
-        "WHERE RP.idEleicao = " + idEleicao + "AND RP.ronda = " + ronda + "AND E.idCidadao = " + idCidadao + ";");
+        "WHERE RP.idEleicao = " + idEleicao + " AND RP.ronda = " + ronda + " AND E.idCidadao = " + idCidadao + ";");
       
       ResultSet rs = getIdAssembleiaVoto.executeQuery();
 
@@ -116,9 +116,9 @@ public class EleitorDAO {
       PreparedStatement votar  = con.prepareStatement(
         "UPDATE Eleitor\n" +
         "SET votou = 1\n" +
-        "WHERE idCidadao = " + idCidadao + "AND idAssembleiaVoto = " + idAssembleiaVoto + ";");
+        "WHERE idCidadao = " + idCidadao + " AND idAssembleiaVoto = " + idAssembleiaVoto + ";");
 
-      rs = votar.executeQuery();
+      votar.executeUpdate();
 
     } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
@@ -139,7 +139,7 @@ public class EleitorDAO {
         "ON LL.id = C.idLegislativa INNER JOIN AssembleiaVoto AS AV\n" +
         "ON C.id = AV.idCirculo INNER JOIN Eleitor AS E\n" +
         "ON AV.id = E.idAssembleiaVoto\n" +
-        "WHERE LL.idEleicao = " + idEleicao + "AND E.idCidadao = " + idCidadao + ";");
+        "WHERE LL.idEleicao = " + idEleicao + " AND E.idCidadao = " + idCidadao + ";");
       
       ResultSet rs = getIdAssembleiaVoto.executeQuery();
 
@@ -151,9 +151,9 @@ public class EleitorDAO {
       PreparedStatement votar  = con.prepareStatement(
         "UPDATE Eleitor\n" +
         "SET votou = 1\n" +
-        "WHERE idCidadao = " + idCidadao + "AND idAssembleiaVoto = " + idAssembleiaVoto + ";");
+        "WHERE idCidadao = " + idCidadao + " AND idAssembleiaVoto = " + idAssembleiaVoto + ";");
 
-      rs = votar.executeQuery();
+      votar.executeUpdate();
 
     } catch (SQLException | ClassNotFoundException e) {
       System.out.println(e);
