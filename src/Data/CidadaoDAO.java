@@ -385,6 +385,37 @@ public class CidadaoDAO implements Map<Integer, Eleitor> {
     }
     return r;
   }
+  
+  public String nome (int idCidadao) {
+        
+        Connection con  = null;
+        
+        String nome = "";
+    
+        try {
+            con = Connect.connect();
+      
+            // Statement para a tabela cidadao.
+            PreparedStatement nomeQuery  = con.prepareStatement(
+                    "SELECT nome\n"+
+                    "FROM Cidadao\n"+
+                    "WHERE id = " + idCidadao + ";");
+
+            // Executar inserção
+            ResultSet rs = nomeQuery.executeQuery();
+            
+            if (rs.next()) {
+               nome = rs.getString("nome");
+            }
+
+        } catch ( SQLException | ClassNotFoundException e) {
+             System.out.println(e);
+        } finally {
+            try { con.close(); }
+            catch (Exception e) { System.out.println(e); }
+        }
+        return nome;
+    }
 
   /*
   Main for testing purposes.

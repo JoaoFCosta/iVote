@@ -8,6 +8,7 @@ package Presentation;
 import Business.Candidato;
 import Business.SGE;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -19,26 +20,28 @@ import javax.swing.ListSelectionModel;
  * @author joaocosta
  */
 public class VotoPresidenciais extends javax.swing.JFrame {
-        private ArrayList<JRadioButton> opcoes;
-        private final SGE sge;
+  private final SGE sge;
 
-        private int ronda;
-        private int idEleicao;
-        private int idCidadao;
+  private int ronda;
+  private int idEleicao;
+  private int idCidadao;
+  private Collection<Candidato> candidatos;
 
-    /**
-     * Creates new form Presidenciais
-     */
-    public VotoPresidenciais(SGE s, int idEleicao, int idCidadao, int ronda) {
-        initComponents();
-        this.sge        = s;
-        this.ronda      = ronda;
-        this.idEleicao  = idEleicao;
-        this.idCidadao  = idCidadao;
-        // Set window title.
-        this.setTitle("Presidenciais");
-        this.setListaOpcoes();
-    }
+  /**
+   * Creates new form Presidenciais
+   */
+  public VotoPresidenciais(SGE s, int idEleicao, int idCidadao, int ronda) {
+    initComponents();
+    this.sge        = s;
+    this.ronda      = ronda;
+    this.idEleicao  = idEleicao;
+    this.idCidadao  = idCidadao;
+    this.candidatos = sge.opcoesVotoPresidencial();
+        
+    // Set window title.
+    this.setTitle("Presidenciais");
+    this.setListaOpcoes();
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,8 +125,7 @@ public class VotoPresidenciais extends javax.swing.JFrame {
         "Confirma que quer votar no candidato: " + selecionado + "?");
                 
       if (decisao == JOptionPane.YES_OPTION) {
-        // Registar voto e voltar para login.
-        sge.votoPresidencial(idEleicao,ronda,idCidadao,selecionado);
+        // TODO: Registar voto e voltar para login.
         Login login = new Login();
         login.setLocationRelativeTo(this);
         this.dispose();
@@ -136,7 +138,11 @@ public class VotoPresidenciais extends javax.swing.JFrame {
       "Tem a certeza que pretende votar em branco?");
     
     if (d == JOptionPane.YES_OPTION) {
-      // TODO: Registar voto em branco.
+      // Registar voto branco.
+      sge.votoBrancoPresidencial(idEleicao,
+        sge.rondaMaisRecente(idEleicao), idCidadao);
+      
+      // Voltar para o ecrã de Login.
       Login L = new Login();
       L.setLocationRelativeTo(this);
       this.dispose();
@@ -149,7 +155,11 @@ public class VotoPresidenciais extends javax.swing.JFrame {
       "Tem a certeza que pretende fazer voto nulo?");
     
     if (d == JOptionPane.YES_OPTION) {
-      // TODO: Registar voto nulo.
+      // Registar voto nulo.
+      sge.votoNuloPresidencial(idEleicao,
+        sge.rondaMaisRecente(idEleicao), idCidadao);
+      
+      // Regressar ao ecrã de Login.
       Login L = new Login();
       L.setLocationRelativeTo(this);
       this.dispose();
@@ -179,12 +189,11 @@ public class VotoPresidenciais extends javax.swing.JFrame {
     }
     
     public void setListaOpcoes () {
-      List<Candidato> candidatos  = sge.getCandidatos(7);
       DefaultListModel dlm        = new DefaultListModel();
     
       optionsList.setModel(dlm);
     
-      for (Candidato c : candidatos) {
+      for (Candidato c : this.candidatos) {
         System.out.println(c.getNome());
         dlm.addElement(c.getNome());
       }

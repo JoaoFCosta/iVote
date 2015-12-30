@@ -184,8 +184,8 @@ public class VotoLegislativas extends javax.swing.JFrame {
             case 1:
                 decisao = JOptionPane.showConfirmDialog(this,
                     "Confirma que quer votar na lista: " + selecionado + "?");
-                //Para registar voto
-                sge.votoLegislativa(idEleicao,idCidadao,selecionado); 
+                // TODO: Registar o voto
+                // sge.votoLegislativa(idEleicao,idCidadao,selecionado); 
                 break;
             default:
                 decisao = JOptionPane.showConfirmDialog(this,
