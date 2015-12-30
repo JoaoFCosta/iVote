@@ -400,7 +400,7 @@ public class SGE extends Observable{
     public boolean votouLegislativa (int idEleicao, int idCidadao) {
         return eleitores.votouLegislativa(idEleicao, idCidadao);
     }
-    /*
+    
     public Map<Integer, List<String>> alocarMandatos (int idEleicao) {
         Map<Integer, List<Lista>> votosCirculoLista = votosCirculoLista(idEleicao);
         EleicaoLegislativa eleicaoL = new EleicaoLegislativa(Calendar.getInstance(), 1);
@@ -412,7 +412,7 @@ public class SGE extends Observable{
         for (Integer idCirculo : votosCirculoLista.keySet()) {
             List<Lista> listas = votosCirculoLista.get(idCirculo);
             
-            mandatos = eleicaoLc.alocarMandatos(listas);
+            mandatos = eleicaoL.alocarMandatos(listas);
             
             List<String> deputados = new ArrayList<String>();
             for (Lista lista : listas) {
@@ -426,7 +426,14 @@ public class SGE extends Observable{
         return resultados;
     }
     
-    public static void main(String [] args) {
+    /*public static void main(String [] args) {
+        SGE sge = new SGE();
+        Map<Integer, List<String>> mandatos = sge.alocarMandatos(3);
+        
+        for (List<String> deputados : mandatos.values()) {
+            for (String deputado : deputados)
+                System.out.println(deputado);
+        }
         
     } */
 }
