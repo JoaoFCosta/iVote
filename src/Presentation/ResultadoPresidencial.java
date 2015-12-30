@@ -58,6 +58,8 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     votosNulosR1 = new javax.swing.JLabel();
     jScrollPane1 = new javax.swing.JScrollPane();
     candidatosR1 = new javax.swing.JTable();
+    jLabel1 = new javax.swing.JLabel();
+    abstencaoR1 = new javax.swing.JLabel();
     jPanel2 = new javax.swing.JPanel();
     jLabel12 = new javax.swing.JLabel();
     jLabel13 = new javax.swing.JLabel();
@@ -67,6 +69,8 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     totalVotosR2 = new javax.swing.JLabel();
     jScrollPane2 = new javax.swing.JScrollPane();
     candidatosR2 = new javax.swing.JTable();
+    jLabel4 = new javax.swing.JLabel();
+    abstencaoR2 = new javax.swing.JLabel();
     jPanel3 = new javax.swing.JPanel();
     vencedorTextField = new javax.swing.JLabel();
 
@@ -114,6 +118,10 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     });
     jScrollPane1.setViewportView(candidatosR1);
 
+    jLabel1.setText("Abstenção: ");
+
+    abstencaoR1.setText("0%");
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -121,24 +129,25 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
       .addGroup(jPanel1Layout.createSequentialGroup()
         .addContainerGap()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(jPanel1Layout.createSequentialGroup()
-            .addComponent(jScrollPane1)
-            .addContainerGap())
+          .addComponent(jScrollPane1)
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addComponent(jLabel5)
             .addGap(18, 18, 18)
-            .addComponent(totalVotosR1, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-            .addGap(16, 16, 16))
+            .addComponent(totalVotosR1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(abstencaoR1)
+            .addGap(0, 0, Short.MAX_VALUE))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addComponent(jLabel3)
             .addGap(70, 70, 70)
-            .addComponent(votosBrancosR1, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
-            .addContainerGap())
+            .addComponent(votosBrancosR1, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addComponent(jLabel2)
             .addGap(82, 82, 82)
-            .addComponent(votosNulosR1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addContainerGap())))
+            .addComponent(votosNulosR1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        .addContainerGap())
     );
     jPanel1Layout.setVerticalGroup(
       jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,7 +155,9 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel5)
-          .addComponent(totalVotosR1))
+          .addComponent(totalVotosR1)
+          .addComponent(jLabel1)
+          .addComponent(abstencaoR1))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel3)
@@ -199,6 +210,10 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     });
     jScrollPane2.setViewportView(candidatosR2);
 
+    jLabel4.setText("Abstenção: ");
+
+    abstencaoR2.setText("0%");
+
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(
@@ -217,14 +232,17 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(votosNulosR2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
+                .addComponent(totalVotosR2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(abstencaoR2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
               .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(votosBrancosR2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-              .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(totalVotosR2, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-                .addGap(22, 22, 22))))))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addComponent(votosNulosR2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                  .addComponent(votosBrancosR2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12))))))
     );
     jPanel2Layout.setVerticalGroup(
       jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +250,9 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel10)
-          .addComponent(totalVotosR2))
+          .addComponent(totalVotosR2)
+          .addComponent(jLabel4)
+          .addComponent(abstencaoR2))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(votosBrancosR2)
@@ -308,6 +328,7 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     totalVotosR1.setText("" + sge.votosTotaisPresidencial(idEleicao, 1));
     votosNulosR1.setText("" + sge.votosNulosPresidencial(idEleicao, 1));
     votosBrancosR1.setText("" + sge.votosBrancosPresidencial(idEleicao, 1));
+    abstencaoR1.setText("" + sge.abstencaoPresidencial(idEleicao, 1) + "%");
     
     votos1 = sge.votosPorCandidatos(idEleicao, 1);
     dtm = (DefaultTableModel) candidatosR1.getModel();
@@ -319,6 +340,7 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
     totalVotosR2.setText("" + sge.votosTotaisPresidencial(idEleicao, 2));
     votosNulosR2.setText("" + sge.votosNulosPresidencial(idEleicao, 2));
     votosBrancosR2.setText("" + sge.votosBrancosPresidencial(idEleicao, 2));
+    abstencaoR2.setText("" + sge.abstencaoPresidencial(idEleicao, 2) + "%");
     
     votos2 = sge.votosPorCandidatos(idEleicao, 2);
     dtm = (DefaultTableModel) candidatosR2.getModel();
@@ -367,13 +389,17 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JLabel abstencaoR1;
+  private javax.swing.JLabel abstencaoR2;
   private javax.swing.JTable candidatosR1;
   private javax.swing.JTable candidatosR2;
+  private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel10;
   private javax.swing.JLabel jLabel12;
   private javax.swing.JLabel jLabel13;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JLabel jLabel3;
+  private javax.swing.JLabel jLabel4;
   private javax.swing.JLabel jLabel5;
   private javax.swing.JMenu jMenu1;
   private javax.swing.JPanel jPanel1;
