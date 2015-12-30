@@ -148,8 +148,10 @@ public class SGE extends Observable{
         Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao, ronda);
         List<Candidato> candidatos = new ArrayList<Candidato>();
 
-        for (Integer idCidadao : resultados.keySet())
-            candidatos.add((Candidato) cidadaos.get(idCidadao));
+        for (Integer idCidadao : resultados.keySet()) {
+          Eleitor e = cidadaos.get(idCidadao);
+          candidatos.add(new Candidato(e.getNome(), e.getCodigo(), e.getCC()));
+        }
 
         return candidatos;
     }
