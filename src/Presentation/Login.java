@@ -201,7 +201,7 @@ public class Login extends javax.swing.JFrame {
   private void resultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultsButtonActionPerformed
     // Aceder à eleição selecionada.
     Eleicao selecao = (Eleicao) electionsList.getModel().getElementAt(
-      electionsList.getSelectedIndex());
+        electionsList.getSelectedIndex());
 
     if (selecao instanceof EleicaoPresidencial) {
       ResultadoPresidencial RP = new ResultadoPresidencial();
@@ -234,11 +234,11 @@ public class Login extends javax.swing.JFrame {
 
   /** Botão de Login pressionado. */
   private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-    
+
     String ccidadao       = cardIdTextField.getText();
     String password       = passwordField.getText();
     boolean votoEfetuado=false;
-    
+
     /** Caso em que input não é inserido. */
     if (ccidadao.equals("") || password.equals("")) {
       JOptionPane.showMessageDialog(this,
@@ -246,56 +246,53 @@ public class Login extends javax.swing.JFrame {
     }
     /** Caso em que input é inserido. */
     else{
-        /** Login de administrador. */
-        if (ccidadao.charAt(0) == 'a') {
-            loginAdmin(ccidadao, password);
-        } 
-        /** Login de eleitor. */
-        else{
-            /**  Verificar se os campos de username ou password estão vazios
-              *  e verificar se o eleitor ainda não votou. */
-            votoEfetuado = sge.votoEfetuado(Integer.parseInt(ccidadao));
-            if (votoEfetuado) {
-                JOptionPane.showMessageDialog(this, 
-                    "O eleitor já efectou o seu voto nestas Eleições.");
-            }
-            /** Caso o eleitor ainda não tenha votado. */
-            else{
-                loginEleitor(ccidadao, password);
-            }
+      /** Login de administrador. */
+      if (ccidadao.charAt(0) == 'a') {
+        loginAdmin(ccidadao, password);
+      }
+      /** Login de eleitor. */
+      else{
+        /**  Verificar se os campos de username ou password estão vazios
+         *  e verificar se o eleitor ainda não votou. */
+        votoEfetuado = sge.votoEfetuado(Integer.parseInt(ccidadao));
+        if (votoEfetuado) {
+          JOptionPane.showMessageDialog(this,
+              "O eleitor já efectou o seu voto nestas Eleições.");
         }
+        /** Caso o eleitor ainda não tenha votado. */
+        else{
+          loginEleitor(ccidadao, password);
+        }
+      }
     }
   }//GEN-LAST:event_loginButtonActionPerformed
 
   private void loginEleitor(String ccidadao, String password) {
     // Verificar se os dados estão correctos.
     boolean r           = sge.loginEleitor(Integer.parseInt(ccidadao), password);
-    //0 ou outro qualquer caso->Não, 1->Presidencial, 2->Legislativa
-    int eleicaoAberta   = 1;
+
     int idEleicao       = sge.idMaisRecenteEleicao();
     int idCidadao       = Integer.parseInt(ccidadao);
 
     if (r) {
-        if(eleicaoAberta==1){
-            int ronda = sge.rondaMaisRecente(idEleicao);
-            VotoPresidenciais VP = new VotoPresidenciais(sge, idEleicao, idCidadao, ronda);
-            VP.setLocationRelativeTo(this);
-            this.dispose();
-            VP.setVisible(true);
-        }
-        if(eleicaoAberta==2){
-            VotoLegislativas VL = new VotoLegislativas(sge, idEleicao, idCidadao);
-            VL.setLocationRelativeTo(this);
-            this.dispose();
-            VL.setVisible(true);
-        }
-        if(eleicaoAberta!=1 && eleicaoAberta!=2){
-            JOptionPane.showMessageDialog(this,
-            "Não existe nenhuma Eleição Aberta.");
-        }
+      if (sge.ePresidencial(idEleicao)) {
+        // Eleição Presidencial.
+        // TODO: Verificar se a eleição está aberta para votos.
+        int ronda             = sge.rondaMaisRecente(idEleicao);
+        VotoPresidenciais VP  = new VotoPresidenciais(sge, idEleicao, idCidadao, ronda);
+        VP.setLocationRelativeTo(this);
+        this.dispose();
+        VP.setVisible(true);
+      } else {
+        // Eleição Legislativa.
+        // TODO: Verificar se a eleição está aberta para votos.
+        VotoLegislativas VL = new VotoLegislativas(sge, idEleicao, idCidadao);
+        VL.setLocationRelativeTo(this);
+        this.dispose();
+        VL.setVisible(true);
+      }
     } else {
-      JOptionPane.showMessageDialog(this,
-          "Dados inválidos.");
+      JOptionPane.showMessageDialog(this, "Dados inválidos.");
     }
   }
 

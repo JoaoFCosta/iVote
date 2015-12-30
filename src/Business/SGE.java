@@ -379,4 +379,11 @@ public class SGE extends Observable{
         notifyObservers(d);
         return 1;
     }
+    
+    /** Verifica se um dado id de eleição é uma eleeção presidencial.
+     *  @param idEleicao  ID da Eleição a ser verificada.
+     *  @return true se a eleição for presidencial e false caso contrário. */
+     public boolean ePresidencial (int idEleicao) {
+       return eleicoes.ePresidencial(idEleicao);
+     }
 }
