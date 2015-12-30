@@ -19,7 +19,7 @@ public class EleicaoPresidencial extends Eleicao {
   
   @Override
   public String toString () {
-    return "[PRESIDENCIAL] " + super.toString();
+    return "Eleição Presidencial de " + super.getData().get(Calendar.YEAR);
   }
     
 }

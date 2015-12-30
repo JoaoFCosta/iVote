@@ -20,7 +20,7 @@ public class EleicaoLegislativa extends Eleicao {
 
   @Override
   public String toString () {
-    return "[LEGISLATIVA] " + super.toString();
+    return "Eleição Legislativa de " + super.getData().get(Calendar.YEAR);
   }
   
   //get the highest value in the 2D table and remove it!

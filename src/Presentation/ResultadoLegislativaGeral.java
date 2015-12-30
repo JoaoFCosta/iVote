@@ -5,7 +5,7 @@
  */
 package Presentation;
 
-import Business.Lista;
+import Business.Eleicao;
 import Business.SGE;
 import java.util.List;
 import java.util.Map;
@@ -15,14 +15,15 @@ import javax.swing.table.DefaultTableModel;
  * @author joaocosta
  */
 public class ResultadoLegislativaGeral extends javax.swing.JFrame {
-  private final int idEleicao;
+  private final Eleicao eleicao;
   private final SGE sge;
 
-  public ResultadoLegislativaGeral (SGE sge, int idEleicao) {
+  public ResultadoLegislativaGeral (SGE sge, Eleicao e) {
     initComponents();
-    this.idEleicao  = idEleicao;
-    this.sge        = sge;
+    this.eleicao  = e;
+    this.sge      = sge;
     
+    this.setTitle(eleicao.toString());
     setResultados();
   }
   
@@ -32,29 +33,28 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
   public ResultadoLegislativaGeral() {
     initComponents();
     this.setTitle("Resultado Eleições Legislativas 2015");
-    this.idEleicao  = 0;
+    this.eleicao    = null;
     this.sge        = null;
   }
 
   /** Configurar as labels para apresentarem os resultados. */
   public void setResultados () {
-    // TODO: Terminar implementação.
+    int idEleicao = eleicao.id();
+    
     totalVotos.setText("" + sge.votosTotaisLegislativa(idEleicao));
     votosBrancos.setText("" + sge.votosBrancosLegislativa(idEleicao));
     votosNulos.setText("" + sge.votosNulosLegislativa(idEleicao));
     abstencao.setText("" + sge.abstencaoLegislativa(idEleicao) + "%");
     
     DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-    Map<Integer, List<Lista>> resultados = sge.votosCirculoLista(idEleicao);
+    Map<Integer, List<String>> resultados = sge.alocarMandatos(idEleicao);
     
     for (Integer i : resultados.keySet()) {
-      List<Lista> listas = resultados.get(i);
+      List<String> lista = resultados.get(i);
       
       int votos = 0;
-      for (Lista l : listas)
-        votos += l.votos;
-      
-      dtm.addRow(new Object[] {i, votos});
+      for (String s : lista)
+        dtm.addRow(new Object[] { s });
     }
   }
   
@@ -92,18 +92,18 @@ public class ResultadoLegislativaGeral extends javax.swing.JFrame {
       }
     });
 
-    jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Círculos"));
+    jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mandatos"));
 
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
 
       },
       new String [] {
-        "Círculo Eleitoral", "Nº de Votos"
+        "Nome"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.Integer.class, java.lang.Integer.class
+        java.lang.String.class
       };
 
       public Class getColumnClass(int columnIndex) {

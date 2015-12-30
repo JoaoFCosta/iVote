@@ -6,6 +6,7 @@
 package Presentation;
 
 import Business.Candidato;
+import Business.Eleicao;
 import Business.SGE;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -15,16 +16,16 @@ import javax.swing.table.DefaultTableModel;
  * @author joaocosta
  */
 public class ResultadoPresidencial extends javax.swing.JFrame {
-  private final int idEleicao;
+  private final Eleicao eleicao;
   private final SGE sge;
 
-  public ResultadoPresidencial (SGE sge, int idEleicao) {
+  public ResultadoPresidencial (SGE sge, Eleicao e) {
     initComponents();
     
-    this.idEleicao  = idEleicao;
-    this.sge        = sge;
-    this.setTitle("Eleições Presidenciais");
+    this.eleicao  = e;
+    this.sge      = sge;
     
+    this.setTitle(eleicao.toString());
     setResultados();
   }
   
@@ -34,8 +35,8 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
   public ResultadoPresidencial() {
     initComponents();
     this.setTitle("Eleições Presidenciais");
-    this.idEleicao = 0;
-    this.sge = null;
+    this.eleicao  = null;
+    this.sge      = null;
   }
 
   /**
@@ -328,6 +329,7 @@ public class ResultadoPresidencial extends javax.swing.JFrame {
 
   /** Preencher campos de votos. */
   public void setResultados () {
+    int idEleicao = eleicao.id();
     List<Candidato> votos1, votos2;
     DefaultTableModel dtm;
     
