@@ -237,14 +237,13 @@ public class Login extends javax.swing.JFrame {
 
     String ccidadao       = cardIdTextField.getText();
     String password       = passwordField.getText();
-    boolean votoEfetuado=false;
+    boolean votoEfetuado  = false;
 
-    /** Caso em que input não é inserido. */
+    /** Campos por preencher. */
     if (ccidadao.equals("") || password.equals("")) {
       JOptionPane.showMessageDialog(this,
           "O campo de cartão de cidadão e password não pode estar vazio.");
     }
-    /** Caso em que input é inserido. */
     else{
       /** Login de administrador. */
       if (ccidadao.charAt(0) == 'a') {
@@ -269,12 +268,15 @@ public class Login extends javax.swing.JFrame {
 
   private void loginEleitor(String ccidadao, String password) {
     // Verificar se os dados estão correctos.
-    boolean r           = sge.loginEleitor(Integer.parseInt(ccidadao), password);
-
+    boolean r           = sge.loginEleitor(Integer.parseInt(ccidadao), password);;
     int idEleicao       = sge.idMaisRecenteEleicao();
     int idCidadao       = Integer.parseInt(ccidadao);
+    int eleicaoAberta     = sge.eleicaoAberta();
 
-    if (r) {
+    if (eleicaoAberta == 0) {
+      JOptionPane.showMessageDialog(this, "Não existe nenhum eleição a decorrer.");
+    }
+    else if (r) {
       if (sge.ePresidencial(idEleicao)) {
         // Eleição Presidencial.
         // TODO: Verificar se a eleição está aberta para votos.

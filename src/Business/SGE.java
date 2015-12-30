@@ -450,4 +450,8 @@ public class SGE extends Observable{
         
         return resultados;
     }
+    
+    public int eleicaoAberta () {
+      return eleicoes.eleicaoAberta();
+    }
 }
