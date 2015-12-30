@@ -61,13 +61,11 @@ public class EleicaoLegislativa extends Eleicao {
 		//System.out.println(row);
 	}
 
-    public List<Integer> alocarMandatos(List<Lista> lista1) {
+    public List<Integer> alocarMandatos(List<Lista> lista) {
         
-	int chairs = 2;
-        List<Lista> lista = new ArrayList<Lista>(Arrays.asList(new Lista(1, 16), new Lista(2, 38), new Lista(3, 14),new Lista(4, 29),new Lista(5, 8),new Lista(6, 1),new Lista(7, 1),new Lista(8, 1)));
+	int chairs = 1;
+        //List<Lista> lista = new ArrayList<Lista>(Arrays.asList(new Lista(1, 16), new Lista(2, 38), new Lista(3, 14),new Lista(4, 29),new Lista(5, 8),new Lista(6, 1),new Lista(7, 1),new Lista(8, 1)));
         
-	double []votes =  new double[]  {16, 38, 14, 29, 8, 1, 1, 1};
-
 	int [] allocated = new int[lista.size()];
 	double [][] dhondtTable = new double [chairs][lista.size()];
 	//System.out.println("Dhondt Table chairs="+chairs+ " parties= " +lista.size()+ "\n");

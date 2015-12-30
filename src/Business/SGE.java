@@ -432,17 +432,16 @@ public class SGE extends Observable{
         
         Map<Integer, List<String>> resultados = new HashMap<Integer, List<String>>();
                 
-        List<Integer> mandatos = new ArrayList<Integer>();
         
         for (Integer idCirculo : votosCirculoLista.keySet()) {
             List<Lista> listas = votosCirculoLista.get(idCirculo);
             
-            mandatos = eleicaoL.alocarMandatos(listas);
+            List<Integer> mandatos = eleicaoL.alocarMandatos(listas);
             
             List<String> deputados = new ArrayList<String>();
             for (Lista lista : listas) {
                 
-                deputados.addAll(circulos.alocarMandatos(idEleicao, idCirculo, lista.idLista, mandatos.get(lista.idLista)));
+                deputados.addAll(circulos.alocarMandatos(idEleicao, idCirculo, lista.idLista, mandatos.get(lista.idLista -1)));
             }
             
             resultados.put(idCirculo, deputados);
