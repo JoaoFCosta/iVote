@@ -154,7 +154,7 @@ public class VotoLegislativas extends javax.swing.JFrame {
 
     if (d == JOptionPane.YES_OPTION) {
       // Registar voto nulo.
-      sge.votoNuloLegislativa(idEleicao, idCidadao, false);
+      sge.votoNuloLegislativa(idEleicao, idCidadao);
 
       // Regressar ao ecrã de Login.
       Login L = new Login();
@@ -170,7 +170,7 @@ public class VotoLegislativas extends javax.swing.JFrame {
 
     if (d == JOptionPane.YES_OPTION) {
       // Registar voto branco.
-      sge.votoBrancoLegislativa(idEleicao, idCidadao, true);
+      sge.votoBrancoLegislativa(idEleicao, idCidadao);
 
       // Voltar para o ecrã de Login.
       Login L = new Login();

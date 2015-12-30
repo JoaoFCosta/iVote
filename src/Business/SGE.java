@@ -127,7 +127,7 @@ public class SGE extends Observable{
         return cidadaos.containsKey(ccidadao);
     }
 
-    /** Verifica se um dado eleitor já voltou na eleição atual.
+    /** Verifica se um dado eleitor já votou na eleição atual.
      *  @param ccidadao Número do cartão de cidadão do eleitor.
      *  @return true se o voto já tiver sido efectuado e false caso contrário.
      */
@@ -144,8 +144,8 @@ public class SGE extends Observable{
     }
 
     /* Primeiro da lista tem mais votos */
-    public List<Candidato> votosPorCandidatos (int idEleicao) {
-        Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao);
+    public List<Candidato> votosPorCandidatos (int idEleicao, int ronda) {
+        Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao, ronda);
         List<Candidato> candidatos = new ArrayList<Candidato>();
 
         for (Integer idCidadao : resultados.keySet())
@@ -153,29 +153,54 @@ public class SGE extends Observable{
 
         return candidatos;
     }
-
-    public int abstencaoPresidencial (int idEleicao, int ronda) {
-        return eleicoes.totalEleitoresPresidencial(idEleicao, ronda) - votosTotaisPresidencial(idEleicao, ronda);
-    }
+    
     /*
+        Map de idCirculo para uma List com classe Lista.
+        Cada Lista tem informação sobre o idLista e votos.
+        As variáveis são públicas para aceder rapidamente.
+    */
+    public Map<Integer, List<Lista>> votosCirculoLista (int idEleicao) {
+        return eleicoes.votosCirculoLista(idEleicao);
+    }
+    
+    public int abstencaoPresidencial (int idEleicao, int ronda) {
+        int abstencao = eleicoes.totalEleitoresPresidencial(idEleicao, ronda) - votosTotaisPresidencial(idEleicao, ronda);
+        
+        if (abstencao < 0)
+            abstencao = 0;
+        
+        return abstencao;
+    }
+    
     public int abstencaoLegislativa (int idEleicao) {
-        return eleicoes.totalEleitoresLegislativa(idEleicao) - votosTotaisLegislativa(idEleicao);
-    }*/
-
+        int abstencao = eleicoes.totalEleitoresLegislativa(idEleicao) - votosTotaisLegislativa(idEleicao);
+        
+        if (abstencao < 0)
+            abstencao = 0;
+        
+        return abstencao;
+    }
+    
     public int votosTotaisPresidencial (int idEleicao, int ronda) {
-        Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao);
+        Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao, ronda);
         int votosValidos = 0;
 
         for (Integer votos : resultados.values())
             votosValidos += votos;
-
+        
         return votosBrancosPresidencial(idEleicao, ronda) + votosNulosPresidencial(idEleicao, ronda) + votosValidos;
-
     }
-
-    /*public int votosTotaisLegislativa (int idEleicao) {
-
-    }*/
+    
+    public int votosTotaisLegislativa (int idEleicao) {
+        Map<Integer, List<Lista>> votosCirculoLista = eleicoes.votosCirculoLista(idEleicao);
+        int votosValidos = 0;
+        
+        for (List<Lista> l : votosCirculoLista.values())
+            for (Lista lista : l)
+                votosValidos += lista.votos;
+        
+        return votosBrancosLegislativa(idEleicao) + votosNulosLegislativa(idEleicao) + votosValidos;
+    }
 
     public int votosBrancosPresidencial (int idEleicao, int ronda) {
         int votos = 0;
@@ -293,6 +318,7 @@ public class SGE extends Observable{
         }
     return r;
   }
+  
   /**
    * Cria uma nova eleicao presidencial
    * @param data data da eleição
@@ -336,35 +362,43 @@ public class SGE extends Observable{
 
     public void votoBrancoPresidencial (int idEleicao, int ronda, int idCidadao) {
         eleicoes.voto(idEleicao, ronda, idCidadao, true);
-        eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+        eleitores.votoPresidencial(idEleicao, ronda, idCidadao);
     }
 
     public void votoNuloPresidencial (int idEleicao, int ronda, int idCidadao) {
         eleicoes.voto(idEleicao, ronda, idCidadao, false);
-        eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+        eleitores.votoPresidencial(idEleicao, ronda, idCidadao);
 
     }
-
-    public void votoBrancoLegislativa (int idEleicao, int idCidadao, boolean votoBranco) {
+        
+    public void votoBrancoLegislativa (int idEleicao, int idCidadao) {
         eleicoes.voto(idEleicao, -1, idCidadao, true);
-        eleitores.votouLegislativa (idEleicao, idCidadao);
+        eleitores.votoLegislativa (idEleicao, idCidadao);
     }
-
-    public void votoNuloLegislativa (int idEleicao, int idCidadao, boolean votoBranco) {
+            
+    public void votoNuloLegislativa (int idEleicao, int idCidadao) {
         eleicoes.voto(idEleicao, -1, idCidadao, false);
-        eleitores.votouLegislativa (idEleicao, idCidadao);
+        eleitores.votoLegislativa (idEleicao, idCidadao);
 
     }
 
     public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) {
         eleicoes.votoPresidencial(idEleicao, ronda, idCidadao, idCandidato);
-        eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+        eleitores.votoPresidencial(idEleicao, ronda, idCidadao);
 
     }
 
     public void votoLegislativa (int idEleicao, int idCidadao, int idLista) {
         eleicoes.votoLegislativa(idEleicao, idCidadao, idLista);
-        eleitores.votouLegislativa (idEleicao, idCidadao);
+        eleitores.votoLegislativa (idEleicao, idCidadao);
+    }
+    
+    public boolean votouPresidencial (int idEleicao, int ronda, int idCidadao) {
+       return eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+    }
+    
+    public boolean votouLegislativa (int idEleicao, int idCidadao) {
+        return eleitores.votouLegislativa(idEleicao, idCidadao);
     }
     
     /** Devolve a lista de candidatos de uma Assembleia de Voto do Partido nome*/

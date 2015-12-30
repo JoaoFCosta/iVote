@@ -50,6 +50,8 @@ public class LegislativaSDAO {
         PreparedStatement insertEleicaoLSt = con.prepareStatement(
         "insert into legislativa (id,idEleicao,data)"
                 + " values ("+idLegislativa+","+idEleicao+","+dataE+ ");");
+        
+        insertEleicaoLSt.executeUpdate();
          } catch (SQLException | ClassNotFoundException e) {
              throw new FailedInsert(e.toString());
          } finally {

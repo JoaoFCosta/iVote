@@ -483,7 +483,7 @@ public int criaEleicaoPresidencial(Calendar data){
         try {
             con = Connect.connect();
 
-            PreparedStatement votoPresidencial = con.prepareStatement(
+            PreparedStatement votoLegislativa = con.prepareStatement(
                     "UPDATE AssembleiaLista\n" +
                             "SET votos = votos +1\n" +
                             "WHERE idLista = " + idLista + " AND idAssembleiaVoto = (SELECT AV.id\n" +
@@ -494,7 +494,7 @@ public int criaEleicaoPresidencial(Calendar data){
                             "ON AV.id = EL.idAssembleiaVoto\n" +
                             "WHERE E.id = " + idEleicao + " AND EL.idCidadao = " + idCidadao +");");
 
-            votoPresidencial.executeUpdate();
+            votoLegislativa.executeUpdate();
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
@@ -689,26 +689,15 @@ public int criaEleicaoPresidencial(Calendar data){
         return eleicao;
     }
      
-    public Map<Integer, Integer> votosCandidatos (int idEleicao) {
+    public Map<Integer, Integer> votosCandidatos (int idEleicao, int ronda) {
         Connection con  = null;
         Map votosCandidatos = (Map) new HashMap<Integer, Integer>();
 
         try {
             con = Connect.connect();
             
-            PreparedStatement rondaPresidencial = con.prepareStatement(
-                    "SELECT RP.ronda FROM Eleicao AS E INNER JOIN RondaPresidencial AS RP " +
-                            "ON E.id = RP.idEleicao WHERE E.id = " + idEleicao +
-                            " ORDER BY RP.ronda DESC LIMIT 1;");
-
-            ResultSet rs = rondaPresidencial.executeQuery();
-            
-            int ronda = 1;
-            if (rs.next())
-                ronda = rs.getInt("ronda");
-
             PreparedStatement presidencial = con.prepareStatement(
-                    "SELECT AC.idCidadao, SUM(AC.votos) AS votos\n" +
+                    "SELECT AC.idCidadao AS idCandidato, SUM(AC.votos) AS votos\n" +
                     "FROM AssembleiaCandidato AS AC INNER JOIN AssembleiaVoto AS AV\n" +
                     "ON AC.idAssembleiaVoto = AV.id INNER JOIN RondaPresidencial AS RP\n" +
                     "ON AV.idRondaPresidencial = RP.id\n" +
@@ -717,7 +706,7 @@ public int criaEleicaoPresidencial(Calendar data){
                     "ORDER BY votos DESC;");
 
             // Consultar eleições presidenciais.
-            rs = presidencial.executeQuery();
+            ResultSet rs = presidencial.executeQuery();
 
             while (rs.next()) {
                 // Fazer parse da data e criar nova eleicao.
