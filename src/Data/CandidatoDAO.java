@@ -169,6 +169,7 @@ public class CandidatoDAO {
             catch (Exception e) { System.out.println(e); }
         }
         return count;
-        }
     }
+    
+}
     

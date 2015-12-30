@@ -34,7 +34,6 @@ public class EleicaoDAOTest {
             try { con.close(); }
             catch (Exception e) { System.out.println(e); }
         }
-
     }
 
     @Before
@@ -59,8 +58,8 @@ public class EleicaoDAOTest {
 
     @Test
     public void validarVotosNulos() throws Exception {
-        Map<Integer, Integer> votosNulosEleicaoUm     = eleicao.votosNulosPorAssembleia(1);
-        Map<Integer, Integer> votosNulosEleicaoQuatro = eleicao.votosNulosPorAssembleia(4);
+        Map<Integer, Integer> votosNulosEleicaoUm     = eleicao.votosNulosPorAssembleia(1, 0);
+        Map<Integer, Integer> votosNulosEleicaoQuatro = eleicao.votosNulosPorAssembleia(4, 1);
 
         assertEquals(1, (int) votosNulosEleicaoQuatro.get(209));
         assertEquals(1, (int) votosNulosEleicaoQuatro.get(215));
@@ -72,19 +71,14 @@ public class EleicaoDAOTest {
 
     @Test
     public void validarVotosBrancos() throws Exception {
-        Map<Integer, Integer> votosBrancosEleicaoUm     = eleicao.votosBrancosPorAssembleia(1);
-        Map<Integer, Integer> votosBrancosEleicaoQuatro = eleicao.votosBrancosPorAssembleia(4);
+        Map<Integer, Integer> votosBrancosEleicaoUm     = eleicao.votosBrancosPorAssembleia(1, 0);
+        Map<Integer, Integer> votosBrancosEleicaoQuatro = eleicao.votosBrancosPorAssembleia(4, 1);
 
         assertEquals(1, (int) votosBrancosEleicaoQuatro.get(209));
         assertEquals(5, (int) votosBrancosEleicaoQuatro.get(215));
 
         assertEquals(2, (int) votosBrancosEleicaoUm.get(19));
         assertEquals(5, (int) votosBrancosEleicaoUm.get(24));
-    }
-    
-    @Test
-    public void votoPresidencialTest() throws Exception {
-        assertEquals(eleicao.votoLegislativa(1, 12345678, 1))
     }
 
 }

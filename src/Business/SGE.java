@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -130,19 +132,69 @@ public class SGE extends Observable{
         else
             return eleitores.votouLegislativa(eleicao, ccidadao);
     }
-  
-  public int votosBrancos (int id) {
+
+    /* Primeiro da lista tem mais votos */
+    public List<Candidato> votosPorCandidatos (int idEleicao) {
+        Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao);
+        List<Candidato> candidatos = new ArrayList<Candidato>();
+        
+        for (Integer idCidadao : resultados.keySet())
+            candidatos.add((Candidato) cidadaos.get(idCidadao));
+        
+        return candidatos;
+    }
+    
+    public int abstencaoPresidencial (int idEleicao, int ronda) {
+        return eleicoes.totalEleitoresPresidencial(idEleicao, ronda) - votosTotaisPresidencial(idEleicao, ronda);
+    }
+    /*
+    public int abstencaoLegislativa (int idEleicao) {
+        return eleicoes.totalEleitoresLegislativa(idEleicao) - votosTotaisLegislativa(idEleicao);
+    }*/
+    
+    public int votosTotaisPresidencial (int idEleicao, int ronda) {
+        Map<Integer, Integer> resultados = eleicoes.votosCandidatos(idEleicao);
+        int votosValidos = 0;
+        
+        for (Integer votos : resultados.values())
+            votosValidos += votos;
+        
+        return votosBrancosPresidencial(idEleicao, ronda) + votosNulosPresidencial(idEleicao, ronda) + votosValidos;
+        
+    }
+    
+    /*public int votosTotaisLegislativa (int idEleicao) {
+        
+    }*/
+
+    public int votosBrancosPresidencial (int idEleicao, int ronda) {
         int votos = 0;
 
-        for (Integer votosAssembleia : eleicoes.votosBrancosPorAssembleia(id).values())
+        for (Integer votosAssembleia : eleicoes.votosBrancosPorAssembleia(idEleicao, ronda).values())
             votos += votosAssembleia;
         return votos;
     }
 
-    public int votosNulos (int id) {
+    public int votosNulosPresidencial (int idEleicao, int ronda) {
         int votos = 0;
 
-        for (Integer votosAssembleia : eleicoes.votosNulosPorAssembleia(id).values())
+        for (Integer votosAssembleia : eleicoes.votosNulosPorAssembleia(idEleicao, ronda).values())
+            votos += votosAssembleia;
+        return votos;
+    }
+    
+    public int votosBrancosLegislativa (int idEleicao) {
+        int votos = 0;
+
+        for (Integer votosAssembleia : eleicoes.votosBrancosPorAssembleia(idEleicao, 0).values())
+            votos += votosAssembleia;
+        return votos;
+    }
+
+    public int votosNulosLegislativa (int idEleicao) {
+        int votos = 0;
+
+        for (Integer votosAssembleia : eleicoes.votosNulosPorAssembleia(idEleicao, 0).values())
             votos += votosAssembleia;
         return votos;
     }
@@ -275,5 +327,37 @@ public class SGE extends Observable{
       
       return r;
   }
-  
+      
+    public void votoBrancoPresidencial (int idEleicao, int ronda, int idCidadao) {
+        eleicoes.voto(idEleicao, ronda, idCidadao, true);
+        eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+    }
+    
+    public void votoNuloPresidencial (int idEleicao, int ronda, int idCidadao) {
+        eleicoes.voto(idEleicao, ronda, idCidadao, false);
+        eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+
+    }
+        
+    public void votoBrancoLegislativa (int idEleicao, int idCidadao, boolean votoBranco) {
+        eleicoes.voto(idEleicao, -1, idCidadao, true);
+        eleitores.votouLegislativa (idEleicao, idCidadao);
+    }
+            
+    public void votoNuloLegislativa (int idEleicao, int idCidadao, boolean votoBranco) {
+        eleicoes.voto(idEleicao, -1, idCidadao, false);
+        eleitores.votouLegislativa (idEleicao, idCidadao);
+
+    }
+    
+    public void votoPresidencial (int idEleicao, int ronda, int idCidadao, int idCandidato) {
+        eleicoes.votoPresidencial(idEleicao, ronda, idCidadao, idCandidato);
+        eleitores.votouPresidencial(idEleicao, ronda, idCidadao);
+
+    }
+    
+    public void votoLegislativa (int idEleicao, int idCidadao, int idLista) {
+        eleicoes.votoLegislativa(idEleicao, idCidadao, idLista);
+        eleitores.votouLegislativa (idEleicao, idCidadao);
+    }
 }
